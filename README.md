@@ -37,13 +37,13 @@ All of it. Thanks to the minimalistic design of JSON it is well-suited to being 
 
 ## How much XML?
 
-JinXML is based on the minimal XML subset [MinXML](https://github.com/sfkleach/MinXML) that uses the three types of tags from XML:
+Not so much. JinXML is based on the minimal XML subset [MinXML](https://github.com/sfkleach/MinXML) that uses the three types of tags from XML:
 
 * Start tags, with attributes.
 * End tags.
 * Empty (or "fused") tags, with attributes.
 
-It does not embrace the wider range of XML bells and whistles:
+But it does not embrace the wider range of XML bells and whistles:
 
 * Character data - not included (see below for explanation).
 * Comments - allowed but discarded.
