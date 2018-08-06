@@ -8,29 +8,25 @@ JinXML is an extension of JSON syntax that adds XML-like start, end and standalo
 
 ## Example
 
-Here's the first example from https://json.org/example.html in JinXML:
-
+Here's a simple example that fits in some of the features of JinXML.
 ```
-<glossary>
-    title: "example glossary",
-    <GlossDiv>
-        title: "S",
-        <GlossList>
-            <GlossEntry>
-                ID: "SGML",
-                SortAs: "SGML",
-                GlossTerm: "Standard Generalized Markup Language",
-                Acronym: "SGML",
-                Abbrev: "ISO 8879:1986",
-                <GlossDef>
-                    para: "A meta-markup language, used to create markup languages such as DocBook.",
-                    GlossSeeAlso: [ "GML", "XML" ]
-                </GlossDef>
-                GlossSee: "markup"
-            </GlossEntry>
-        </GlossList>
-    </GlossDiv>
-</glossary>
+<markers> 
+    <marker>
+        /* When a field has multiple values it's natural to use parentheses */
+        name:       "Rixos The Palm Dubai",
+        location:   ( 25.1212, 55.1535 )
+    </marker>
+    <marker>
+        // Commas can be omitted or swapped for semi-colons. 
+        name:       'Shangri-La Hotel';
+        location:   ( 25.2084 55.2719 )
+    </marker>
+    <marker>
+        <!-- Trailing commas are allowed. Also single-quotes, as in HTML. -->
+        name:       "Grand Hyatt";
+        location:   ( 25.2285, 55.3273, )
+    </marker>
+</markers>
 ```
 
 
