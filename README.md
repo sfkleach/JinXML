@@ -1,6 +1,6 @@
 # JinXML
 
-JSON in XML - a fusion of JSON and minimal XML syntax; clean and effective. Recommended file extension .jinxml
+JSON in XML - a clean and practical fusion of JSON and minimal XML syntax. Recommended file extension .jinxml
 
 ## What Is It?
 
