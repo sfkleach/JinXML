@@ -11,6 +11,7 @@ See also:
 * [Tips for using JinXML](Tips.md)
 * [List of examples](Examples.md)
 
+
 ## Example
 
 Here's a simple example that fits in some of the features of JinXML.
@@ -34,11 +35,12 @@ Here's a simple example that fits in some of the features of JinXML.
 </markers>
 ```
 
-## How much JSON?
+
+## How much JSON is included?
 
 All of it. Thanks to the minimalistic design of JSON it is well-suited to being extended: JinXML is a true superset of JSON.
 
-## How much XML?
+## How much XML is included?
 
 Not so much. JinXML is based on the minimal XML subset [MinXML](https://github.com/sfkleach/MinXML) that uses the three types of tags from XML:
 
@@ -57,7 +59,11 @@ But it does not embrace the wider range of XML bells and whistles:
 
 N.B. MinXML is a strict subset of both JinXML and XML.
 
-## Why?
+## What is it good for?
+
+As a notation, JinXML is well-suited to complex, hierarchical data where the lack of inter-operatability with third party applications isn't an issue. It's a bit more flexible and comfortable than either JSON or XML, as outlined below, but its real advantage is that the processing model is very simple. This is very helpful when working with complex data transformations e.g. representing domain specific languages.
+
+## Why another notation?
 
 The core of XML seems very simple: named elements with attributes and children. But as soon as you start writing programs to that use XML to represent data, you discover it is a surprisingly complicated format. Not only do you have to worry about extraneous features such as processing directives but also management issues such as validation against schemas -  and what format will the schema be supplied in? When all you want to do is represent data, you become engaged in complexities that aren’t relevant. And those complexities often leads to confusion e.g. which is better ```<temperature value="98.4"/>```, or ```<temperature>98.4</temperature>```?
 
