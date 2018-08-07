@@ -29,8 +29,6 @@ Here's a simple example that fits in some of the features of JinXML.
 </markers>
 ```
 
-
-
 ## How much JSON?
 
 All of it. Thanks to the minimalistic design of JSON it is well-suited to being extended: JinXML is a true superset of JSON.
@@ -56,8 +54,11 @@ N.B. MinXML is a strict subset of both JinXML and XML.
 
 ## Why?
 
-JinXML is syntax neutral. By “syntax neutral” we mean that we have a no-frills data format that can be processed with reasonable ease in a very wide variety of programming languages, can be read by programmers and, at a pinch, written as well. We mean that it is free of features that strongly favour people from one particular background. In other words, we have aimed to make it accessible to a very wide range of people, without bias, to the best of our judgement.
+The core of XML seems very simple: named elements with attributes and children. But as soon as you start writing programs to that use XML to represent data, you discover it is a surprisingly complicated format. Not only do you have to worry about extraneous features such as processing directives but also management issues such as validation against schemas -  and what format will the schema be supplied in? When all you want to do is represent data, you become engaged in complexities that aren’t relevant. And those complexities often leads to confusion e.g. which is better ```<temperature value="98.4"/>```, or ```<temperature>98.4</temperature>```?
 
-So what was the motivation behind stripping XML down to create JinXML? XML was a good starting point because it is designed to be machine processable, has become very widely known and there are a lot of languages providing XML support out of the box. But there were two basic reasons that strongly pushed in the direction of no-frills.
+JSON has proved successful in part because it strips away complications that aren't about the data and adds some syntactic richness to make representation both easier and more straightforward. But in some ways it is too stripped down, having so support for comments (self-description), lacks clarity on duplicate keys and the choice of primitive values seems somewhat arbitrary. This has spawned a cottage industry of variants such as [Relaxed JSON](http://www.relaxedjson.org/), [Really Relaxed JSON](https://www.npmjs.com/package/really-relaxed-json), [JSON::Relaxed](https://metacpan.org/pod/JSON::Relaxed) and [BSON](http://bsonspec.org/).
 
-Firstly, as soon as you start writing programs to that use XML to represent data, you realise it is a surprisingly complicated format. Not only do you have to worry about extraneous features such as processing directives but also management issues such as validation against schemas (and what format will the schema be in?) When all you want to do is represent data, you become engaged in complexities that aren’t relevant - such as CDATA blocks.
+Minimal XML showed that we could retain just the core of XML, using only start and end tags, and have something very useful and an exceptionally neat API. But it is verbose. The motivation behind JinXML was to cure this verbosity by adding in the syntax of JSON whilst retaining this nice API and, ideally, keep compatibility by making JinXML a strict superset of both. Not only is this possible but surprisingly it adds multiple values in a natural way.
+
+
+
