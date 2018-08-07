@@ -58,7 +58,7 @@ The core of XML seems very simple: named elements with attributes and children. 
 
 JSON has proved successful in part because it strips away complications that aren't about the data and adds some syntactic richness to make representation both easier and more straightforward. But in some ways it is too stripped down, having so support for comments (self-description), lacks clarity on duplicate keys and the choice of primitive values seems somewhat arbitrary. This has spawned a cottage industry of variants such as [Relaxed JSON](http://www.relaxedjson.org/), [Really Relaxed JSON](https://www.npmjs.com/package/really-relaxed-json), [JSON::Relaxed](https://metacpan.org/pod/JSON::Relaxed) and [BSON](http://bsonspec.org/).
 
-Minimal XML showed that we could retain just the core of XML, using only start and end tags, and have something very useful and an exceptionally neat API. But it is verbose. The motivation behind JinXML was to cure this verbosity by adding in the syntax of JSON whilst retaining this nice API and, ideally, keep compatibility by making JinXML a strict superset of both. Not only is this possible but surprisingly it adds multiple values in a natural way.
+Minimal XML showed that we could retain just the core of XML, using only start and end tags, and have something very useful and an exceptionally neat API. But it is verbose. The motivation behind JinXML was to cure this verbosity by adding in the syntax of JSON whilst retaining this nice API and, ideally, keep compatibility by making JinXML a strict superset of both. Not only is this possible but it adds multiple values in a natural way and, perhaps surprisingly, is both practical and readable.
 
 
 
