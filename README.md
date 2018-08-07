@@ -60,7 +60,10 @@ Minimal XML showed that we could retain just the core of XML, using only start a
 
 JSON itself has niggling flaws. It proved successful in part because it strips away complications that aren't about the data and adds some syntactic richness to make representation both easier and more straightforward. But in some ways it is too stripped down, having no support for comments (self-description), lacks clarity on duplicate keys, fussy key and comma syntax, and the choice of primitive values seems somewhat arbitrary. This has spawned variants such as [Relaxed JSON](http://www.relaxedjson.org/), [Really Relaxed JSON](https://www.npmjs.com/package/really-relaxed-json), [JSON::Relaxed](https://metacpan.org/pod/JSON::Relaxed) and [BSON](http://bsonspec.org/).
 
-So JinXML also strives to take on JSON without requiring the syntactic clutter, taking its cues from XML. So commas are optional, keys do not need string quoting when they are XML names, and attributed elements are the natural generalisation of primitive values. INSERT TEXT ABOUT DUPLICATE KEYS Duplicate keys are allowed but adds multiple values in a natural way and, perhaps surprisingly, is both practical and readable.
+So JinXML also strives to take on JSON without requiring the syntactic clutter, taking its cues from XML. So commas are optional, keys do not need string quoting when they are XML names, and attributed elements are the natural generalisation of primitive values. 
 
+Lastly, JinXML was not our first attempt at merging the two notations. JinXML was inspired by seeing how the design tension between arrays and objects could be resolved by shifting to multi-valued maps. This led to a nice interpretation of duplicate keys that makes relations (as opposed to functions) easier to represebt. Surprisingly, at least to this writer, it was possible to implement this efficiently 
+
+None of this would matter if JinXML was ugly and unreadable. Fortunately, knocking off the rough edges seems to have been beneficial. 
 
 
