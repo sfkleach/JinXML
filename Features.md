@@ -1,14 +1,14 @@
 # List of Features in JinXML
 
 * [Strict superset of JSON](#strict-superset-of-json)
-* Duplicate keys supported
-* Unquoted keys
-* Trailing and optional commas
-* End of line comments
-* Long comments
-* XML-like tags
-* XML-like comments
-* Single-quoted XML string literals with HTML5 escapes
+* [Duplicate keys supported](#duplicate-keys-supported)
+* [Unquoted keys](#unquoted-keys)
+* [Trailing and optional commas](#trailing-and-optional-commas)
+* [End of line comments](#end-of-line-comments)
+* [Long comments](#long-comments)
+* [XML-like tags](#xml-like-tags)
+* [XML-like comments](#xml-like-comments)
+* [Single-quoted XML string literals with HTML5 escapes](#single-quoted-xml-string-literals-with-html5-escapes)
 * [Double-quoted JSON string literals escapes extended with HTML5 character entities](#double-quoted-json-string-literals-escapes-extended-with-html5-character-entities)
 
 ## Strict superset of JSON
