@@ -38,7 +38,7 @@ Object keys always occur in well-defined syntactic contexts and hence do not nee
 { size: 8, size+: 19, name: "Steve", name+: "Stephen", name+: "Steve" }
 ```
 
-Aside: Unquoted keys is quite a popular extension to JSON e.g. [JSON5](http://json5.org). Note that unquoted values, as in [Relaxed JSON](https://github.com/phadej/relaxed-json) is not permitted; identifiers are reserved for future extensions of JinXML.
+> Aside: Unquoted keys is quite a popular extension to JSON e.g. [JSON5](http://json5.org). Note that unquoted values, as in [Relaxed JSON](https://github.com/phadej/relaxed-json) is not permitted; identifiers are reserved for future extensions of JinXML.
 
 ## Trailing and optional commas
 
