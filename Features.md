@@ -41,10 +41,43 @@ Object keys always occur in well-defined syntactic contexts and hence do not nee
 > Aside: Unquoted keys is quite a popular extension to JSON e.g. [JSON5](http://json5.org). Note that unquoted values, as in [Relaxed JSON](https://github.com/phadej/relaxed-json) is not permitted; identifiers are reserved for future extensions of JinXML.
 
 ## Trailing and optional commas
+Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. They are treated as a 1-character comment! Hence the following are both permitted, although the latter is not recommended.
+```
+{ size: 8 size+: 19 }
+{ ,, size: , 8, size,,+: 19, }
+```
 
 ## End of line comments
+End-of-line comments are started with a pair of slashes and are discarded.
+```
+// Could do with a different running example.
+{
+  // This comes from Wikipedia - note there's no indication of the type this represents.
+  "firstName": "John", 
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27, // Does the age of a person freeze at their time of death?
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  },
+  "children": [],
+  "spouse": null  // Can you have multiple spouses?
+}
+```
 
 ## Long comments
+Long comments start with ```/*``` and are closed by the next _matching_ occurence of ```*/```, in other words they nest. 
+```
+/* The way to comment a large chunk of JinXML is using long comments like this:
+    <data> size /* or length? */: 8, size: 19 </data>
+*/
+<data> length: 8, length: 19 </data>
+```
+
+Technical note: nested long comments means that the tokeniser is not a finite-state machine as it has to track nesting. 
 
 ## XML-like tags
 
