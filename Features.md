@@ -69,15 +69,14 @@ End-of-line comments are started with a pair of slashes and are discarded.
 ```
 
 ## Long comments
-Long comments start with ```/*``` and are closed by the next _matching_ occurence of ```*/```, in other words they nest. 
+Long comments start with ```/*``` and are closed by the next occurence of ```*/```, in other words they do not nest. 
 ```
-/* The way to comment a large chunk of JinXML is using long comments like this:
-    <data> size /* or length? */: 8, size: 19 </data>
+/* The way to comment several lines in a row.
 */
 <data> length: 8, length: 19 </data>
 ```
 
-Technical note: nested long comments means that the tokeniser is not a finite-state machine as it has to track nesting. 
+Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
 
 ## XML-like tags
 
