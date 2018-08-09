@@ -79,6 +79,7 @@ Long comments start with ```/*``` and are closed by the next occurence of ```*/`
 Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
 
 ## XML-like tags
+This is the signature feature of JinXML. Start tags, standalone tags _and_ end tags have an element name plus attributes.
 
 ## XML-like comments
 
