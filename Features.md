@@ -14,7 +14,6 @@
 * [Quoted element names and attribute keys](#quoted-element-names-and-attribute-keys)
 * [XML-like headers, comments and processing directives](#xml-like-headers-comments-and-processing-directives)
 * [Single-quoted XML string literals with HTML5 escapes](#single-quoted-xml-string-literals-with-html5-escapes)
-extended-with-html5-character-entities)
 
 ## Strict superset of JSON
 This is self-explanatory: a JinXML parser can read any normal JSON input. In other words nothing in JinXML breaks normal JSON usage. And the output of such a parse has the expected representation. [Objects with duplicate keys](https://dzone.com/articles/duplicate-keys-in-json-objects) are not normal JSON and JinXML will not behave the same way - see below for details.
