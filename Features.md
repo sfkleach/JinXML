@@ -3,10 +3,14 @@
 * [Strict superset of JSON](#strict-superset-of-json)
 * [Duplicate keys supported](#duplicate-keys-supported)
 * [Unquoted keys](#unquoted-keys)
+* [Equals as well as colon](#equals-as-well-as-colon)
 * [Trailing and optional commas](#trailing-and-optional-commas)
 * [End of line comments](#end-of-line-comments)
 * [Long comments](#long-comments)
 * [XML-like tags](#xml-like-tags)
+* [Colon as well as equals](#colon-as-well-as-equals)
+* [Optional tag names](#optional-tag-names)
+* [Quoted names](#quoted-names)
 * [XML-like comments](#xml-like-comments)
 * [Single-quoted XML string literals with HTML5 escapes](#single-quoted-xml-string-literals-with-html5-escapes)
 * [Double-quoted JSON string literals escapes extended with HTML5 character entities](#double-quoted-json-string-literals-escapes-extended-with-html5-character-entities)
@@ -39,6 +43,14 @@ Object keys always occur in well-defined syntactic contexts and hence do not nee
 ```
 
 > Aside: Unquoted keys is quite a popular extension to JSON e.g. [JSON5](http://json5.org). Note that unquoted values, as in [Relaxed JSON](https://github.com/phadej/relaxed-json) is not permitted; identifiers are reserved for future extensions of JinXML.
+
+## Equals as well as colon
+The ```=``` separator is an alternative to ```:``` and ```+=``` is an alternative to ```+:```. There is no significance to the choice and a parser and/or application should not process them differently.
+
+Example:
+```
+{ size=8, size+=19, name="Steve", name+="Stephen", name+="Steve" }
+```
 
 ## Trailing and optional commas
 Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. They are treated as a 1-character comment! Hence the following are both permitted, although the latter is not recommended.
@@ -79,7 +91,75 @@ Long comments start with ```/*``` and are closed by the next occurence of ```*/`
 Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
 
 ## XML-like tags
-This is the signature feature of JinXML. Start tags, standalone tags _and_ end tags have an element name plus attributes.
+Just as in XML, there are three kinds of tags. Start and end tags are paired and enclose a series of expressions and their names must match. The pair together is called an element.
+
+A start tag has a name and a series of zero or more attributes and looks like this:
+```
+<NAME NAME=STRING NAME=STRING ...>
+```
+Attributes are name/value pairs separated by one of ```=``` or ```+=```. The difference between ```=``` or ```+=``` is that ```=``` does not allow duplicate attribute-keys but ```+=``` does. The restriction that ```=``` imposes is on a per-element, not just per tag. \[n.b. in the next section we also add the synonyms ```:``` and ```+:```.]
+
+Perhaps surprisingly, end-tags may also have attributes. The intention is to allow programs that serially generate content to be able to add attributes after processing the children. End tags look very much like start tags:
+```
+</NAME NAME=STRING NAME=STRING ...>
+```
+The attributes of an element are the attributes of the start tag followed by the attributes of the end tag. There is no difference between placing attributes at the start or end tag - although push parsers will inevitably see the difference, so attributes that are intended to affect the processing of the contents will necessarily need to be placed on the start tag.
+
+Standalone tags are simply a notational convenience for a start-tag that is immediately followed by an end-tag i.e. has no children. They are written like this:
+```
+<NAME NAME=STRING NAME=STRING ... />
+```
+
+## Colon as well as equals
+The ```:``` separator is an alternative to ```=``` and ```+:``` is an alternative to ```+=```. There is no significance to the choice and a parser and/or application should not process them differently.
+
+Example:
+```
+<data col:"8" col+="19" />
+```
+
+## Optional tag names
+One or other of a start or end tag pair may omit the name of the element. The main use case is omission of the name of the end element. Note that a standalone element cannot omit its name so ```</>``` is unambiguously an end-tag.
+
+Example:
+```
+<person>
+  firstName = "John" 
+  lastName = "Smith"
+  isAlive = true
+  age = 27        // Does the age of a person freeze at their time of death?
+  address =       // See how to fix this 'stutter' in the next section.
+  <address>
+    streetAddress = "21 2nd Street"
+    city = "New York"
+    state = "NY"
+    postalCode = "10021-3100"
+  </>
+  children = []
+  spouse = null  // Can you have multiple spouses?
+</>
+```
+
+A relatively common use case is to want to use the same name for object-key and element-name. To improve readability, in this specific case, both start and end tag names can be omitted.
+```
+<person>
+  firstName = "John" 
+  lastName = "Smith"
+  isAlive = true
+  age = 27        // Does the age of a person freeze at their time of death?
+  address = <>
+    streetAddress = "21 2nd Street"
+    city = "New York"
+    state = "NY"
+    postalCode = "10021-3100"
+  </>
+  ...
+</>
+```
+
+This is the only situation in which both the start and end tags of a matched pair can omit the element name.
+
+## Quoted names
 
 ## XML-like comments
 
