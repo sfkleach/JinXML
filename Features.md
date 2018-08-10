@@ -7,7 +7,8 @@
 * [Trailing and optional commas](#trailing-and-optional-commas)
 * [End of line comments](#end-of-line-comments)
 * [Long comments](#long-comments)
-* [Double-quoted JSON string literals escapes extended with HTML5 character entities](#double-quoted-json-string-literals-escapes-* [XML-like tags](#xml-like-tags)
+* [Double-quoted JSON string literals with HTML5 escapes](#double-quoted-json-string-literals-with-HTML5-escapes)
+* [XML-like tags](#xml-like-tags)
 * [Colon as well as equals](#colon-as-well-as-equals)
 * [Optional tag names](#optional-tag-names)
 * [Quoted element names and attribute keys](#quoted-element-names-and-attribute-keys)
@@ -98,7 +99,7 @@ Long comments start with ```/*``` and are closed by the next occurence of ```*/`
 
 :notebook: Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
 
-## Double-quoted JSON string literals escapes extended with HTML5 character entities
+## Double-quoted JSON string literals with HTML5 escapes
 
 
 ## XML-like tags
