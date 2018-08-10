@@ -7,13 +7,13 @@
 * [Trailing and optional commas](#trailing-and-optional-commas)
 * [End of line comments](#end-of-line-comments)
 * [Long comments](#long-comments)
-* [XML-like tags](#xml-like-tags)
+* [Double-quoted JSON string literals escapes extended with HTML5 character entities](#double-quoted-json-string-literals-escapes-* [XML-like tags](#xml-like-tags)
 * [Colon as well as equals](#colon-as-well-as-equals)
 * [Optional tag names](#optional-tag-names)
-* [Quoted element names](#quoted-element-names)
-* [XML-like comments](#xml-like-comments)
+* [Quoted element names and attribute keys](#quoted-element-names-and-attribute-keys)
+* [XML-like headers, comments and processing directives](#xml-like-headers-comments-and-processing-directives)
 * [Single-quoted XML string literals with HTML5 escapes](#single-quoted-xml-string-literals-with-html5-escapes)
-* [Double-quoted JSON string literals escapes extended with HTML5 character entities](#double-quoted-json-string-literals-escapes-extended-with-html5-character-entities)
+extended-with-html5-character-entities)
 
 ## Strict superset of JSON
 This is self-explanatory: a JinXML parser can read any normal JSON input. In other words nothing in JinXML breaks normal JSON usage. And the output of such a parse has the expected representation. [Objects with duplicate keys](https://dzone.com/articles/duplicate-keys-in-json-objects) are not normal JSON and JinXML will not behave the same way - see below for details.
@@ -46,7 +46,7 @@ Object keys always occur in well-defined syntactic contexts and hence do not nee
 
 > Aside: Unquoted keys is quite a popular extension to JSON e.g. [JSON5](http://json5.org). Note that unquoted values, as in [Relaxed JSON](https://github.com/phadej/relaxed-json) is not permitted; identifiers are reserved for future extensions of JinXML.
 
-Design note: future plans include let bindings to user-defined identifiers, so keys must be identified as distinct from identifiers at parse time.
+:notebook: Design note: future plans include let bindings to user-defined identifiers, so keys must be identified as distinct from identifiers at parse time.
 
 ## Equals as well as colon
 The ```=``` separator is an alternative to ```:``` and ```+=``` is an alternative to ```+:```. There is no significance to the choice and a parser and/or application should not process them differently.
@@ -56,7 +56,7 @@ Example:
 { size=8, size+=19, name="Steve", name+="Stephen", name+="Steve" }
 ```
 
-Design note: this arises from the desire to unify element attributes and string valued objects.
+:notebook: Design note: this arises from the desire to unify element attributes and string valued objects.
 
 ## Trailing and optional commas
 Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. They are treated as a 1-character comment! Hence the following are both permitted, although the latter is not recommended.
@@ -96,7 +96,10 @@ Long comments start with ```/*``` and are closed by the next occurence of ```*/`
 <data> length: 8, length: 19 </data>
 ```
 
-Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
+:notebook: Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
+
+## Double-quoted JSON string literals escapes extended with HTML5 character entities
+
 
 ## XML-like tags
 Just as in XML, there are three kinds of tags. Start and end tags are paired and enclose a series of expressions and their names must match. The pair together is called an element.
@@ -126,7 +129,7 @@ Example:
 <data col:"8" col+="19" />
 ```
 
-Design note: As noted above, we're unifying the syntax for element attributes with string-valued objects.
+:notebook: Design note: As noted above, we're unifying the syntax for element attributes with string-valued objects.
 
 ## Optional tag names
 One or other of a start or end tag pair may omit the name of the element. The main use case is omission of the name of the end element. Note that a standalone element cannot omit its name so ```</>``` is unambiguously an end-tag.
@@ -169,12 +172,23 @@ A relatively common use case is to want to use the same name for object-key and 
 
 This is the only situation in which both the start and end tags of a matched pair can omit the element name.
 
-Design note: these decisions are geared up to simplifying the task of generating large-scale JinXML.
+:notebook: Design note: these decisions are geared up to simplifying the task of generating large-scale JinXML.
 
-## Quoted element names
+## Quoted element names and attribute keys
+Both element-names and attribute-keys may be quoted using string-literal syntax. This makes it possible to use non-standard identifiers. Here is a simple example:
+```
+<"left field" "and/or"="operator"> 34, 98 </"left field">
+```
 
-## XML-like comments
+:notebook: Design note: the intention is to unify the name-space of element-names, attribute-keys and object-keys.
+
+## XML-like headers, comments and processing directives
+XML comments of the form ```<!--``` to ```-->``` are supported in the sense that their content must be discarded. Similarly the ```<?xml``` header at the start of every valid XML document is discarded and all xml processing directives as well.
+
+N.B. No processor should respond to their content i.e. pragmas hidden in discarded are official no-nos. Discarded means discarded. 
+
+:notebook: Design note: This is a low-priority item but slightly improves the range of XML data that can be accommodated without change. Processing directives may be accommodated in a later revision and we do not want to cramp our style in the intermin. And the idea of embedding character encoding in the XML header is downright horrible & will never be resurrected.
 
 ## Single-quoted (XML) string literals with HTML5 escapes
 
-## Double-quoted JSON string literals escapes extended with HTML5 character entities
+
