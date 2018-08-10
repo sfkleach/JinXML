@@ -96,10 +96,15 @@ Long comments start with ```/*``` and are closed by the next occurence of ```*/`
 <data> length: 8, length: 19 </data>
 ```
 
-:notebook: Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
+> :notebook: Design note: Although I prefer nestable long comments, non-nesting long comments was chosen to correspond to Javascript. Using them to uncomment code is unsound practice, even when they nest.
 
 ## Double-quoted JSON string literals with HTML5 escapes
+JSON string literals have a relatively small number of escapes ```\n```, ```\r``` and so on. JinXML significantly extends the range of supported escapes through recognising ```\&``` as introducing an HTML5 character entity code. For example:
+```
+{ copyright = "\&copy; Copyright Stephen Leach, 2018" }
+```
 
+> :notebook: Design note: The clash in escape conventions for string literals is the most awkward aspect of unifying JSON and MinXML.
 
 ## XML-like tags
 Just as in XML, there are three kinds of tags. Start and end tags are paired and enclose a series of expressions and their names must match. The pair together is called an element.
@@ -189,6 +194,14 @@ N.B. No processor should respond to their content i.e. pragmas hidden in discard
 
 :notebook: Design note: This is a low-priority item but slightly improves the range of XML data that can be accommodated without change. Processing directives may be accommodated in a later revision and we do not want to cramp our style in the intermin. And the idea of embedding character encoding in the XML header is downright horrible & will never be resurrected.
 
-## Single-quoted (XML) string literals with HTML5 escapes
+## Single-quoted (XML) string literals with JSON escapes
+In JinXML, single and double quoted strings are mostly interchangeable - but single-quoted strings are primarily intended to help bring across HTML data. They each use different conventions to introduce escape sequences. Double-quoted strings use ```\``` to start escape sequences but single-quoted strings use ```&```. 
 
+In this regard, single-quoted strings are very like XML attribute values (which may be single or double-quoted). However, JinXML extends the escape sequences to allow ```&\``` to switch to using the escape sequences of JSON.
 
+For example:
+```
+<greeting text='Hello, world!&\n'/>
+```
+
+N.B. There is no automatic line-ending conversion in JinXML and never will be. JinXML is all about recording data, not corrupting it.
