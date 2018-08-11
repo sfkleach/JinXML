@@ -137,7 +137,7 @@ Example:
 > :notebook: Design note: As noted above, we're unifying the syntax for element attributes with string-valued objects.
 
 ## Optional tag names
-One or other of a start or end tag pair may omit the name of the element. The main use case is omission of the name of the end element. Note that a standalone element cannot omit its name so ```</>``` is unambiguously an end-tag.
+One or other of a start or end tag pair may substitute the special symbol ```+``` for the name of the element. The main use case is omission of the name of the end element. 
 
 Example:
 ```
@@ -152,32 +152,39 @@ Example:
     city = "New York"
     state = "NY"
     postalCode = "10021-3100"
-  </>
+  </+>
   children = []
   spouse = null  // Can you have multiple spouses?
-</>
+</+>
 ```
 
-A relatively common use case is to want to use the same name for object-key and element-name. To improve readability, in this specific case, both start and end tag names can be omitted.
+A relatively common use case is to want to use the same name for object-key and element-name. To improve readability, in this specific case, both start and end tag names can be defaulted.
 ```
 <person>
   firstName = "John" 
   lastName = "Smith"
   isAlive = true
   age = 27        // Does the age of a person freeze at their time of death?
-  address = <>
+  address = <+>
     streetAddress = "21 2nd Street"
     city = "New York"
     state = "NY"
     postalCode = "10021-3100"
-  </>
+  </+>
   ...
-</>
+</+>
 ```
 
-This is the only situation in which both the start and end tags of a matched pair can omit the element name.
+This is the only situation in which both the start and end tags of a matched pair can omit the element name. And because it applies to both the start and end tag, it is also the only situation a standalone tag may have its name omitted.
 
-:notebook: Design note: these decisions are geared up to simplifying the task of generating large-scale JinXML.
+```
+{
+  length = 0
+  data = <+/>
+}
+```
+
+:notebook: Design note: these decisions are geared up to simplifying the task of generating large-scale JinXML. I would have preferred to have used ```*``` rather than ```+``` but this would have clashed with long comments.
 
 ## Quoted element names and attribute keys
 Both element-names and attribute-keys may be quoted using string-literal syntax. This makes it possible to use non-standard identifiers. Here is a simple example:
