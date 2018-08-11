@@ -36,7 +36,7 @@ But what does it mean if a key occurs multiple times in an object? It means that
 { "size": 8, "size"+: 19, "name": "Steve", "name"+: "Stephen", "name"+: "Steve" }
 ```
 
-Design note: the support for duplicate keys is needed, so that elements unify arrays and maps.
+> :notebook: Design note: the support for duplicate keys is needed, so that elements unify arrays and maps.
 
 ## Unquoted keys
 Object keys always occur in well-defined syntactic contexts and hence do not need to be string-quoted, provided that they aren't too exotic. To keep the grammar simple, unquoted keys have to follow the same rules as XML element and attribute names (i.e. they are an [XML Name](https://www.w3.org/TR/xml/#NT-Name)). So the above examples could be written as shown below - and is noticeably more readable.
@@ -46,7 +46,7 @@ Object keys always occur in well-defined syntactic contexts and hence do not nee
 
 > Aside: Unquoted keys is quite a popular extension to JSON e.g. [JSON5](http://json5.org). Note that unquoted values, as in [Relaxed JSON](https://github.com/phadej/relaxed-json) is not permitted; identifiers are reserved for future extensions of JinXML.
 
-:notebook: Design note: future plans include let bindings to user-defined identifiers, so keys must be identified as distinct from identifiers at parse time.
+> :notebook: Design note: future plans include let bindings to user-defined identifiers, so keys must be identified as distinct from identifiers at parse time.
 
 ## Equals as well as colon
 The ```=``` separator is an alternative to ```:``` and ```+=``` is an alternative to ```+:```. There is no significance to the choice and a parser and/or application should not process them differently.
@@ -56,7 +56,7 @@ Example:
 { size=8, size+=19, name="Steve", name+="Stephen", name+="Steve" }
 ```
 
-:notebook: Design note: this arises from the desire to unify element attributes and string valued objects.
+> :notebook: Design note: this arises from the desire to unify element attributes and string valued objects.
 
 ## Trailing and optional commas
 Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. They are treated as a 1-character comment! Hence the following are both permitted, although the latter is not recommended.
@@ -65,7 +65,7 @@ Commas are entirely optional in JinXML - they are discarded during tokenisation 
 { ,, size: , 8, size,,+: 19, }
 ```
 
-Design note: this is the most direct way to unify the syntactic behaviour of comma-free XML with Relaxed JSON.
+> :notebook: Design note: this is the most direct way to unify the syntactic behaviour of comma-free XML with Relaxed JSON.
 
 ## End of line comments
 End-of-line comments are started with a pair of slashes and are discarded.
@@ -134,7 +134,7 @@ Example:
 <data col:"8" col+="19" />
 ```
 
-:notebook: Design note: As noted above, we're unifying the syntax for element attributes with string-valued objects.
+> :notebook: Design note: As noted above, we're unifying the syntax for element attributes with string-valued objects.
 
 ## Optional tag names
 One or other of a start or end tag pair may omit the name of the element. The main use case is omission of the name of the end element. Note that a standalone element cannot omit its name so ```</>``` is unambiguously an end-tag.
