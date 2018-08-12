@@ -48,143 +48,143 @@ __Initial JinXML__: Root of the grammar
 
 ![Shebang? JinXML](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/InitialJinXML.png "Root of the syntax tree")
 
-__JinXML __: _to be done_
+__JinXML__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JinXML.png "hover text")
 
-__Element __: _to be done_
+__Element__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Element.png "hover text")
 
-__LeadsWithJSON __: _to be done_
+__LeadsWithJSON__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LeadsWithJSON.png "hover text")
 
-__LeadsWithElement __: _to be done_
+__LeadsWithElement__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LeadsWithElement.png "hover text")
 
-__StartTag __: _to be done_
+__StartTag__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StartTag.png "hover text")
 
-__EndTag __: _to be done_
+__EndTag__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EndTag.png "hover text")
 
-__FusedTag __: _to be done_
+__FusedTag__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FusedTag.png "hover text")
 
-__ElementName __: _to be done_
+__ElementName__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/ElementName.png "hover text")
 
-__Attribute __: _to be done_
+__Attribute__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Attribute.png "hover text")
 
-__AttributeName __: _to be done_
+__AttributeName__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/AttributeName.png "hover text")
 
-__NCName __: _to be done_
+__NCName__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NCName.png "hover text")
 
-__JSON __: _to be done_
+__JSON__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JSON.png "hover text")
 
-__Variable __: _to be done_
+__Variable__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Variable.png "hover text")
 
-__Reserved __: _to be done_
+__Reserved__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Reserved.png "hover text")
 
-__Identifier __: _to be done_
+__Identifier__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Identifier.png "hover text")
 
-__Number __: _to be done_
+__Number__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Number.png "hover text")
 
-__String __: _to be done_
+__String__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/String.png "hover text")
 
-__DoubleQuotedString __: _to be done_
+__DoubleQuotedString__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/DoubleQuotedString.png "hover text")
 
-__BEscape __: _to be done_
+__BEscape__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/BEscape.png "hover text")
 
-__StringQuotedString __: _to be done_
+__StringQuotedString__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StringQuotedString.png "hover text")
 
-__XEscape __: _to be done_
+__XEscape__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XEscape.png "hover text")
 
-__NamedCharacterReference __: _to be done_
+__NamedCharacterReference__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NamedCharacterReference.png "hover text")
 
-__Hex __: _to be done_
+__Hex__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Hex.png "hover text")
 
-__Array __: _to be done_
+__Array__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Array.png "hover text")
 
-__Object __: _to be done_
+__Object__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Object.png "hover text")
 
-__Entry __: _to be done_
+__Entry__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Entry.png "hover text")
 
-__EntryKey __: _to be done_
+__EntryKey__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EntryKey.png "hover text")
 
-__D __: _to be done_
+__D__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/D.png "hover text")
 
-__XComment __: _to be done_
+__XComment__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XComment.png "hover text")
 
-__XOther __: _to be done_
+__XOther__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XOther.png "hover text")
 
-__JComment __: _to be done_
+__JComment__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JComment.png "hover text")
 
-__LongComment __: _to be done_
+__LongComment__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LongComment.png "hover text")
 
-__EoLComment __: _to be done_
+__EoLComment__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EoLComment.png "hover text")
 
-__Shebang __: _to be done_
+__Shebang__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Shebang.png "hover text")
 
-__S __: _to be done_
+__S__: _to be done_
 
 ![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/S.png "hover text")
 
