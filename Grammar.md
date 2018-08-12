@@ -1,7 +1,7 @@
 # Grammar of JinXML
 
 ## EBNF
-This is a complete single-levl grammar for JinXML in EBNF, together with railroad diagram. courtesy of the excellent Railroad Diagram Generator. Many of the non-terminal names are taken from the XML specification. Content that should be discarded is associated with D and is made up of commas, comments and whitespaces (S).
+This is a complete single-level grammar for JinXML in EBN, as opposed to splitting off a tokenisation phase. This is illustrated with a railroad diagram, courtesy of the excellent [Railroad Diagram Generator](http://bottlecaps.de/rr/ui). Some of the important non-terminal names (NCName) are borrowed from the XML specification. Content that should be discarded is associated with D and is made up of commas, comments and whitespaces (S).
 
 ```
 InitialJinXML ::= Shebang? JinXML
