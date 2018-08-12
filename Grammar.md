@@ -46,146 +46,146 @@ S ::= (#x20 | #x9 | #xD | #xA)+
 
 __Initial JinXML__: Root of the grammar
 
-![Shebang? JinXML](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/InitialJinXML.png "Root of the syntax tree")
+![Image of InitialJinXML rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/InitialJinXML.png "Root of the syntax tree")
 
-__JinXML__: _to be done_
+__JinXML__: JinXML is the non-terminal through which all recursion happens
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JinXML.png "hover text")
+![Image of JinXML rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JinXML.png "JinXML is the non-terminal through which all recursion happens")
 
-__Element__: _to be done_
+__Element__: Element are made up of tags
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Element.png "hover text")
+![Image of Element rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Element.png "Element are made up of tags")
 
-__LeadsWithJSON__: _to be done_
+__LeadsWithJSON__: This helps capture the mandatory spacing between JSON expressions
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LeadsWithJSON.png "hover text")
+![Image of LeadsWithJSON rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LeadsWithJSON.png "This helps capture the mandatory spacing between JSON expressions")
 
-__LeadsWithElement__: _to be done_
+__LeadsWithElement__: This helps capture the mandatory spacing between JSON expressions
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LeadsWithElement.png "hover text")
+![Image of LeadsWithJSON rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LeadsWithElement.png "This helps capture the mandatory spacing between JSON expressions")
 
-__StartTag__: _to be done_
+__StartTag__: Must be paired with an EndTag
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StartTag.png "hover text")
+![Image of StartTag rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StartTag.png "Must be paired with an EndTag")
 
-__EndTag__: _to be done_
+__EndTag__: Must be paired with a StartTag
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EndTag.png "hover text")
+![Image of EndTag rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EndTag.png "Must be paired with a StartTag")
 
-__FusedTag__: _to be done_
+__FusedTag__: Combines a start-and-end tag pair when there are no children
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FusedTag.png "hover text")
+![Image of FusedTag rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FusedTag.png "Combines a start-and-end tag pair when there are no children")
 
-__ElementName__: _to be done_
+__ElementName__: Element names, attribute keys and object keys are almost identical - but '+' is allowed for element names.
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/ElementName.png "hover text")
+![Image of ElementName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/ElementName.png "Element names support + for defaulting")
 
-__Attribute__: _to be done_
+__Attribute__: An attribute pairs up a name with a string value
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Attribute.png "hover text")
+![Image of Attribute rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Attribute.png "An attribute pairs up a name with a string value")
 
-__AttributeName__: _to be done_
+__AttributeName__: May be quoted or unquoted
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/AttributeName.png "hover text")
+![Image of AttributeName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/AttributeName.png "May be quoted or unquoted")
 
-__NCName__: _to be done_
+__NCName__: Same as XML spec
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NCName.png "hover text")
+![Image of NCName URL](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NCName.png "Same as XML spec")
 
-__JSON__: _to be done_
+__JSON__: Denotes a JSON-styled expression
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JSON.png "hover text")
+![Image of JSON rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JSON.png "Denotes a JSON-styled expression")
 
-__Variable__: _to be done_
+__Variable__: looks like an unquoted identifier, excluded the JSON reserved identifiers.
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Variable.png "hover text")
+![Image of Variable rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Variable.png "looks like an unquoted identifier, excluded the JSON reserved identifiers")
 
-__Reserved__: _to be done_
+__Reserved__: JSON reserves null, true and false
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Reserved.png "hover text")
+![Image of Reserved rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Reserved.png "JSON reserves null, true and false")
 
-__Identifier__: _to be done_
+__Identifier__: Supports underscore
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Identifier.png "hover text")
+![Image of Identifier rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Identifier.png "Supports underscore")
 
-__Number__: _to be done_
+__Number__: As per JSON
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Number.png "hover text")
+![Image of Number rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Number.png "As per JSON")
 
-__String__: _to be done_
+__String__: Merges JSON-style and XML-style strings
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/String.png "hover text")
+![Image of String rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/String.png "Merges JSON-style and XML-style strings")
 
-__DoubleQuotedString__: _to be done_
+__DoubleQuotedString__: JSON-style string with enhanced escapes.
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/DoubleQuotedString.png "hover text")
+![Image of DoubleQuotedString rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/DoubleQuotedString.png "JSON-style string with enhanced escapes")
 
-__BEscape__: _to be done_
+__BEscape__: Backslash based escape sequence
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/BEscape.png "hover text")
+![Image of BEscape rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/BEscape.png "Backslash based escape sequence")
 
-__StringQuotedString__: _to be done_
+__StringQuotedString__: XML-style string with enhanced escapes.
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StringQuotedString.png "hover text")
+![Image of StringQuotedString rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StringQuotedString.png "XML-style string with enhanced escapes")
 
-__XEscape__: _to be done_
+__XEscape__: Ampersand based escapes
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XEscape.png "hover text")
+![Image of XEscape rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XEscape.png "hover text")
 
-__NamedCharacterReference__: _to be done_
+__NamedCharacterReference__: HTML5 based names for characters
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NamedCharacterReference.png "hover text")
+![Image of NamedCharacterReference rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NamedCharacterReference.png "HTML5 based names for characters")
 
-__Hex__: _to be done_
+__Hex__: Hex digits
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Hex.png "hover text")
+![Image of Hex rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Hex.png "Hex digits")
 
-__Array__: _to be done_
+__Array__: JSON-style array brackets
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Array.png "hover text")
+![Image of Array rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Array.png "JSON-style array brackets")
 
-__Object__: _to be done_
+__Object__: JSON-style object brackets
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Object.png "hover text")
+![Image of Object rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Object.png "JSON-style object brackets")
 
-__Entry__: _to be done_
+__Entry__: Member of JSON-style object
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Entry.png "hover text")
+![Image of Entry rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Entry.png "Member of JSON-style object")
 
-__EntryKey__: _to be done_
+__EntryKey__: Same as attribute key
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EntryKey.png "hover text")
+![Image of EntryKey rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EntryKey.png "Same as attribute key")
 
-__D__: _to be done_
+__D__: Input that should be *D*iscarded
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/D.png "hover text")
+![Image of D rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/D.png "Input that should be discarded")
 
-__XComment__: _to be done_
+__XComment__: XML-style comments
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XComment.png "hover text")
+![Image of XComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XComment.png "XML-style comments")
 
-__XOther__: _to be done_
+__XOther__: Complex content rule for XML-style comment
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XOther.png "hover text")
+![Image of XOther rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XOther.png "Complex content rule for XML-style comment")
 
-__JComment__: _to be done_
+__JComment__: Javascript-like comments
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JComment.png "hover text")
+![Image of JComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JComment.png "Javascript-like comments")
 
-__LongComment__: _to be done_
+__LongComment__: Javascript multi-line comments
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LongComment.png "hover text")
+![Image of LongComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LongComment.png "Javascript multi-line comments")
 
-__EoLComment__: _to be done_
+__EoLComment__: Javascript end of line comment
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EoLComment.png "hover text")
+![Image of EoLComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EoLComment.png "Javascript end of line comment")
 
-__Shebang__: _to be done_
+__Shebang__: Unix-style #! header
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Shebang.png "hover text")
+![Image of Shebang rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Shebang.png "Unix-style #! header")
 
-__S__: _to be done_
+__S__: White*s*pace to be discarded
 
-![alt text](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/S.png "hover text")
+![Image of S rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/S.png "Whitespace to be discarded")
 
 
