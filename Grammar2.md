@@ -1,9 +1,9 @@
 # Two-level Grammar of JinXML
 
 ## Overview
-This is a complete two-level grammar for JinXML in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form), with a top-level grammar plus a grammar for tokenisation. Both are provided in BNF and illustrated with a railroad diagram, courtesy of the excellent [Railroad Diagram Generator](http://bottlecaps.de/rr/ui). Some of the important non-terminal names (NCName) are borrowed from the XML specification. Content that should be discarded is associated with D and is made up of commas, comments and whitespaces (S).
+JinXML has a whitespace insensitive layout, which means that it is a good idea to split the syntax into two phases: a lower-level tokenisation phase and an upper level parsing phase. This page describes both levels for JinXML in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) and also illustrates the grammars with railroad diagrams, courtesy of the excellent [Railroad Diagram Generator](http://bottlecaps.de/rr/ui). 
 
-## Top-Level Grammar in EBNF
+## Upper-Level Grammar in EBNF, corresponds to parse phase
 ```
 JinXML ::= Element | JSON
 Element ::= StartTag ( EntryPrefix? JinXML )* EndTag | FusedTag
@@ -84,6 +84,6 @@ __EntryPrefix__: Corresponds to "key =" in JSON.
 
 ![Image of EntryPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/EntryPrefix.png "Corresponds to 'key =' in JSON")
 
-## Lower-Level Grammar for Tokens in EBNF
+## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 
-## Lower-Level Grammar for Tokens as Railroad Diagrams
+## Lower-Level Grammar for Tokenisation as Railroad Diagrams
