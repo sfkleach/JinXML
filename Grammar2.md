@@ -1,4 +1,4 @@
-# Grammar of JinXML
+# Two-level Grammar of JinXML
 
 ## Overview
 This is a complete two-level grammar for JinXML in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form), with a top-level grammar plus a grammar for tokenisation. Both are provided in BNF and illustrated with a railroad diagram, courtesy of the excellent [Railroad Diagram Generator](http://bottlecaps.de/rr/ui). Some of the important non-terminal names (NCName) are borrowed from the XML specification. Content that should be discarded is associated with D and is made up of commas, comments and whitespaces (S).
