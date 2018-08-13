@@ -7,7 +7,7 @@ This is a complete single-level grammar for JinXML in EBN, as opposed to splitti
 InitialJinXML ::= Shebang? JinXML
 JinXML ::= Element | JSON | D JinXML
 Element ::= StartTag (LeadsWithJSON | LeadsWithElement)? D? EndTag | FusedTag
-LeadsWithJSON ::= JSON (D? LeadsWithElement)? | JSON (D LeadsWithJSON)?
+LeadsWithJSON ::= EntryPrefix? JSON ((D? LeadsWithElement)|(D LeadsWithJSON))? |  EntryPrefix? LeadsWithElement
 LeadsWithElement ::= Element (D? (LeadsWithJSON | LeadsWithElement))?
 StartTag ::= '<' D? ElementName ( D Attributes)* D? '>'
 EndTag ::= '</' D? ElementName D? '>' | '</' D? '>'
@@ -30,7 +30,8 @@ NamedCharacterReference ::= [http://www.w3.org/TR/html5/syntax.html#named-charac
 Hex ::= [0-9a-fA-F]
 Array ::= '[' Children  ']'
 Object ::= '{' D? ( Entry D?)* '}'
-Entry ::= EntryKey D? '+'? [:=] D? JinXML
+Entry ::= EntryPrefix JinXML
+EntryPrefix ::= EntryKey D? '+'? [:=] D? 
 EntryKey ::= Identifier | String
 D ::= ( S | XComment | XOther | JComment | ',' )+
 XComment ::= '<!--' ( [^-]* | '-'+ [^->] )* '-'* '-->' 
@@ -151,6 +152,10 @@ __Object__: JSON-style object brackets
 __Entry__: Member of JSON-style object
 
 ![Image of Entry rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Entry.png "Member of JSON-style object")
+
+__EntryPrefix__: Corresponds to "key =" in JSON.
+
+![Image of EntryPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EntryPrefix.png "Corresponds to 'key =' in JSON")
 
 __EntryKey__: Same as attribute key
 
