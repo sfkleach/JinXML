@@ -1,8 +1,9 @@
 # Grammar of JinXML
 
-## EBNF
-This is a complete single-level grammar for JinXML in EBN, as opposed to splitting off a tokenisation phase. This is illustrated with a railroad diagram, courtesy of the excellent [Railroad Diagram Generator](http://bottlecaps.de/rr/ui). Some of the important non-terminal names (NCName) are borrowed from the XML specification. Content that should be discarded is associated with D and is made up of commas, comments and whitespaces (S).
+## Overview
+This is a complete two-level grammar for JinXML in [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form), with a top-level grammar plus a grammar for tokenisation. Both are provided in BNF and illustrated with a railroad diagram, courtesy of the excellent [Railroad Diagram Generator](http://bottlecaps.de/rr/ui). Some of the important non-terminal names (NCName) are borrowed from the XML specification. Content that should be discarded is associated with D and is made up of commas, comments and whitespaces (S).
 
+## Top-Level Grammar in EBNF
 ```
 JinXML ::= Element | JSON
 Element ::= StartTag ( EntryPrefix? JinXML )* EndTag | FusedTag
@@ -21,7 +22,7 @@ Entry ::= EntryPrefix JinXML
 EntryPrefix ::= (Identifier | String) ( [:=] | '+:' | '+=' )
 ```
 
-## Railroad Diagram
+## Top Level Grammar as Railroad Diagram
 
 __JinXML__: JinXML is the non-terminal through which all recursion happens
 
@@ -83,3 +84,6 @@ __EntryPrefix__: Corresponds to "key =" in JSON.
 
 ![Image of EntryPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/EntryPrefix.png "Corresponds to 'key =' in JSON")
 
+## Lower-Level Grammar for Tokens in EBNF
+
+## Lower-Level Grammar for Tokens as Railroad Diagrams
