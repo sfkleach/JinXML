@@ -85,5 +85,64 @@ __EntryPrefix__: Corresponds to "key =" in JSON.
 ![Image of EntryPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/EntryPrefix.png "Corresponds to 'key =' in JSON")
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
+Note that Shebang sequences may only occur at the start of a stream. 
+
+```
+Reserved ::= 'null' | 'true' | 'false'
+Identifier ::= [a-zA-Z_] [a-zA-Z0-9_]*
+Number ::= '-'? [0-9]+ ( '.' [0-9]+ )? ( ( 'e' | 'E' ) [0-9]+ )?
+String ::= SingleQuotedString | DoubleQuotedString
+DoubleQuotedString ::= '"' ([^"\]|BEscape)* '"' | "'" ([^'\]|BEscape)* "'"
+BEscape ::= '\' ( ["'\/bfnrt] | 'u' Hex Hex Hex Hex | Reference )
+StringQuotedString ::= "'" ([^&>"]|XEscape)* "'"
+XEscape ::= '&' (NamedCharacterReference|'#' [0-9]+|'#x' Hex+|'\' BEscape)';'
+NamedCharacterReference ::= [http://www.w3.org/TR/html5/syntax.html#named-character-references]
+Hex ::= [0-9a-fA-F]
+Discard ::= ( Whitespace | XComment | XOther | JComment | ',' )+
+XComment ::= '<!--' ( [^-]* | '-'+ [^->] )* '-'* '-->' 
+XOther ::= '<' [?!] [^>]* '>' 
+JComment ::= LongComment | EoLComment
+LongComment ::=  '/*' ( [^*] | '*'+ [^*/] )* '*'* '*/'
+EoLComment ::= '//' [^#xA]* #xA
+Whitespace ::= (#x20 | #x9 | #xD | #xA)+
+Shebang ::= ('#!' [^#xA]* #xA)+
+```
 
 ## Lower-Level Grammar for Tokenisation as Railroad Diagrams
+
+
+![Image of Reserved rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Reserved.png)
+
+![Image of Identifier rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Identifier.png)
+
+![Image of Number rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Number.png)
+
+![Image of String rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/String.png)
+
+![Image of DoubleQuotedString rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/DoubleQuotedString.png)
+
+![Image of BEscape rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/BEscape.png)
+
+![Image of StringQuotedString rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/StringQuotedString.png)
+
+![Image of XEscape rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/XEscape.png)
+
+![Image of NamedCharacterReference rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/NamedCharacterReference.png)
+
+![Image of Hex rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Hex.png)
+
+![Image of Discard rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Discard.png)
+
+![Image of XComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/XComment.png)
+
+![Image of XOther rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/XOther.png)
+
+![Image of JComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/JComment.png)
+
+![Image of LongComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/LongComment.png)
+
+![Image of EoLComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/EoLComment.png)
+
+![Image of Whitespace rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Whitespace.png)
+
+![Image of Shebang rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Shebang.png)
