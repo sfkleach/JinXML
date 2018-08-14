@@ -28,7 +28,7 @@ StringQuotedString ::= "'" ([^&>"]|XEscape)* "'"
 XEscape ::= '&' (NamedCharacterReference|'#' [0-9]+|'#x' Hex+|'\' BEscape)';'
 NamedCharacterReference ::= [http://www.w3.org/TR/html5/syntax.html#named-character-references]
 Hex ::= [0-9a-fA-F]
-Array ::= '[' Children  ']'
+Array ::= '[' (LeadsWithJSON | LeadsWithElement)? D? ']'
 Object ::= '{' D? ( Entry D?)* '}'
 Entry ::= EntryPrefix JinXML
 EntryPrefix ::= EntryKey D? '+'? [:=] D? 
