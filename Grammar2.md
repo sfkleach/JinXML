@@ -110,12 +110,15 @@ Shebang ::= ('#!' [^#xA]* #xA)+
 
 ## Lower-Level Grammar for Tokenisation as Railroad Diagrams
 
+__Reserved__: identifiers that play the role of literal constants.
 
 ![Image of Reserved rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Reserved.png)
 
-![Image of Identifier rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Identifier.png)
+__Numbers__: Only base 10 so far.
 
 ![Image of Number rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Number.png)
+
+__Strings__: Single and double quoted strings and their symmetrical escape sequences
 
 ![Image of String rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/String.png)
 
@@ -130,6 +133,8 @@ Shebang ::= ('#!' [^#xA]* #xA)+
 ![Image of NamedCharacterReference rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/NamedCharacterReference.png)
 
 ![Image of Hex rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Hex.png)
+
+__Discards__: Tokens to be discarded
 
 ![Image of Discard rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Discard.png)
 
