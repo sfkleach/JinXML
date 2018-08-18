@@ -6,20 +6,19 @@ JinXML has a whitespace insensitive layout, which means that it is a good idea t
 ## Upper-Level Grammar in EBNF, corresponds to parse phase
 ```
 JinXML ::= Element | JSON
-Element ::= StartTag ( EntryPrefix? JinXML )* EndTag | FusedTag
-StartTag ::= '<' ElementName Attribute*  '>'
-EndTag ::= '</' ElementName Attribute* '>'
-FusedTag ::= '<' ElementName Attribute* '/>'
-ElementName ::= NCName | '+' | String
-Attribute ::= AttributeName ( [:=] | '+:' | '+=' ) String
-AttributeName ::= NCName | String
+Element ::= StartTag ( Entry* | JinXML* ) EndTag | FusedTag
+StartTag ::= '<' ( ElementName Attribute* )? '>'
+EndTag ::= '</' ( ElementName Attribute* )? '>'
+FusedTag ::= '<' ( ElementName Attribute* )? '/>'
+ElementName ::= NCName | '&' | String
+Attribute ::= FieldPrefix String
 NCName ::= [http://www.w3.org/TR/xml-names/#NT-NCName]
 JSON ::= Reserved | Number | String | Array | Object
 Reserved ::= 'null' | 'true' | 'false'
 Array ::= '[' JinXML*  ']'
 Object ::= '{' Entry* '}'
-Entry ::= EntryPrefix JinXML
-EntryPrefix ::= (Identifier | String) ( [:=] | '+:' | '+=' )
+Entry ::= FieldPrefix JinXML
+FieldPrefix ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' )
 ```
 
 ## Top Level Grammar as Railroad Diagram
@@ -52,10 +51,6 @@ __Attribute__: An attribute pairs up a name with a string value
 
 ![Image of Attribute rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Attribute.png "An attribute pairs up a name with a string value")
 
-__AttributeName__: May be quoted or unquoted
-
-![Image of AttributeName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/AttributeName.png "May be quoted or unquoted")
-
 __NCName__: Same as XML spec
 
 ![Image of NCName URL](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/NCName.png "Same as XML spec")
@@ -80,16 +75,17 @@ __Entry__: Member of JSON-style object
 
 ![Image of Entry rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/Entry.png "Member of JSON-style object")
 
-__EntryPrefix__: Corresponds to "key =" in JSON.
+__FieldPrefix__: Corresponds to ```key =``` in JSON or inside a tag, quoted or unquoted.
 
-![Image of EntryPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/EntryPrefix.png "Corresponds to 'key =' in JSON")
+![Image of AttributeName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/AttributeName.png "May be quoted or unquoted")
+
+![Image of FIeldPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar2/images/FieldPrefix.png "Corresponds to 'key ='")
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 Note that Shebang sequences may only occur at the start of a stream. 
 
 ```
 Reserved ::= 'null' | 'true' | 'false'
-Identifier ::= [a-zA-Z_] [a-zA-Z0-9_]*
 Number ::= '-'? [0-9]+ ( '.' [0-9]+ )? ( ( 'e' | 'E' ) [0-9]+ )?
 String ::= SingleQuotedString | DoubleQuotedString
 DoubleQuotedString ::= '"' ([^"\]|BEscape)* '"' | "'" ([^'\]|BEscape)* "'"
