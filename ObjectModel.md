@@ -1,5 +1,11 @@
 # What is the standard JinXML Object Model?
 
+## Overview
+
+DESCRIBE THE AIMS OF THE STANDARD OBJECT MODEL - SAME AS THE STANDARD PUSH PARSER
+
+The following classes and methods illustrate a _typical_ instantiation of the standard object model.
+
 ## Class JOM
 
 ### Declarative Methods
@@ -29,3 +35,5 @@
 * Method ```setAttribute( String key = 0, Int position = 0, String? value = null, String padding = "" )```
 
 ## Class Builder
+
+INSTANTIATE THE BUILDER METHODS
