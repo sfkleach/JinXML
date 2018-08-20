@@ -2,11 +2,21 @@
 
 ## Overview
 
-DESCRIBE THE AIMS OF THE STANDARD OBJECT MODEL - SAME AS THE STANDARD PUSH PARSER
+DESCRIBE THE AIMS OF THE STANDARD OBJECT MODEL - SAME AS THE STANDARD PUSH PARSER. EXPLAIN MULTIMAP.
 
-The following classes and methods illustrate a _typical_ instantiation of the standard object model.
+The following classes and methods illustrate a _typical_ instantiation of the standard object model. 
 
 ## Class JOM
+
+### Helper Interface - MultiMap< T, U >
+In this context, a multi-map is a map that allows a key to have several values.
+
+* Method ```get( T t ) -> List< U >```
+* Method ```entriesIterator() -> Iterator< Maplet< T, U > >```
+* Method ```keysIterator() -> Iterator< Maplet< T, List< U > > >```
+* Method ```contains( T t, U? u = null ) -> Boolean```
+* Method ```push( T t, U u )```
+* Method ```pop( T t ) -> U?```
 
 ### Declarative Methods
 
