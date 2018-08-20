@@ -19,8 +19,6 @@ languages, can rely on a basic set of features. We don't want to stop library de
 innovating (we couldn't anyway!) so this is deliberately phrased as an encouragement.
 
 A standard push-parser:
- - Is configurable and that configuration can be serialised/deserialised 
-   as JinXML to a string or a file. See [below](#What-can-be-configured-in-JinXMLs-standard-push-parser) for details.
  - Consumes a stream of characters and produces a _stream_ of events.
  - It must support an input consisting of multiple (zero or more) JinXML expressions on the input.
  - It must make an output event available as soon as possible i.e. it must not be necessary to consume 
@@ -34,13 +32,8 @@ A standard push-parser:
 Below we elaborate a _typical_ set of classes, functions and methods for meeting the above standard. The
 standard does not require a library to follow these names or even the same classes and relationships.
 
-### Class PushParserFactory
-* newPushParserFactory() -> PushParserFactory
-* newPushParserFactoryFromFile( File? configuration ) -> PushParserFactory
-* newPushParserFactoryFromFile( InputStream? configuration ) -> PushParserFactory
-* Method newPushParser( InputStream? input, bool singleton = true ) -> PushParserFactory
-
 ### Class PushParser
+* newPushParser( InputStream? input, bool singleReturn = true ) -> PushParser
 * Method readEvent() -> Event
 * Method readExpression() -> Stream<Event>
 * Method readInput() -> Stream< Event >
@@ -55,54 +48,37 @@ standard does not require a library to follow these names or even the same class
 Events and listeners follow an identical scheme. Note that events LiteralEvent and IdentifierEvent 
 can only be generated when a custom configuration for the push parser is provided.
 
-EXPLAIN HOW THE OPTIONAL VALUES ARE SUBSTITUTED FROM CONFIGURATION
-
 ```sml
 datatype Event =
-  StartTagEvent( String? key = null ) |
-  AttributeEvent( String key, String Value, Boolean solo = true ) |
+  StartTagEvent( String? key ) |
+  AttributeEvent( String key, String value, Boolean solo = true ) |
   EndTagEvent( String? key = null ) |
   StartArrayEvent( String? key = null ) |
   EndArrayEvent( String? key = null ) |
-  StartObjectEvent() |
-  StartEntryEvent( String key, Boolean solo = true ) |
-  EndEntryEvent() |
-  EndObjectEvent() |
-  LiteralEvent( String value ) |
+  StartObjectEvent( String? key = null ) |
+  StartEntryEvent( String? key = null, Boolean solo = true ) |
+  EndEntryEvent( String? key = null, Boolean solo = true ) |
+  EndObjectEvent( String? key = null ) |
   IntEvent( String value ) |
   FloatEvent( String value ) |
   StringEvent( String value ) |
-  IdentifierEvent( String value ) |
   BooleanEvent( String value ) |
   NullEvent( String value )
 ```
 
 The listener methods follow the same pattern and naming convention as the events.
 
-* Method startTagEvent( String? key = null )
-* Method attributeEvent( String key, String Value, Boolean solo = true )
-* Method endTagEvent( String? key = null )
-* Method startArrayEvent( String? key = null )
-* Method endArrayEvent( String? key = null )
-* Method startObjectEvent( String? key = null )
-* Method startEntryEvent( String key, Boolean solo = true )
-* Method endEntryEvent()
-* Method endObjectEvent()
-* Method literalEvent( String value )
-* Method intEvent( String value )
-* Method floatEvent( String value )
-* Method stringEvent( String value )
-* Method identifierEvent( String value )
-* Method booleanEvent( String value )
-* Method nullEvent( String value )
-
-## What can be configured in JinXML's standard push-parser
-The identifiers and literals identified by the standard push-parser can be configured. 
-
-* SOME HIGH LEVEL DESCRIPTION HERE
-
-The default configuration for a standard push parser looks like this:
-
-* CONCRETE EXAMPLE - the default configuration
-
-
+* Method ```startTagEvent( String? key = null )```
+* Method ```attributeEvent( String key, String value, Boolean solo = true )```
+* Method ```endTagEvent( String? key = null )```
+* Method ```startArrayEvent( String? key = null )```
+* Method ```endArrayEvent( String? key = null )```
+* Method ```startObjectEvent( String? key = null )```
+* Method ```startEntryEvent( String? key = null, Boolean solo = true )```
+* Method ```endEntryEvent( String? key = null, Boolean solo = true )```
+* Method ```endObjectEvent( String? key = null )```
+* Method ```intEvent( String value )```
+* Method ```floatEvent( String value )```
+* Method ```stringEvent( String value )```
+* Method ```booleanEvent( String value )```
+* Method ```nullEvent( String value )```
