@@ -25,61 +25,61 @@ FieldPrefix ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' )
 
 __JinXML__: JinXML is the non-terminal through which all recursion happens
 
-![Image of JinXML rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JinXML.png "JinXML is the non-terminal through which all recursion happens")
+![Image of JinXML rule](grammar/images/JinXML.png "JinXML is the non-terminal through which all recursion happens")
 
 __Element__: Element are made up of tags
 
-![Image of Element rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Element.png "Element are made up of tags")
+![Image of Element rule](grammar/images/Element.png "Element are made up of tags")
 
 __StartTag__: Must be paired with an EndTag
 
-![Image of StartTag rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StartTag.png "Must be paired with an EndTag")
+![Image of StartTag rule](grammar/images/StartTag.png "Must be paired with an EndTag")
 
 __EndTag__: Must be paired with a StartTag
 
-![Image of EndTag rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EndTag.png "Must be paired with a StartTag")
+![Image of EndTag rule](grammar/images/EndTag.png "Must be paired with a StartTag")
 
 __FusedTag__: Combines a start-and-end tag pair when there are no children
 
-![Image of FusedTag rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FusedTag.png "Combines a start-and-end tag pair when there are no children")
+![Image of FusedTag rule](grammar/images/FusedTag.png "Combines a start-and-end tag pair when there are no children")
 
 __ElementName__: Element names, attribute keys and object keys are almost identical - but '+' is allowed for element names.
 
-![Image of ElementName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/ElementName.png "Element names support + for defaulting")
+![Image of ElementName rule](grammar/images/ElementName.png "Element names support + for defaulting")
 
 __Attribute__: An attribute pairs up a name with a string value
 
-![Image of Attribute rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Attribute.png "An attribute pairs up a name with a string value")
+![Image of Attribute rule](grammar/images/Attribute.png "An attribute pairs up a name with a string value")
 
 __NCName__: Same as XML spec
 
-![Image of NCName URL](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NCName.png "Same as XML spec")
+![Image of NCName URL](grammar/images/NCName.png "Same as XML spec")
 
 __JSON__: Denotes a JSON-styled expression
 
-![Image of JSON rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JSON.png "Denotes a JSON-styled expression")
+![Image of JSON rule](grammar/images/JSON.png "Denotes a JSON-styled expression")
 
 __Reserved__: JSON reserves null, true and false
 
-![Image of Reserved rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Reserved.png "JSON reserves null, true and false")
+![Image of Reserved rule](grammar/images/Reserved.png "JSON reserves null, true and false")
 
 __Array__: JSON-style array brackets
 
-![Image of Array rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Array.png "JSON-style array brackets")
+![Image of Array rule](grammar/images/Array.png "JSON-style array brackets")
 
 __Object__: JSON-style object brackets
 
-![Image of Object rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Object.png "JSON-style object brackets")
+![Image of Object rule](grammar/images/Object.png "JSON-style object brackets")
 
 __Entry__: Member of JSON-style object
 
-![Image of Entry rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Entry.png "Member of JSON-style object")
+![Image of Entry rule](grammar/images/Entry.png "Member of JSON-style object")
 
 __FieldPrefix__: Corresponds to ```key =``` in JSON or inside a tag, quoted or unquoted.
 
-![Image of AttributeName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/AttributeName.png "May be quoted or unquoted")
+![Image of AttributeName rule](grammar/images/AttributeName.png "May be quoted or unquoted")
 
-![Image of FieldPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FieldPrefix.png "Corresponds to 'key ='")
+![Image of FieldPrefix rule](grammar/images/FieldPrefix.png "Corresponds to 'key ='")
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 Note that Shebang sequences may only occur at the start of a stream. 
@@ -108,42 +108,42 @@ Shebang ::= ('#!' [^#xA]* #xA)+
 
 __Reserved__: identifiers that play the role of literal constants.
 
-![Image of Reserved rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Reserved.png)
+![Image of Reserved rule](grammar/images/Reserved.png)
 
 __Numbers__: Only base 10 so far.
 
-![Image of Number rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Number.png)
+![Image of Number rule](grammar/images/Number.png)
 
 __Strings__: Single and double quoted strings and their symmetrical escape sequences
 
-![Image of String rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/String.png)
+![Image of String rule](grammar/images/String.png)
 
-![Image of DoubleQuotedString rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/DoubleQuotedString.png)
+![Image of DoubleQuotedString rule](grammar/images/DoubleQuotedString.png)
 
-![Image of BEscape rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/BEscape.png)
+![Image of BEscape rule](grammar/images/BEscape.png)
 
-![Image of StringQuotedString rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/StringQuotedString.png)
+![Image of StringQuotedString rule](grammar/images/StringQuotedString.png)
 
-![Image of XEscape rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XEscape.png)
+![Image of XEscape rule](grammar/images/XEscape.png)
 
-![Image of NamedCharacterReference rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/NamedCharacterReference.png)
+![Image of NamedCharacterReference rule](grammar/images/NamedCharacterReference.png)
 
-![Image of Hex rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Hex.png)
+![Image of Hex rule](grammar/images/Hex.png)
 
 __Discards__: Tokens to be discarded
 
-![Image of Discard rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Discard.png)
+![Image of Discard rule](grammar/images/Discard.png)
 
-![Image of XComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XComment.png)
+![Image of XComment rule](grammar/images/XComment.png)
 
-![Image of XOther rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/XOther.png)
+![Image of XOther rule](grammar/images/XOther.png)
 
-![Image of JComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/JComment.png)
+![Image of JComment rule](grammar/images/JComment.png)
 
-![Image of LongComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/LongComment.png)
+![Image of LongComment rule](grammar/images/LongComment.png)
 
-![Image of EoLComment rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/EoLComment.png)
+![Image of EoLComment rule](grammar/images/EoLComment.png)
 
-![Image of Whitespace rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Whitespace.png)
+![Image of Whitespace rule](grammar/images/Whitespace.png)
 
-![Image of Shebang rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/Shebang.png)
+![Image of Shebang rule](grammar/images/Shebang.png)
