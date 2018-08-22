@@ -75,11 +75,6 @@ __Entry__: Member of JSON-style object
 
 ![Image of Entry rule](grammar/images/Entry.png "Member of JSON-style object")
 
-__FieldPrefix__: Corresponds to ```key =``` in JSON or inside a tag, quoted or unquoted.
-
-![Image of AttributeName rule](grammar/images/AttributeName.png "May be quoted or unquoted")
-
-![Image of FieldPrefix rule](grammar/images/FieldPrefix.png "Corresponds to 'key ='")
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 Note that Shebang sequences may only occur at the start of a stream. 
