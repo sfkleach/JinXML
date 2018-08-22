@@ -7,9 +7,9 @@ JinXML has a whitespace insensitive layout, which means that it is a good idea t
 ```
 JinXML ::= Element | JSON
 Element ::= StartTag ( Entry* | JinXML* ) EndTag | FusedTag
-StartTag ::= '<' ( ElementName Attribute* )? '>'
-EndTag ::= '</' ( ElementName Attribute* )? '>'
-FusedTag ::= '<' ( ElementName Attribute* )? '/>'
+StartTag ::= '<' ElementName Attribute* '>'
+EndTag ::= '</' ElementName Attribute* '>'
+FusedTag ::= '<' ElementName Attribute* '/>'
 ElementName ::= NCName | '&' | String
 Attribute ::= FieldPrefix String
 NCName ::= [http://www.w3.org/TR/xml-names/#NT-NCName]
@@ -17,8 +17,8 @@ JSON ::= Reserved | Number | String | Array | Object
 Reserved ::= 'null' | 'true' | 'false'
 Array ::= '[' JinXML*  ']'
 Object ::= '{' Entry* '}'
-Entry ::= FieldPrefix JinXML
-FieldPrefix ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' )
+Entry ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' ) JinXML 
+Entry ::= '&' ( ':' | '=' | '+:' | '+=' ) Element
 ```
 
 ## Top Level Grammar as Railroad Diagram
