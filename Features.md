@@ -16,10 +16,10 @@
 * [Single-quoted XML string literals with HTML5 escapes](#single-quoted-xml-string-literals-with-html5-escapes)
 
 ## Strict superset of JSON
-This is self-explanatory: a JinXML parser can read any normal JSON input. In other words nothing in JinXML breaks normal JSON usage. And the output of such a parse has the expected representation. [Objects with duplicate keys](https://dzone.com/articles/duplicate-keys-in-json-objects) are not normal JSON and JinXML will not behave the same way - see below for details.
+This is self-explanatory: a JinXML parser can read any normal JSON input. In other words nothing in JinXML breaks normal JSON usage. And the output of such a parse has the expected representation. Note that [objects with duplicate keys](https://dzone.com/articles/duplicate-keys-in-json-objects) are not considered to be 'normal' JSON. JinXML supports multiplevalues properly and hence does not behave the same way as abnormal JSON - see below for details.
 
 ## Duplicate keys supported
-JSON expressions such as ```{ "size": 8, "size": 19 }``` meet the [JSON grammar](https://json.org) but are disallowed by most parsers. The internet standard [RFC 7159](https://tools.ietf.org/html/rfc7159) uses the infamous ("SHOULD")[https://www.ietf.org/rfc/rfc2119.txt] to say that keys are not actually required to be unique. JinXML won't allow this as it stands.
+JSON expressions such as ```{ "size": 8, "size": 19 }``` meet the [JSON grammar](https://json.org) but are disallowed by most parsers. The internet standard [RFC 7159](https://tools.ietf.org/html/rfc7159) uses the infamous ["SHOULD"](https://www.ietf.org/rfc/rfc2119.txt) to say that keys are not actually required to be unique. JinXML won't allow this as it stands.
 
 However, a JinXML parser allows duplicates _when explicitly permitted_ using the ```+:``` (and ```+=```) syntax. The ```+:``` sign turns off any checks for this child being a duplicate key. So the above example would be permitted if it was written as:
 ```
