@@ -79,7 +79,7 @@ __FieldPrefix__: Corresponds to ```key =``` in JSON or inside a tag, quoted or u
 
 ![Image of AttributeName rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/AttributeName.png "May be quoted or unquoted")
 
-![Image of FIeldPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FieldPrefix.png "Corresponds to 'key ='")
+![Image of FieldPrefix rule](https://raw.githubusercontent.com/sfkleach/JinXML/master/grammar/images/FieldPrefix.png "Corresponds to 'key ='")
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 Note that Shebang sequences may only occur at the start of a stream. 
