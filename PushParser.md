@@ -35,7 +35,7 @@ standard does not require a library to follow these names or even the same class
 ### Class PushParser
 * newPushParser( InputStream? input, bool singleReturn = true ) -> PushParser
 * Method readEvent() -> Event
-* Method readExpression() -> Stream<Event>
+* Method readExpression() -> Stream< Event >
 * Method readInput() -> Stream< Event >
 
 ### Class Listener
@@ -50,12 +50,12 @@ can only be generated when a custom configuration for the push parser is provide
 
 ```sml
 datatype Event =
-  StartTagEvent( String? key ) |
+  StartTagEvent( String key ) |
   AttributeEvent( String key, String value, Boolean solo = true ) |
   EndTagEvent( String? key = null ) |
-  StartArrayEvent( String? key = null ) |
+  StartArrayEvent( String key = null ) |
   EndArrayEvent( String? key = null ) |
-  StartObjectEvent( String? key = null ) |
+  StartObjectEvent( String key = null ) |
   StartEntryEvent( String? key = null, Boolean solo = true ) |
   EndEntryEvent( String? key = null, Boolean solo = true ) |
   EndObjectEvent( String? key = null ) |
@@ -68,13 +68,13 @@ datatype Event =
 
 The listener methods follow the same pattern and naming convention as the events.
 
-* Method ```startTagEvent( String? key = null )```
+* Method ```startTagEvent( String key = null )```
 * Method ```attributeEvent( String key, String value, Boolean solo = true )```
 * Method ```endTagEvent( String? key = null )```
-* Method ```startArrayEvent( String? key = null )```
+* Method ```startArrayEvent( String key = null )```
 * Method ```endArrayEvent( String? key = null )```
-* Method ```startObjectEvent( String? key = null )```
-* Method ```startEntryEvent( String? key = null, Boolean solo = true )```
+* Method ```startObjectEvent( String key = null )```
+* Method ```startEntryEvent( String key = null, Boolean solo = true )```
 * Method ```endEntryEvent( String? key = null, Boolean solo = true )```
 * Method ```endObjectEvent( String? key = null )```
 * Method ```intEvent( String value )```
