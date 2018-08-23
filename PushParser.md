@@ -53,12 +53,12 @@ datatype Event =
   StartTagEvent( String key ) |
   AttributeEvent( String key, String value, Boolean solo = true ) |
   EndTagEvent( String? key = null ) |
-  StartArrayEvent( String key = null ) |
-  EndArrayEvent( String? key = null ) |
-  StartObjectEvent( String key = null ) |
+  StartArrayEvent() |
+  EndArrayEvent() |
+  StartObjectEvent() |
   StartEntryEvent( String? key = null, Boolean solo = true ) |
-  EndEntryEvent( String? key = null, Boolean solo = true ) |
-  EndObjectEvent( String? key = null ) |
+  EndEntryEvent() |
+  EndObjectEvent() |
   IntEvent( String value ) |
   FloatEvent( String value ) |
   StringEvent( String value ) |
@@ -68,15 +68,15 @@ datatype Event =
 
 The listener methods follow the same pattern and naming convention as the events.
 
-* Method ```startTagEvent( String key = null )```
+* Method ```startTagEvent( String key )```
 * Method ```attributeEvent( String key, String value, Boolean solo = true )```
 * Method ```endTagEvent( String? key = null )```
-* Method ```startArrayEvent( String key = null )```
-* Method ```endArrayEvent( String? key = null )```
-* Method ```startObjectEvent( String key = null )```
+* Method ```startArrayEvent()```
+* Method ```endArrayEvent()```
+* Method ```startObjectEvent()```
 * Method ```startEntryEvent( String key = null, Boolean solo = true )```
-* Method ```endEntryEvent( String? key = null, Boolean solo = true )```
-* Method ```endObjectEvent( String? key = null )```
+* Method ```endEntryEvent()```
+* Method ```endObjectEvent()```
 * Method ```intEvent( String value )```
 * Method ```floatEvent( String value )```
 * Method ```stringEvent( String value )```
