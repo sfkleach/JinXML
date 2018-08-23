@@ -21,6 +21,11 @@ Entry ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' ) JinXML
 Entry ::= '&' ( ':' | '=' | '+:' | '+=' ) Element
 ```
 
+The following side-conditions apply:
+* ElementNames in paired tags must not differ, where ```&``` is considered to automatically match.
+* ```&``` can only be used in a StartTag when its element appears on the right of an Entry.
+* ```&``` can only be used as an Entry name when followed by a named StartTag (not ```&```).
+
 ## Top Level Grammar as Railroad Diagram
 
 __JinXML__: JinXML is the non-terminal through which all recursion happens
