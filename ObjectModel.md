@@ -23,10 +23,15 @@ In this context, a multi-map is a map that allows a key to have several values. 
 ### Declarative Methods
 
 * Method ```name() -> String``` - returns the name of the object, which is typically intended to be a type-name. 
+
 * Method ```attributesAsCollection( Boolean view = false, Boolean mutable = false ) -> MultiMap< String, String >``` - returns a multi-map representing the attributes of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
+
 * Method ```getAttribute( String key = 0, Int position = 0, String? default = null ) -> String?```
+
 * Method ```allAttributes( String? key = null, Int position? = 0) -> List< String >```
+
 * Method ```childrenCollection() -> MultiMap< String, JOM >``` - returns a multi-map representing the children of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the children and changes to the multi-map immediately affect the children. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
+
 * Method ```getChild( String key = "", Int position = 0, JOM? default = null ) -> JOM?```
 * Method ```allChildren( String? key = null, Int? position = null ) -> List< JOM >```
 * Method ```isIntValue() -> Boolean```
