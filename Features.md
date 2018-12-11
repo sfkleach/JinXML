@@ -224,4 +224,4 @@ For example:
 <greeting text='Hello, world!&\n'/>
 ```
 
-N.B. There is no automatic line-ending conversion in JinXML and never will be. JinXML is all about recording data, not corrupting it.
+N.B. There is no automatic line-ending conversion in JinXML, such as MacOS \r to Unix \n or PC \r\n, and there never will be. JinXML is all about recording data, not corrupting it with dodgy heuristics.
