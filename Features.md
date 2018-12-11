@@ -39,7 +39,7 @@ But what does it mean if a key occurs multiple times in an object? It means that
 > :notebook: Design note: the support for duplicate keys is needed, so that elements unify arrays and maps.
 
 ## Unquoted keys
-Object keys always occur in well-defined syntactic contexts and hence do not need to be string-quoted, provided that they aren't too exotic. To keep the grammar simple, unquoted keys have to follow the same rules as XML element and attribute names (i.e. they are an [XML Name](https://www.w3.org/TR/xml/#NT-Name)). So the above examples could be written as shown below - and is noticeably more readable.
+Object keys always occur in well-defined syntactic contexts and hence do not need to be string-quoted, provided that they aren't too exotic. To keep the grammar simple, unquoted keys have to follow the same rules as XML element and attribute names (i.e. they are an [XML Name](https://www.w3.org/TR/xml/#NT-Name)). So the above example could be written as shown below, which is noticeably more readable.
 ```
 { size: 8, size+: 19, name: "Steve", name+: "Stephen", name+: "Steve" }
 ```
