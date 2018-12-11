@@ -49,7 +49,7 @@ Object keys always occur in well-defined syntactic contexts and hence do not nee
 > :notebook: Design note: future plans include let bindings to user-defined identifiers, so keys must be identified as distinct from identifiers at parse time.
 
 ## Equals as well as colon
-The ```=``` separator is an alternative to ```:``` and ```+=``` is an alternative to ```+:```. There is no significance to the choice and a parser and/or application should not process them differently.
+The ```=``` separator is an alternative to ```:``` and ```+=``` is an alternative to ```+:```. There is no significance to the choice and a parser and/or application may not process them differently.
 
 Example:
 ```
@@ -125,9 +125,10 @@ Standalone tags are simply a notational convenience for a start-tag that is imme
 ```
 <NAME NAME=STRING NAME=STRING ... />
 ```
+A parser may treat the standalone tag as a start tag with all the attributes immediately followed by an end tag that has no attributes.
 
 ## Colon as well as equals
-The ```:``` separator is an alternative to ```=``` and ```+:``` is an alternative to ```+=```. There is no significance to the choice and a parser and/or application should not process them differently.
+The ```:``` separator is an alternative to ```=``` and ```+:``` is an alternative to ```+=```. There is no significance to the choice and a parser and/or application may not process them differently.
 
 Example:
 ```
