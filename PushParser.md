@@ -3,7 +3,7 @@
 ## What is a push parser?
 A push-parser consumes an input stream and generates a stream of events that can be used to recognise 
 the input and construct a model of the input. Typically the events are driven from a relatively small
-window onto the input stream, so that the memory consumption of a push parser is very modes. This means 
+window onto the input stream, so that the memory consumption of a push parser is very modest. This means 
 that such a push parser is suitable for analysing very large data sets as its memory footprint stays small
 relative to the size of input.
 
