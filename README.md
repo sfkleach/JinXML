@@ -79,7 +79,7 @@ JSON itself has niggling flaws. It proved successful in part because it strips a
 
 So JinXML also strives to take on JSON without requiring the syntactic clutter, taking its cues from XML. So commas are optional, keys do not need string quoting when they are XML names, and attributed elements are the natural generalisation of primitive values. 
 
-Lastly, JinXML was not our first attempt at merging the two notations. JinXML was inspired by seeing how the design tension between arrays and objects could be resolved by shifting to multi-valued maps. This led to a nice interpretation of duplicate keys that makes relations (as opposed to functions) easier to represebt. Surprisingly, at least to this writer, it was possible to implement this efficiently 
+Lastly, JinXML was not our first attempt at merging the two notations. JinXML was inspired by seeing how the design tension between arrays and objects could be resolved by shifting to multi-valued maps. This led to a nice interpretation of duplicate keys that makes relations (as opposed to functions) easier to represent. Surprisingly, at least to this writer, it was possible to implement this efficiently 
 
 None of this would matter if JinXML was ugly and unreadable. Fortunately, knocking off the rough edges seems to have been beneficial. 
 
