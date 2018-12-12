@@ -21,8 +21,8 @@ object.
 
 * Method ```getAttributesAsMultiMap( Boolean view = false, Boolean mutable = false ) -> MultiMap< String, String >``` - returns a multi-map representing the attributes of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
-* Method ```getAttributesIterator() -> Iterator< Maplet< String, String > >``` - returns 
-all the attributes as an insensitive iterator over shallowly immutable maplets.
+* Method ```getAttributesStream() -> Stream< Maplet< String, String > >``` - returns 
+all the attributes as an insensitive stream over shallowly immutable maplets.
 
 * Method ```getValue( String key, Boolean reverse = false, Int position = 0, String? default = null ) -> String?``` - returns the value associated with the maplet with key ```key``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```getAttributeCount( key ) - 1 - position```.
 
@@ -40,7 +40,7 @@ object.
 
 * Method ```getMembersAsMultiMap() -> MultiMap< String, JOM >``` - returns a multi-map representing the members of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the members and changes to the multi-map immediately affect the membrs. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
-* Method ```getMemberIterator() -> Iterator< Maplet< String, JOM > >``` 
+* Method ```getMemberStream() -> Stream< Maplet< String, JOM > >``` 
 
 * Method ```getChild( String sel = "", Int position = 0, JOM? default = null ) -> JOM?``` - returns the object associated with the maplet with selector ```sel``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```countChildren( sel ) - 1 - position```.
 
@@ -113,7 +113,7 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```toEventStream() -> Stream< PushParser.Event >``` - generates a stream of events that performs an immune 'walk' over the Element. The walk is insensitive in the sense that the stream it returns is immune to all updates to the Element that might occur while the walk is in-progress.
 
-## Class Builder extends PushParser.Listener, Iterator< Element >
+## Class Builder extends PushParser.Listener, Stream< Element >
 
 ### General Methods
 
