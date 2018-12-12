@@ -1,4 +1,4 @@
-# What is the standard JOM - JinXML Object Model?
+# What is the standard JOM Element - JinXML Object Model?
 
 ## Overview
 
@@ -12,7 +12,7 @@ The JOM presents a JOM-value as having a name, attributes and members. The attri
 be thought of as a collection of key-value pairs and the members as a colleaction of selector-child pairs.
 
 
-## Declarative Methods
+## class Element Declarative Methods
 
 * Method ```getName() -> String``` - returns the name of the object, which is typically intended to be a type-name. 
 
@@ -77,7 +77,7 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```getNullValue( Null? default = null ) -> Null?```
 
-## Mutators Methods
+### Mutators Methods
 
 * Method ```setName( String name )```
 
@@ -109,28 +109,37 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```removeLastValue( String sel, JOM? value = null ) -> JOM?```
 
-## Class Builder : PushParser.Listener
+### Builder Related Methods
+
+* Method ```toEventStream() -> Stream< PushParser.Event >``` - generates a stream of events that performs an immune 'walk' over the Element. The walk is insensitive in the sense that the stream it returns is immune to all updates to the Element that might occur while the walk is in-progress.
+
+## Class Builder extends PushParser.Listener, Iterator< Element >
 
 ### General Methods
 
-* Factory Constructor ```newBuilder( Boolean mutable = false ) -> Builder``` - returns a factory object that can be used to construct new JOM values. If the flag ```mutable``` is true, then the new values are constructed to be (deeply) mutable, otherwise (deeply) immutable.
+* Factory Constructor ```newBuilder( Boolean mutable = false, Boolean allowQueuing = false ) -> Builder``` - returns a factory object that can be used to construct new JOM elements. If the flag ```mutable``` is true, then the new values are constructed to be (deeply) mutable, otherwise (deeply) immutable. If ```allowQueuing``` is false, then no events are accepted after a JOM-element is ready until the element is constructed by ```newInstance```, otherwise events are allowed.
 
-* Method ```isOpen() -> Boolean``` - returns true if the builder is in an open state i.e. the in-progress value has not received a balanced stream of events.
+* Method ```hasNext() -> Boolean``` - returns true if enough events have been received to construct an element.
 
-* Method ```size() -> Int``` - returns a count of the number of completed values waiting to be built.
+* Method ```isInProgress() -> Boolean``` - return true if some events have been received but there are more open than close events. 
 
-* Method ```autoClose()``` - closes off all the open states of the in-progress build.
+* Method ```next() -> Element``` - constructs the next JOM element if one is ready for construction, otherwise will raise an exception. Use ```this.hasNext()``` to determine whether it is safe to call this method.
 
-* Method ```instance( Boolean allowIncomplete = false, Boolean lastUse = true, JOM? orelse = null ) -> JOM?``` - returns the next freshly built JOM value. If ```lastuse``` is true then the factory object cannot be used for any further construction, which means that it may release any private store or incorporate it into the newly built value. If the flag ```allowIncomplete``` is false then builder must be in a valid state or a validation error is raised. But if ```allowIncomplete``` is true then the builder temporarily closes off all open states and builds the JOM value; if further building is permitted
-it will re-open the temporarily closed states so building can carry on from where it left off.
+* Method ```tryNext( Element? orElse = null )``` - if a JOM element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
 
-* Method ```include( JOM value, Boolean checkMutability = false )``` - adds and shares this JOM value into the in-progress build. The mutability of the included value is checked depending on the ```checkMutability``` flag. It is **not** an error to mix mutability this way but an occasionally important feature.
+* Method ```snapshot() -> Element``` - all open states are automatically but temporarily completed;
+if a JOM element is ready for construction after the auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the temporarily closed states are restored to their previous state. Use ```this.isInProgress()``` to check whether it is safe to call this method.
 
-* Method ```reconstruct( JOM value )``` - replays a series of events which would construct the JOM
-value supplied but does so inside the in-progress build. This is effectively the same as including
+* Method ```trySnapshot( Element? orElse = null ) -> Element?``` - as for ```snapshot``` but never raises an exception but returns the value in```orElse``` instead.
+
+* Method ```include( Element value, Boolean checkMutability = false )``` - adds and shares this JOM value into the in-progress build. The mutability of the included value is checked depending on the ```checkMutability``` flag. It is **not** an error to mix mutability this way but an occasionally important feature.
+
+* Method ```reconstruct( Element value )``` - replays a series of events which would construct the Element supplied but does so inside the in-progress build. This is effectively the same as ```this.processEvents( value.toEventStream() )```
 a deep copy.
 
 * Method ```processEvent( PushParser.Event event )``` - processes a PushParser event using the appropriate method.
+
+* Method ```processEvents( Stream< PushParser.Event > events )``` - processes a series of events, which is effectively the same as ```events.forEach( e =>> this.processEvent( e ) )```.
 
 ### Event Handling Methods
 
