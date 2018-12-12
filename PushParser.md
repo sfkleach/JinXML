@@ -1,13 +1,13 @@
 # Standard Push Parser
 
-## What is a push parser?
-A push-parser consumes an input stream and generates a stream of events that can be used to recognise 
+## What is a Push Parser?
+A push-parser consumes an input stream and generates a series of events that can be used to recognise 
 the input and construct a model of the input. Typically the events are driven from a relatively small
 window onto the input stream, so that the memory consumption of a push parser is very modest. This means 
 that such a push parser is suitable for analysing very large data sets as its memory footprint stays small
 relative to the size of input.
 
-The event stream is typically realised by the push-parser being passed a 'listener' objects whose 
+The event series is typically realised by the push-parser being passed a 'listener' objects whose 
 methods correspond to the different type of events. As the push-parser progresses, for each event it
 calls the corresponding method of the listener. These methods will have side-effects, so that the
 listener can incrementally build the output.
@@ -23,7 +23,7 @@ A standard push-parser:
  - It must support an input consisting of multiple (zero or more) JinXML expressions on the input.
  - It must make an output event available as soon as possible i.e. it must not be necessary to consume 
    additional input characters before the output event is available.
- - Can provide the stream of events available as a stream e.g. iterator, enumerable, lazy list.
+ - Can provide the stream of events available as a stream e.g. iterator, enumerable, (Java) stream.
  - Can provide the stream of events as method calls on a standard-listener.
  - Can be advanced event-by-event.
  - Can be advanced JinXML expression-by-expression.

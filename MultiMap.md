@@ -12,22 +12,22 @@ In this context an immutable copy or view is one that does not support update op
 However, an immutable view will still reflect changes to the original Multi-Map 
 i.e. _shallow_ immutability. 
 
-Importantly all iterators are expected to be _insensitive_ to changes in the original multi-map, 
+Importantly all iterators are expected to be _immune_ to changes in the original multi-map, 
 as if the iterator was based on a shallow copy made at the time the iterator was instantiated.
 This makes it safe to modify the multi-map while iterating over it.
 
 * Method ```getValuesAsList( K k, Boolean view = false, Boolean mutable = false ) -> List< V >``` - returns the values of the maplets with key k. If ```view``` is ```true``` then the list is a mutable view onto the multi-map and changes to the list immediately affect the multi-map. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
-* Method ```entriesIterator() -> Iterator< Maplet< K, V > >``` - returns an insensitive iterator over shallowly immutable maplets of a multi-map. 
+* Method ```entriesStream() -> Stream< Maplet< K, V > >``` - returns an immune iterator over shallowly immutable maplets of a multi-map. 
 
-* Method ```keysIterator() -> Iterator< K >``` - returns an insensitive iterator over the distinct keys of the multi-map.
+* Method ```keysStream() -> Stream< K >``` - returns an immune iterator over the distinct keys of the multi-map.
 
 * Method ```asMap( Boolean view = false, Boolean mutable = false ) -> Map< K, List< V > >``` - returns a map from keys to an ordered list of values.  If view is ```false``` then the map and 
 the contained lists are copies. If view is ```true``` then the maps and contained lists are 
 all dynamic views. The map and contained lists are mutable or immutable depending on the value of 
-```mutable```. An iterator of this map is insensitive.
+```mutable```. An iterator of this map is immune.
 
-* Method ```asMapIterator( Boolean view = false, Boolean mutable = false ) -> Iterator< Maplet< K, List< V > > >``` - returns an insensitive iterator that iterates over shallowly-immutable maplets.
+* Method ```asMapStream( Boolean view = false, Boolean mutable = false ) -> Stream< Maplet< K, List< V > > >``` - returns an immune iterator that iterates over shallowly-immutable maplets.
 The flag ```view``` determines if the lists are copies or views onto the original MultiMap and the
 flag ```mutable``` determines if the list is mutable.
 
