@@ -1,4 +1,4 @@
-# What is the standard JOM Element - JinXML Object Model?
+# What is the standard JOM Element class - the JinXML Object Model?
 
 ## Overview
 
@@ -8,7 +8,7 @@ The following classes and methods illustrate a _typical_ instantiation of the st
 
 ### Terminology
 
-The JOM presents a JOM-value as having a name, attributes and members. The attributes should
+The JOM presents a Element as having a name, attributes and members. The attributes should
 be thought of as a collection of key-value pairs and the members as a colleaction of selector-child pairs.
 
 
@@ -38,11 +38,11 @@ the key.
 * Method ```countMembers() -> Int``` - returns the total number of select-child pairs in the 
 object.
 
-* Method ```getMembersAsMultiMap() -> MultiMap< String, JOM >``` - returns a multi-map representing the members of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the members and changes to the multi-map immediately affect the membrs. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
+* Method ```getMembersAsMultiMap() -> MultiMap< String, Element >``` - returns a multi-map representing the members of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the members and changes to the multi-map immediately affect the membrs. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
-* Method ```getMemberStream() -> Stream< Maplet< String, JOM > >``` 
+* Method ```getMemberStream() -> Stream< Maplet< String, Element > >``` 
 
-* Method ```getChild( String sel = "", Int position = 0, JOM? default = null ) -> JOM?``` - returns the object associated with the maplet with selector ```sel``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```countChildren( sel ) - 1 - position```.
+* Method ```getChild( String sel = "", Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the maplet with selector ```sel``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```countChildren( sel ) - 1 - position```.
 
 * Method ```getFirstChild( String sel, String? default = null ) -> String?``` - returns the first child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
 
@@ -54,7 +54,7 @@ the selector ```sel```.
 * Method ```getChildrenAsMultiMap( Boolean view = false, Boolean mutable = false ) -> MultiMap< String, String >``` - returns a multi-map representing the children of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the children and changes to the multi-map immediately affect the children. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
 
-* Method ```getChildrenAsList( String? key = "", Boolean view = false, Boolean mutable = false ) -> List< JOM >``` - returns all the children that are in maplets with key ```key```. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
+* Method ```getChildrenAsList( String? key = "", Boolean view = false, Boolean mutable = false ) -> List< Element >``` - returns all the children that are in maplets with key ```key```. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
 * Method ```isIntValue() -> Boolean``` - returns true if the object represents an integer. This test is only required to check the name of the object.
 
@@ -95,19 +95,19 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```removeLastValue( String key, String? value = null ) -> String?```
 
-* Method ```setMembers( MultiMap< String, JOM > members )```
+* Method ```setMembers( MultiMap< String, Element > members )```
 
-* Method ```setChildren( String sel, Iterable< JOM > )```
+* Method ```setChildren( String sel, Iterable< Element > )```
 
-* Method ```setChild( String sel, Boolean reverse = false, Int position = 0, JOM child )```
+* Method ```setChild( String sel, Boolean reverse = false, Int position = 0, Element child )```
 
-* Method ```addFirstChild( String sel, JOM child )```
+* Method ```addFirstChild( String sel, Element child )```
 
-* Method ```addLastChild( String sel, JOM child )```
+* Method ```addLastChild( String sel, Element child )```
 
-* Method ```removeFirstChild( String sel, JOM? value = null ) -> JOM?```
+* Method ```removeFirstChild( String sel, Element? value = null ) -> Element?```
 
-* Method ```removeLastValue( String sel, JOM? value = null ) -> JOM?```
+* Method ```removeLastValue( String sel, Element? value = null ) -> Element?```
 
 ### Builder Related Methods
 
@@ -117,22 +117,22 @@ If ```strict``` is false then integral values will return true for this test.
 
 ### General Methods
 
-* Factory Constructor ```newBuilder( Boolean mutable = false, Boolean allowQueuing = false ) -> Builder``` - returns a factory object that can be used to construct new JOM elements. If the flag ```mutable``` is true, then the new values are constructed to be (deeply) mutable, otherwise (deeply) immutable. If ```allowQueuing``` is false, then no events are accepted after a JOM-element is ready until the element is constructed by ```newInstance```, otherwise events are allowed.
+* Factory Constructor ```newBuilder( Boolean mutable = false, Boolean allowQueuing = false ) -> Builder``` - returns a factory object that can be used to construct new Elements. If the flag ```mutable``` is true, then the new values are constructed to be (deeply) mutable, otherwise (deeply) immutable. If ```allowQueuing``` is false, then no events are accepted after an Element is ready until the element is constructed by ```newInstance```, otherwise events are allowed.
 
 * Method ```hasNext() -> Boolean``` - returns true if enough events have been received to construct an element.
 
 * Method ```isInProgress() -> Boolean``` - return true if some events have been received but there are more open than close events. 
 
-* Method ```next() -> Element``` - constructs the next JOM element if one is ready for construction, otherwise will raise an exception. Use ```this.hasNext()``` to determine whether it is safe to call this method.
+* Method ```next() -> Element``` - constructs the next Element if one is ready for construction, otherwise will raise an exception. Use ```this.hasNext()``` to determine whether it is safe to call this method.
 
-* Method ```tryNext( Element? orElse = null )``` - if a JOM element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
+* Method ```tryNext( Element? orElse = null )``` - if an Element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
 
 * Method ```snapshot() -> Element``` - all open states are automatically but temporarily completed;
-if a JOM element is ready for construction after the auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the temporarily closed states are restored to their previous state. Use ```this.isInProgress()``` to check whether it is safe to call this method.
+if an Element is ready for construction after the auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the temporarily closed states are restored to their previous state. Use ```this.isInProgress()``` to check whether it is safe to call this method.
 
 * Method ```trySnapshot( Element? orElse = null ) -> Element?``` - as for ```snapshot``` but never raises an exception but returns the value in```orElse``` instead.
 
-* Method ```include( Element value, Boolean checkMutability = false )``` - adds and shares this JOM value into the in-progress build. The mutability of the included value is checked depending on the ```checkMutability``` flag. It is **not** an error to mix mutability this way but an occasionally important feature.
+* Method ```include( Element value, Boolean checkMutability = false )``` - adds and shares this Element into the in-progress build. The mutability of the included value is checked depending on the ```checkMutability``` flag. It is **not** an error to mix mutability this way but an occasionally important feature.
 
 * Method ```reconstruct( Element value )``` - replays a series of events which would construct the Element supplied but does so inside the in-progress build. This is effectively the same as ```this.processEvents( value.toEventStream() )```
 a deep copy.
