@@ -35,8 +35,8 @@ standard does not require a library to follow these names or even the same class
 ### Class PushParser
 * newPushParser( InputStream? input, bool singleReturn = true ) -> PushParser
 * Method readEvent() -> Event
-* Method readExpression() -> Stream< Event >
-* Method readInput() -> Stream< Event >
+* Method readExpression() -> Iterator< Event >
+* Method readInput() -> Iterator< Event >
 
 ### Class Listener
 * newListener( PushParser pp ) -> Listener
