@@ -16,9 +16,9 @@ Because of the variation between programming languages, such as the different ba
 
 The following classes and methods illustrate a _typical_ instantiation of the standard object model. 
 
-* Element - a class representing a single JinXML value.
-* MultiMap - a crucial helper class for Elements.
-* Builder - used for incrementally constructing Elements from an event stream.
-* PushParser - generates an event stream.
-* PushParser.Event - a class representing all the different event types that can be generated.
+* [Element](Element.md) - a class representing a single JinXML value.
+* [MultiMap](MultiMap.md) - a crucial helper class for Elements.
+* [Builder](Builder.md) - used for incrementally constructing Elements from an event stream.
+* [PushParser](PushParser.md) - generates an event stream.
+* [PushParser.Event](PushParser.md) - a class representing all the different event types that can be generated.
 
