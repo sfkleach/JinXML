@@ -26,7 +26,12 @@ public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > {
 	public PhoenixMultiMap< K, V > addAll( K key, Iterable< ? extends V > values ) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	@Override
+	public PhoenixMultiMap< K, V > addAll( PhoenixMultiMap< ? extends K, ? extends V > multimap ) {
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public EmptyFrozenPMMap< K, V > removeEntry( Object key, Object value ) {
 		throw new UnsupportedOperationException();
