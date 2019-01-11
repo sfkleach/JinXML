@@ -14,7 +14,7 @@ import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixMultiMap< Key, Value > implements PhoenixMultiMap< Key, Value > {
 	
 	protected Key shared_key;	//	Will be initialised in the concrete constructors.
-	List< Value > values_list = new ArrayList<>();
+	protected List< Value > values_list = new ArrayList<>();
 
 	@SuppressWarnings("null")
 	public AbsSharedKeyMutablePMMap() {
@@ -92,7 +92,7 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 
 	@Override
 	public int sizeKeys() {
-		return 1;
+		return this.values_list.isEmpty() ? 0 : 1;
 	}
 
 	@Override
