@@ -220,7 +220,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 */
 	default PhoenixMultiMap< K, V > addAll( PhoenixMultiMap< ? extends K, ? extends V > multimap ) {
 		PhoenixMultiMap< K, V > self = this;
-		for ( Map.Entry< K, V > p : this.entriesToList() ) {
+		for ( Map.Entry< ? extends K, ? extends V > p : multimap.entriesToList() ) {
 			self = self.add( p );
 		}
 		return self;

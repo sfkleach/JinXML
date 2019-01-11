@@ -29,7 +29,11 @@ public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > {
 		if ( ! it.hasNext() ) return this;
 		V value = it.next();
 		if ( it.hasNext() ) {
-			return new SharedKeyMutablePMMap< K, V >( key ).add( value ).addAll( values );
+			PhoenixMultiMap< K, V > m = new SharedKeyMutablePMMap< K, V >( key ).add( value ).add( it.next() );
+			while ( it.hasNext() ) {
+				m.add( key, it.next() );
+			}
+			return m;
 		} else {
 			return new SingleEntryMutablePMMap< K, V >( key, value );
 		}
