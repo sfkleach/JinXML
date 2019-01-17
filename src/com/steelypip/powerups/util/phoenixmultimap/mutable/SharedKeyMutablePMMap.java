@@ -119,7 +119,7 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > freezeByMutation() {
+	public PhoenixMultiMap< Key, Value > freezeByPhoenixing() {
 		PhoenixMultiMap < Key, Value > f = new SharedKeyFrozenPMMap< Key, Value >( this.shared_key );
 		for ( Value v : this.values_list ) {
 			f = f.add( shared_key, v );

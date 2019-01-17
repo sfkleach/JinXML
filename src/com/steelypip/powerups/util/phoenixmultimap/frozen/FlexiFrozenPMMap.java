@@ -57,7 +57,7 @@ public class FlexiFrozenPMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, V
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > freezeByMutation() {
+	public PhoenixMultiMap< Key, Value > freezeByPhoenixing() {
 		return this;
 	}	
 

@@ -78,7 +78,7 @@ public class SharedKeyFrozenPMMap< Key, Value > extends AbsSharedKeyMutablePMMap
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > freezeByMutation() {
+	public PhoenixMultiMap< Key, Value > freezeByPhoenixing() {
 		return this;
 	}
 

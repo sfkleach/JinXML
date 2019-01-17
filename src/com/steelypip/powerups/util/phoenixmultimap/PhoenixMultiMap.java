@@ -50,7 +50,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 		PhoenixMultiMap< K, V > result = new EmptyMutablePMMap< K, V >();
 		result.addAll( ppmap );
 		if ( freeze ) {
-			result = result.freezeByMutation();
+			result = result.freezeByPhoenixing();
 		}
 		return result;
 	}
@@ -255,6 +255,12 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 */
 	PhoenixMultiMap< K, V > setValues( K key, Iterable<? extends V> values );
 	
+	/**
+	 * After this assignment, the key has one and only one value, regardless of previous values.
+	 * @param key the target to assign to
+	 * @param value the value to replace all other values
+	 * @return the assigned value (the subject is now defunct)
+	 */
 	PhoenixMultiMap< K, V > setSingletonValue( K key, V value );
 	
 	PhoenixMultiMap< K, V > updateValue( K key, int n, V value );
@@ -283,7 +289,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 		return this.entriesToList().stream().map( ( Map.Entry< K, V > p ) -> p.getValue() ).collect( Collectors.toList() );
 	}
 	
-	PhoenixMultiMap< K, V > freezeByMutation();
+	PhoenixMultiMap< K, V > freezeByPhoenixing();
 	
 	default PhoenixMultiMap< K, V > trimToSize() {
 		return this;

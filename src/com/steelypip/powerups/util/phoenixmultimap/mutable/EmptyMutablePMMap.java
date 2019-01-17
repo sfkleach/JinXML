@@ -71,7 +71,7 @@ public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public PhoenixMultiMap< K, V > freezeByMutation() {
+	public PhoenixMultiMap< K, V > freezeByPhoenixing() {
 		return EmptyFrozenPMMap.INSTANCE;
 	}
 

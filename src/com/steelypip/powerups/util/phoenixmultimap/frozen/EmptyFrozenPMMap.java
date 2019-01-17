@@ -63,7 +63,7 @@ public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > {
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > freezeByMutation() {
+	public PhoenixMultiMap< K, V > freezeByPhoenixing() {
 		return this;
 	}
 

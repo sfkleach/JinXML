@@ -132,7 +132,7 @@ public abstract class ViewPhoenixMultiMapAsMultiMap< K, V > implements MultiMap<
 	}
 
 	public MultiMap< K, V > freeze() {
-		updatePhoenixMultiMap( accessPhoenixMultiMap().freezeByMutation() );
+		updatePhoenixMultiMap( accessPhoenixMultiMap().freezeByPhoenixing() );
 		return this;
 	}
 

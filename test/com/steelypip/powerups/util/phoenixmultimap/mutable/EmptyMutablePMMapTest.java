@@ -1,4 +1,4 @@
-package com.steelypip.powerups.util.phoenixmultimap.frozen;
+package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
 import static org.junit.Assert.*;
 
@@ -113,7 +113,7 @@ public class EmptyMutablePMMapTest {
 
 	@Test
 	public void testFreezeByMutation() {
-		PhoenixMultiMap< String, String > x = this.pmmap.freezeByMutation();
+		PhoenixMultiMap< String, String > x = this.pmmap.freezeByPhoenixing();
 		assertEquals( x, this.pmmap );
 		try {
 			x.clearAllEntries();

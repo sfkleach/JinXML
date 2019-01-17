@@ -70,7 +70,7 @@ public class EmptyFrozenPMMapTest {
 
 	@Test
 	public void testFreezeByMutation() {
-		PhoenixMultiMap< String, String > x = this.pmmap.freezeByMutation();
+		PhoenixMultiMap< String, String > x = this.pmmap.freezeByPhoenixing();
 		assertSame( x, this.pmmap );
 	}
 
