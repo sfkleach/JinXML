@@ -8,15 +8,15 @@ import java.util.Map;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.TreeMapSingleValuePhoenixMultiMap;
 
-public abstract class AbsSingleValueMutablePMMap< Key, Value > extends TreeMapSingleValuePhoenixMultiMap< Key, Value > implements PhoenixMultiMap< Key, Value > {
+public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingleValuePhoenixMultiMap< Key, Value > implements PhoenixMultiMap< Key, Value > {
 
 	private static final long serialVersionUID = 1L;
 	
-	public AbsSingleValueMutablePMMap() {
+	public AbsPlainMapMutablePMMap() {
 		super();
 	}
 
-	public AbsSingleValueMutablePMMap( Map< ? extends Key, ? extends Value > m ) {
+	public AbsPlainMapMutablePMMap( Map< ? extends Key, ? extends Value > m ) {
 		super( m );
 	}
 

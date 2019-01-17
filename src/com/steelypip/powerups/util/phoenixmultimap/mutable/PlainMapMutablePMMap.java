@@ -4,28 +4,25 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
-import com.steelypip.powerups.util.phoenixmultimap.frozen.SingleValueFrozenPMMap;
+import com.steelypip.powerups.util.phoenixmultimap.frozen.PlainMapFrozenPMMap;
 
-public class SingleValueMutablePMMap< Key, Value > extends AbsSingleValueMutablePMMap< Key, Value > {
+public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap< Key, Value > {
 	
 	private static final long serialVersionUID = -2697005333497258559L;
 	
-	public SingleValueMutablePMMap() {
+	public PlainMapMutablePMMap() {
 		super();
 	}
 
-
-	public SingleValueMutablePMMap( Map< ? extends Key, ? extends Value > m ) {
+	public PlainMapMutablePMMap( Map< ? extends Key, ? extends Value > m ) {
 		super( m );
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public PhoenixMultiMap< Key, Value > clearAllEntries() {
 		return (EmptyMutablePMMap< Key, Value >)EmptyMutablePMMap.INSTANCE;
 	}
-
 
 	@Override
 	public PhoenixMultiMap< Key, Value > add( Key key, Value value ) {
@@ -94,12 +91,9 @@ public class SingleValueMutablePMMap< Key, Value > extends AbsSingleValueMutable
 		}
 	}
 
-
 	@Override
-	public PhoenixMultiMap< Key, Value > freezeByMutation() {
-		return new SingleValueFrozenPMMap< Key, Value >( this );
-	}
-	
-	
+	public PhoenixMultiMap< Key, Value > freezeByPhoenixing() {
+		return new PlainMapFrozenPMMap< Key, Value >( this );
+	}	
 
 }

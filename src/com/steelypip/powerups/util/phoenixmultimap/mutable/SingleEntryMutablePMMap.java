@@ -40,7 +40,7 @@ public class SingleEntryMutablePMMap< K, V > extends AbsSingleEntryMutablePMMap<
 		if ( _key == null ? this.key == null : _key.equals(  this.key ) ) {
 			return new SharedKeyMutablePMMap< K, V >( key ).add( this.value ).add(  _value );
 		} else {
-			return new SingleValueMutablePMMap< K, V >().add( this.key, this.value ).add( _key, _value );
+			return new PlainMapMutablePMMap< K, V >().add( this.key, this.value ).add( _key, _value );
 		}
 	}
 
@@ -86,7 +86,7 @@ public class SingleEntryMutablePMMap< K, V > extends AbsSingleEntryMutablePMMap<
 			this.value = _value;
 			return this;
 		} else {
-			return new SingleValueMutablePMMap<  K, V  >().setSingletonValue( _key, _value ).setSingletonValue( this.key, this.value );
+			return new PlainMapMutablePMMap<  K, V  >().setSingletonValue( _key, _value ).setSingletonValue( this.key, this.value );
 		}
 	}
 
@@ -103,7 +103,7 @@ public class SingleEntryMutablePMMap< K, V > extends AbsSingleEntryMutablePMMap<
 
 
 	@Override
-	public PhoenixMultiMap< K, V > freezeByMutation() {
+	public PhoenixMultiMap< K, V > freezeByPhoenixing() {
 		return new SingleEntryFrozenPMMap< K, V >( this );
 	}
 	
