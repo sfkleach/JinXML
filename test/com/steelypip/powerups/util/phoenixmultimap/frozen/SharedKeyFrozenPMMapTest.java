@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.SharedKeyMutablePMMap;
-import com.steelypip.powerups.util.phoenixmultimap.mutable.SingleEntryMutablePMMap;
 
 public class SharedKeyFrozenPMMapTest {
 	
@@ -20,24 +19,27 @@ public class SharedKeyFrozenPMMapTest {
 	
 	@Before
 	public void setUp() {
-		this.pmmap = new SharedKeyMutablePMMap< String, String >( "key0" );
+		List< String> values = new ArrayList< String >();
+		values.add( "value0" );
+		values.add( "value1" );
+		this.pmmap = new SharedKeyFrozenPMMap< String, String >( "key0", values );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testClearAllEntries() {
 		assertFalse( this.pmmap.isEmpty() );
 		this.pmmap1 = this.pmmap.clearAllEntries();
 		assertTrue( this.pmmap1.isEmpty() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAdd() {
 		this.pmmap1 = this.pmmap.add( "foo", "bar" );
 		assertEquals( 2, this.pmmap1.sizeEntries() );
 		assertTrue( this.pmmap1.hasEntry( "foo", 0, "bar" ) );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAddAll() {
 		List< String > x = new ArrayList< String >();
 		x.add( "bar" );
@@ -46,14 +48,14 @@ public class SharedKeyFrozenPMMapTest {
 		assertTrue( this.pmmap1.hasEntry( "foo", "bar" ) );
 	}
 	
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAddAllPMMAP_AddEmpty() {
 		this.pmmap1 = this.pmmap.addAll( PhoenixMultiMap.newEmptyPhoenixMultiMap() );
 		assertFalse( this.pmmap1.isEmpty() );
 		assertEquals( 1, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAddAllPMMAP_AddOne() {
 		PhoenixMultiMap< String, String > m = PhoenixMultiMap.newEmptyPhoenixMultiMap();
 		m = m.add( "left", "right" );
@@ -62,31 +64,31 @@ public class SharedKeyFrozenPMMapTest {
 		assertEquals( 2, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testRemoveEntry() {
 		this.pmmap1 = this.pmmap.removeEntry( "key0", "value0" );
 		assertTrue( this.pmmap1.isEmpty() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testRemoveEntryAt() {
 		this.pmmap1 = this.pmmap.removeEntryAt( "alpha", 0 );
 		assertEquals( 1, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testRemoveEntries_Match() {
 		this.pmmap1 = this.pmmap.removeEntries( "key0" );
 		assertTrue( this.pmmap1.isEmpty() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testRemoveEntries_NoMatch() {
 		this.pmmap1 = this.pmmap.removeEntries( "foo" );
 		assertEquals( 1, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testSetValues() {
 		//	Arrange
 		List< String > x = new ArrayList< String >();
@@ -100,7 +102,7 @@ public class SharedKeyFrozenPMMapTest {
 		assertTrue( this.pmmap1.hasEntry(  "foo", "gort" ) );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testSetSingletonValue_NewEntry() {
 		this.pmmap1 = this.pmmap.setSingletonValue( "foo", "value" );
 		assertEquals( 2, this.pmmap1.sizeEntries() );
@@ -108,25 +110,25 @@ public class SharedKeyFrozenPMMapTest {
 		assertTrue( this.pmmap1.hasEntry(  "foo", "value" ) );
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test( expected=UnsupportedOperationException.class )
 	public void testUpdateValue() {
 		this.pmmap1 = this.pmmap.updateValue( "foo", 0, "value" );
 		assertEquals( 1, this.pmmap1.sizeEntries() );
 		assertTrue( this.pmmap1.hasEntry( "foo", 0, "value" ) );		
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test( expected=UnsupportedOperationException.class )
 	public void testUpdateValueBadIndex() {
 		this.pmmap1 = this.pmmap.updateValue( "foo", 1, "value" );	
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test( expected=UnsupportedOperationException.class )
 	public void testUpdateValueBadKey() {
 		this.pmmap1 = this.pmmap.updateValue( "bar", 1, "value" );	
 	}
 
 	@Test
-	public void testFreezeByMutation() {
+	public void testFreezeByPhoenixing() {
 		PhoenixMultiMap< String, String > x = this.pmmap.freezeByPhoenixing();
 		assertEquals( x, this.pmmap );
 		try {
@@ -160,7 +162,7 @@ public class SharedKeyFrozenPMMapTest {
 	public void testEntriesToList() {
 		List< Map.Entry<  String, String > > list = this.pmmap.entriesToList();
 		assertFalse( list.isEmpty() );
-		assertEquals( 1, list.size() );
+		assertEquals( 2, list.size() );
 		assertEquals( "key0", list.get(0).getKey() );
 	}
 
@@ -191,26 +193,22 @@ public class SharedKeyFrozenPMMapTest {
 
 	@Test
 	public void testSizeEntries() {
-		assertEquals( 1, this.pmmap.sizeEntries() );
+		assertEquals( 2, this.pmmap.sizeEntries() );
 	}
 
 	@Test
 	public void testSizeEntriesWithKey() {
 		assertEquals( 0, this.pmmap.sizeEntriesWithKey( "foo" ) );
-		this.pmmap1 = this.pmmap.add( "sharedkey", "99" );
-		assertEquals( 1, this.pmmap1.sizeEntriesWithKey( "sharedkey" ) );
 	}
 
 	@Test
 	public void testSizeKeys() {
 		assertEquals( 1, this.pmmap.sizeKeys() );
-		this.pmmap1 = this.pmmap.add( "key1", "99" );
-		assertEquals( 2, this.pmmap1.sizeKeys() );
 	}
 
 	@Test
 	public void testValuesList() {
-		assertEquals( 1, this.pmmap.valuesList().size() );
+		assertEquals( 2, this.pmmap.valuesList().size() );
 	}
 
 	@Test

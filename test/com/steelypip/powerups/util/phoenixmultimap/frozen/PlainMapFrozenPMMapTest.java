@@ -128,7 +128,7 @@ public class PlainMapFrozenPMMapTest {
 	}
 
 	@Test
-	public void testFreezeByMutation() {
+	public void testFreezeByPhoenixing() {
 		PhoenixMultiMap< String, String > x = this.pmmap.freezeByPhoenixing();
 		assertEquals( x, this.pmmap );
 		try {

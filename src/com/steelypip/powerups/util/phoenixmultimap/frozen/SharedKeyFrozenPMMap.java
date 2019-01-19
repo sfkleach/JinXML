@@ -1,5 +1,7 @@
 package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map.Entry;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -7,11 +9,11 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsSharedKeyMutablePM
 
 public class SharedKeyFrozenPMMap< Key, Value > extends AbsSharedKeyMutablePMMap< Key, Value > {
 	
-	public SharedKeyFrozenPMMap( Key key ) {
+	public SharedKeyFrozenPMMap( Key key, Collection< ? extends Value > values ) {
 		super();
 		this.shared_key = key;
+		this.values_list = new ArrayList< Value >( values );
 	}
-	
 
 	@Override
 	public PhoenixMultiMap< Key, Value > clearAllEntries() {
