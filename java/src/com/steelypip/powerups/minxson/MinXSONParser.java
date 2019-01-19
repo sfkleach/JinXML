@@ -54,6 +54,7 @@ public class MinXSONParser extends LevelTracker implements Iterable< MinXML > {
 	private final TreeMap< String, String > extra_attributes = new TreeMap< String, String >();
 	private boolean EMBEDDED_EXTENSION = false;
 	private boolean TYPE_PREFIX_EXTENSION = false;
+	@SuppressWarnings("unused")
 	private boolean TUPLE_EXTENSION = false;
 	
 	/**

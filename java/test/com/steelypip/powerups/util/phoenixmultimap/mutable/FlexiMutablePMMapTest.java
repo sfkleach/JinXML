@@ -134,7 +134,7 @@ public class FlexiMutablePMMapTest {
 		try {
 			x.clearAllEntries();
 			fail();
-		} catch ( UnsupportedOperationException _ ) {
+		} catch ( UnsupportedOperationException _ex ) {
 		}
 	}
 

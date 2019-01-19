@@ -19,7 +19,6 @@ public class PlainMapFrozenPMMap< Key, Value > extends AbsPlainMapMutablePMMap< 
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public PhoenixMultiMap< Key, Value > clearAllEntries() {
 		throw new UnsupportedOperationException();

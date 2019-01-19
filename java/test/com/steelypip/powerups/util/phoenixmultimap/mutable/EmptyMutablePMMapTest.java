@@ -118,7 +118,7 @@ public class EmptyMutablePMMapTest {
 		try {
 			x.clearAllEntries();
 			fail();
-		} catch ( UnsupportedOperationException _ ) {
+		} catch ( UnsupportedOperationException _ex ) {
 		}
 	}
 

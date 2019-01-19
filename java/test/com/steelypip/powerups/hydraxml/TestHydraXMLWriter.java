@@ -59,6 +59,7 @@ public class TestHydraXMLWriter {
 	
 	@Test( expected=Exception.class )
 	public void badMultiValuedAttribute() {
+		@SuppressWarnings("unused")
 		HydraXML alpha = parse( "<alpha left='right1' left='right2'/>" );
 //		assertEquals( "<alpha left=\"right1\" left+=\"right2\"/>", render( alpha ) );
 	}

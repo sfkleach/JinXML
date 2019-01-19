@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import com.steelypip.powerups.common.StdPair;
-import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.TreeMapPhoenixMultiMap;
 
 public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixMultiMap< Key, Value > {

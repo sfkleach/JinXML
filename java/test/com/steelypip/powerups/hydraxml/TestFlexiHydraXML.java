@@ -1,8 +1,8 @@
 package com.steelypip.powerups.hydraxml;
 
-import static org.junit.Assert.*;
-
-import java.io.PrintWriter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;

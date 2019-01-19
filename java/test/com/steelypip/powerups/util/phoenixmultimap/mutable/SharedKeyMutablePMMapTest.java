@@ -120,7 +120,7 @@ public class SharedKeyMutablePMMapTest {
 		try {
 			x.clearAllEntries();
 			fail();
-		} catch ( UnsupportedOperationException _ ) {
+		} catch ( UnsupportedOperationException _ex ) {
 		}
 	}
 
