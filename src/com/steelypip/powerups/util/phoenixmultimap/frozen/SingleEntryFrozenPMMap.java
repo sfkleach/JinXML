@@ -46,6 +46,11 @@ public class SingleEntryFrozenPMMap< K, V > extends AbsSingleEntryMutablePMMap< 
 	}
 
 	@Override
+	public PhoenixMultiMap< K, V > addAll( PhoenixMultiMap< ? extends K, ? extends V > multimap ) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public PhoenixMultiMap< K, V > removeEntry( K _key, V _value ) {
 		throw new UnsupportedOperationException();
 	}
@@ -75,13 +80,9 @@ public class SingleEntryFrozenPMMap< K, V > extends AbsSingleEntryMutablePMMap< 
 		throw new UnsupportedOperationException();
 	}
 
-
-
 	@Override
 	public PhoenixMultiMap< K, V > freezeByPhoenixing() {
 		return this;
 	}
-	
-	
 	
 }

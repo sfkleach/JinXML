@@ -82,13 +82,9 @@ public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap<
 
 	@Override
 	public PhoenixMultiMap< Key, Value > updateValue( Key key, int n, Value value ) throws IllegalArgumentException {
-		if ( n != 0 ) throw new IllegalArgumentException();
-		if ( this.hasKey( key ) ) {
-			this.put( key, value );
-			return this;
-		} else {
-			throw new IllegalArgumentException();
-		}
+		if ( n != 0 || ! this.hasKey( key ) ) throw new IllegalArgumentException();
+		this.put( key, value );
+		return this;
 	}
 
 	@Override

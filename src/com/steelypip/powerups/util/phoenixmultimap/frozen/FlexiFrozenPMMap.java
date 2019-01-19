@@ -1,5 +1,7 @@
 package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -10,10 +12,20 @@ public class FlexiFrozenPMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, V
 	private static final long serialVersionUID = 7434046523595764233L;
 
 	public FlexiFrozenPMMap( PhoenixMultiMap< Key, Value > mmm ) {
-		mmm.entriesToList().forEach( ( Map.Entry< Key, Value > p ) -> add( p ) );
+		mmm.entriesToList().forEach( ( Map.Entry< Key, Value > p ) -> secretAdd( p.getKey(), p.getValue() ) );
 	}
 
 	public FlexiFrozenPMMap() {
+	}
+	
+	private PhoenixMultiMap< Key, Value > secretAdd( Key key, Value value ) {
+		List< Value > list = this.get( key );
+		if ( list == null ) {
+			list = new ArrayList<>( 1 );
+			this.put( key, list );
+		}
+		list.add( value );
+		return this;
 	}
 
 	@Override

@@ -263,6 +263,13 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 */
 	PhoenixMultiMap< K, V > setSingletonValue( K key, V value );
 	
+	/**
+	 * updateValue requires that there is already an n-th entry with the specified key. 
+	 * @param key the target to assign to
+	 * @param n the position of the value to replace
+	 * @param value the replacement value
+	 * @return the assigned value (the subject is now defunct)
+	 */
 	PhoenixMultiMap< K, V > updateValue( K key, int n, V value );
 
 

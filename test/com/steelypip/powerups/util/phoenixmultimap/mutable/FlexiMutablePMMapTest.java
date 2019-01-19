@@ -10,19 +10,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
-import com.steelypip.powerups.util.phoenixmultimap.mutable.PlainMapMutablePMMap;
+import com.steelypip.powerups.util.phoenixmultimap.mutable.FlexiMutablePMMap;
 
-public class PlainMapMutablePMMapTest {
+public class FlexiMutablePMMapTest {
 	
 	PhoenixMultiMap< String, String > pmmap;
 	PhoenixMultiMap< String, String > pmmap1;
 	
 	@Before
 	public void setUp() {
-		PlainMapMutablePMMap< String, String > m = new PlainMapMutablePMMap<>();
-		m = (PlainMapMutablePMMap< String, String >) m.add( "key0", "value0" );
-		m = (PlainMapMutablePMMap< String, String >) m.add( "key1", "value0" );
-		this.pmmap = new PlainMapMutablePMMap<>( m );
+		PhoenixMultiMap< String, String > m = new FlexiMutablePMMap<>();
+		m = m.add( "key0", "value0" );
+		m = m.add( "key1", "value0" );
+		this.pmmap = m;
 	}
 
 	@Test
@@ -98,8 +98,8 @@ public class PlainMapMutablePMMapTest {
 		this.pmmap1 = this.pmmap.setValues( "foo", x );
 		//	Assert
 		assertEquals( 4, this.pmmap1.sizeEntries() );
-		assertTrue( this.pmmap1.hasEntry(  "foo", "bar" ) );
-		assertTrue( this.pmmap1.hasEntry(  "foo", "gort" ) );
+		assertTrue( this.pmmap1.hasEntry( "foo", "bar" ) );
+		assertTrue( this.pmmap1.hasEntry( "foo", "gort" ) );
 	}
 
 	@Test
@@ -110,11 +110,11 @@ public class PlainMapMutablePMMapTest {
 		assertTrue( this.pmmap1.hasEntry( "foo", "value" ) );
 	}
 
-	@Test( expected=IllegalArgumentException.class )
+	@Test
 	public void testUpdateValue() {
-		this.pmmap1 = this.pmmap.updateValue( "foo", 0, "value" );
-		assertEquals( 3, this.pmmap1.sizeEntries() );
-		assertTrue( this.pmmap1.hasEntry( "foo", 0, "value" ) );		
+		this.pmmap1 = this.pmmap.updateValue( "key0", 0, "value2" );
+		assertEquals( 2, this.pmmap1.sizeEntries() );
+		assertTrue( this.pmmap1.hasEntry( "key0", 0, "value2" ) );		
 	}
 
 	@Test( expected=IllegalArgumentException.class )

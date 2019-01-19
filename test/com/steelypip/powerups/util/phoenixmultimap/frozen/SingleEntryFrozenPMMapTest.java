@@ -1,4 +1,4 @@
-package com.steelypip.powerups.util.phoenixmultimap.mutable;
+package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
 import static org.junit.Assert.*;
 
@@ -10,85 +10,82 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
-import com.steelypip.powerups.util.phoenixmultimap.mutable.PlainMapMutablePMMap;
+import com.steelypip.powerups.util.phoenixmultimap.mutable.SingleEntryMutablePMMap;
 
-public class PlainMapMutablePMMapTest {
+public class SingleEntryFrozenPMMapTest {
 	
 	PhoenixMultiMap< String, String > pmmap;
 	PhoenixMultiMap< String, String > pmmap1;
 	
 	@Before
 	public void setUp() {
-		PlainMapMutablePMMap< String, String > m = new PlainMapMutablePMMap<>();
-		m = (PlainMapMutablePMMap< String, String >) m.add( "key0", "value0" );
-		m = (PlainMapMutablePMMap< String, String >) m.add( "key1", "value0" );
-		this.pmmap = new PlainMapMutablePMMap<>( m );
+		this.pmmap = new SingleEntryFrozenPMMap< String, String >( "key0", "value0" );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testClearAllEntries() {
 		assertFalse( this.pmmap.isEmpty() );
 		this.pmmap1 = this.pmmap.clearAllEntries();
 		assertTrue( this.pmmap1.isEmpty() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAdd() {
 		this.pmmap1 = this.pmmap.add( "foo", "bar" );
-		assertEquals( 3, this.pmmap1.sizeEntries() );
+		assertEquals( 2, this.pmmap1.sizeEntries() );
 		assertTrue( this.pmmap1.hasEntry( "foo", 0, "bar" ) );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAddAll() {
 		List< String > x = new ArrayList< String >();
 		x.add( "bar" );
 		this.pmmap1 = this.pmmap.addAll( "foo", x );
-		assertEquals( 3, this.pmmap1.sizeEntries() );
+		assertEquals( 2, this.pmmap1.sizeEntries() );
 		assertTrue( this.pmmap1.hasEntry( "foo", "bar" ) );
 	}
 	
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAddAllPMMAP_AddEmpty() {
 		this.pmmap1 = this.pmmap.addAll( PhoenixMultiMap.newEmptyPhoenixMultiMap() );
 		assertFalse( this.pmmap1.isEmpty() );
-		assertEquals( 2, this.pmmap1.sizeEntries() );
+		assertEquals( 1, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testAddAllPMMAP_AddOne() {
 		PhoenixMultiMap< String, String > m = PhoenixMultiMap.newEmptyPhoenixMultiMap();
 		m = m.add( "left", "right" );
 		assertEquals( 1, m.sizeEntries() );
 		this.pmmap1 = this.pmmap.addAll( m );
-		assertEquals( 3, this.pmmap1.sizeEntries() );
+		assertEquals( 2, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testRemoveEntry() {
 		this.pmmap1 = this.pmmap.removeEntry( "key0", "value0" );
-		assertEquals( 1, this.pmmap1.sizeEntries() );
+		assertTrue( this.pmmap1.isEmpty() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testRemoveEntryAt() {
 		this.pmmap1 = this.pmmap.removeEntryAt( "alpha", 0 );
-		assertEquals( 2, this.pmmap1.sizeEntries() );
-	}
-
-	@Test
-	public void testRemoveEntries_Match() {
-		this.pmmap1 = this.pmmap.removeEntries( "key0" );
 		assertEquals( 1, this.pmmap1.sizeEntries() );
 	}
 
-	@Test
-	public void testRemoveEntries_NoMatch() {
-		this.pmmap1 = this.pmmap.removeEntries( "foo" );
-		assertEquals( 2, this.pmmap1.sizeEntries() );
+	@Test( expected=UnsupportedOperationException.class )
+	public void testRemoveEntries_Match() {
+		this.pmmap1 = this.pmmap.removeEntries( "key0" );
+		assertTrue( this.pmmap1.isEmpty() );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
+	public void testRemoveEntries_NoMatch() {
+		this.pmmap1 = this.pmmap.removeEntries( "foo" );
+		assertEquals( 1, this.pmmap1.sizeEntries() );
+	}
+
+	@Test( expected=UnsupportedOperationException.class )
 	public void testSetValues() {
 		//	Arrange
 		List< String > x = new ArrayList< String >();
@@ -97,32 +94,32 @@ public class PlainMapMutablePMMapTest {
 		//	Act
 		this.pmmap1 = this.pmmap.setValues( "foo", x );
 		//	Assert
-		assertEquals( 4, this.pmmap1.sizeEntries() );
+		assertEquals( 3, this.pmmap1.sizeEntries() );
 		assertTrue( this.pmmap1.hasEntry(  "foo", "bar" ) );
 		assertTrue( this.pmmap1.hasEntry(  "foo", "gort" ) );
 	}
 
-	@Test
+	@Test( expected=UnsupportedOperationException.class )
 	public void testSetSingletonValue_NewEntry() {
 		this.pmmap1 = this.pmmap.setSingletonValue( "foo", "value" );
-		assertEquals( 3, this.pmmap1.sizeEntries() );
+		assertEquals( 2, this.pmmap1.sizeEntries() );
 		assertEquals( 1, this.pmmap1.sizeEntriesWithKey( "foo" ) );
-		assertTrue( this.pmmap1.hasEntry( "foo", "value" ) );
+		assertTrue( this.pmmap1.hasEntry(  "foo", "value" ) );
 	}
 
-	@Test( expected=IllegalArgumentException.class )
+	@Test( expected=UnsupportedOperationException.class )
 	public void testUpdateValue() {
 		this.pmmap1 = this.pmmap.updateValue( "foo", 0, "value" );
-		assertEquals( 3, this.pmmap1.sizeEntries() );
+		assertEquals( 1, this.pmmap1.sizeEntries() );
 		assertTrue( this.pmmap1.hasEntry( "foo", 0, "value" ) );		
 	}
 
-	@Test( expected=IllegalArgumentException.class )
+	@Test( expected=UnsupportedOperationException.class )
 	public void testUpdateValueBadIndex() {
 		this.pmmap1 = this.pmmap.updateValue( "foo", 1, "value" );	
 	}
 
-	@Test( expected=IllegalArgumentException.class )
+	@Test( expected=UnsupportedOperationException.class )
 	public void testUpdateValueBadKey() {
 		this.pmmap1 = this.pmmap.updateValue( "bar", 1, "value" );	
 	}
@@ -162,7 +159,8 @@ public class PlainMapMutablePMMapTest {
 	public void testEntriesToList() {
 		List< Map.Entry<  String, String > > list = this.pmmap.entriesToList();
 		assertFalse( list.isEmpty() );
-		assertEquals( 2, list.size() );
+		assertEquals( 1, list.size() );
+		assertEquals( "key0", list.get(0).getKey() );
 	}
 
 	@Test
@@ -187,28 +185,27 @@ public class PlainMapMutablePMMapTest {
 
 	@Test
 	public void testKeySet() {
-		assertEquals( 2, this.pmmap.keySet().size() );
+		assertEquals( 1, this.pmmap.keySet().size() );
 	}
 
 	@Test
 	public void testSizeEntries() {
-		assertEquals( 2, this.pmmap.sizeEntries() );
+		assertEquals( 1, this.pmmap.sizeEntries() );
 	}
 
 	@Test
 	public void testSizeEntriesWithKey() {
 		assertEquals( 0, this.pmmap.sizeEntriesWithKey( "foo" ) );
-		assertEquals( 1, this.pmmap.sizeEntriesWithKey( "key0" ) );
 	}
 
 	@Test
 	public void testSizeKeys() {
-		assertEquals( 2, this.pmmap.sizeKeys() );
+		assertEquals( 1, this.pmmap.sizeKeys() );
 	}
 
 	@Test
 	public void testValuesList() {
-		assertEquals( 2, this.pmmap.valuesList().size() );
+		assertEquals( 1, this.pmmap.valuesList().size() );
 	}
 
 	@Test

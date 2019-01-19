@@ -92,13 +92,9 @@ public class SingleEntryMutablePMMap< K, V > extends AbsSingleEntryMutablePMMap<
 
 	@Override
 	public PhoenixMultiMap< K, V > updateValue( K _key, int n, V _value ) throws IllegalArgumentException {
-		if ( n != 0 ) throw new IllegalArgumentException();
-		if ( this.hasKey( _key ) ) {
-			this.value = _value;
-			return this;
-		} else {
-			throw new IllegalArgumentException();
-		}
+		if ( n != 0 || ! this.hasKey( _key ) ) throw new IllegalArgumentException();
+		this.value = _value;
+		return this;
 	}
 
 
