@@ -24,19 +24,22 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
  */
 public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 		
-	default PhoenixMultiMap< K, V > copyIfMutable() {
-		if ( this instanceof MutableMarkerInterface ) {
-			PhoenixMultiMap< K, V > sofar = new EmptyMutablePMMap< K, V >();
-			for ( Map.Entry< ? extends K, ? extends V > e : this ) {
-				sofar.add(  e.getKey(), e.getValue() );
-			}
-			return sofar;
-		} else if ( this instanceof FrozenMarkerInterface ) {
-			return this;
+	default PhoenixMultiMap< K, V > mutableCopy() {
+		PhoenixMultiMap< K, V > sofar = new EmptyMutablePMMap< K, V >();
+		for ( Map.Entry< ? extends K, ? extends V > e : this ) {
+			sofar.add(  e.getKey(), e.getValue() );
+		}
+		return sofar;
+	}
+	
+	default PhoenixMultiMap< K, V > frozenCopyUnlessFrozen() {
+		if ( this.isMutable() ) {
+			return this.mutableCopy().freezeByPhoenixing();
 		} else {
-			throw new RuntimeException( "Internal error: a concrete instance of PhoenixMultiMap is neither tagged as Mutable nor Frozen" );
+			return this;
 		}
 	}
+
 	
 	default boolean isMutable() {
 		return this instanceof MutableMarkerInterface;

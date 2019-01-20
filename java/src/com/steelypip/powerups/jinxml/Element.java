@@ -1,5 +1,8 @@
 package com.steelypip.powerups.jinxml;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
@@ -11,10 +14,40 @@ public interface Element {
 	String getName();
 	
 	/**
-	 * returns the total number of key-value attributes, including duplicates
+	 * returns the total number of key-value attributes, including duplicates.
 	 * @return number of key-value attributes
 	 */
 	int countAttributes();
+
+	/**
+	 * returns an iterator over the attribute entries of an element
+	 * @return the iterator
+	 */
+	Iterator< Entry< String, String > > getAttributesIterator();
+
+	
+	/**
+	 * Sets the attributes of an element sequentially to the entries of a multi-map
+	 * preserving the order.
+	 * @param attributes the multi-map containing the entries to add
+	 */
+	void setAttributes( MultiMap< String, String > attributes );
+	
+	/**
+	 * Sets the attributes of an element to the values supplied  - all sharing
+	 * the same key. Any previous attributes are removed.
+	 * @param key the shared key
+	 * @param values a set of values provided as an iterable
+	 */
+	void setValues( String key, Iterable< String > values );
+	
+	/**
+	 * Adds an entry to the attributes of an element.
+	 * @param key key of the entry being added
+	 * @param value value of the entry being added
+	 */
+	void addLastValue( String key, String value );
+
 	
 	/**
 	 * Same as getAttributesAsMultiMap( false, false )
@@ -38,6 +71,7 @@ public interface Element {
 	 * @return a multi-map based on the attributes of the element
 	 */
 	MultiMap< String, String > getAttributesAsMultiMap( boolean view, boolean mutable );
+
 	
 /**class Element
 Quick Note on Terminology

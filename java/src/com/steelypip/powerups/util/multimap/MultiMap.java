@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 
@@ -12,7 +13,7 @@ import java.util.Iterator;
 
 public interface MultiMap< K, V > {
 	
-	public default MultiMap< K, V > newMultiMap() {
+	public static < K, V > MultiMap< K, V > newMultiMap() {
 		return (
 			new ViewPhoenixMultiMapAsMultiMap< K, V >() {
 				
@@ -85,8 +86,13 @@ public interface MultiMap< K, V > {
 	 */
 	List< Map.Entry< K, V > > entriesToList();
 	
-	default Iterator< Map.Entry< K, V > > iterator() {
-		return this.entriesToList().iterator();
+	/**
+	 * Returns a stream of all key-value pairs contained in this multi-map
+	 * @return
+	 */
+	
+	default Stream< Map.Entry< K, V > > entriesToStream() {
+		return this.entriesToList().stream();
 	}
 	
 	/**
