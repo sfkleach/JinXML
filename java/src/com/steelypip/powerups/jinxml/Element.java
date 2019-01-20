@@ -1,10 +1,43 @@
-package com.steelypip.powerups.jimxml;
+package com.steelypip.powerups.jinxml;
+
+import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
 
+	/**
+	 * returns the name of the object, which is typically intended to be a type-name.
+	 * @return the name of the object
+	 */
 	String getName();
 	
+	/**
+	 * returns the total number of key-value attributes, including duplicates
+	 * @return number of key-value attributes
+	 */
 	int countAttributes();
+	
+	/**
+	 * Same as getAttributesAsMultiMap( false, false )
+	 * @return 
+	 */
+	MultiMap< String, String > getAttributesAsMultiMap();
+	/**
+	 * Same as getAttributesAsMultiMap( false, mutable )
+	 * @param mutable a flag indicating if the result is mutable or not
+	 * @return a multi-map based on the attributes of the element 
+	 */
+	MultiMap< String, String > getAttributesAsMultiMap( boolean mutable );
+	/**
+	 * returns a multi-map representing the attributes of the object. 
+	 * If view is true then the multi-map is a mutable view onto the attributes 
+	 * and changes to the multi-map immediately affect the attributes. If view 
+	 * is false then the list is a copy. The result is mutable or immutable 
+	 * depending on the value of mutable
+	 * @param view a flag indicating if the result is a view on the Element or a clan copy
+	 * @param mutable a flag indicating if the result is mutable or not
+	 * @return a multi-map based on the attributes of the element
+	 */
+	MultiMap< String, String > getAttributesAsMultiMap( boolean view, boolean mutable );
 	
 /**class Element
 Quick Note on Terminology
