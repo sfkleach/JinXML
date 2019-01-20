@@ -23,6 +23,17 @@ public class SingleEntryFrozenPMMapTest {
 	public void setUp() {
 		this.pmmap = new SingleEntryFrozenPMMap< String, String >( "key0", "value0" );
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertFalse( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertTrue( this.pmmap.isFrozen() );
+	}
+
 
 	@Test( expected=UnsupportedOperationException.class )
 	public void testClearAllEntries() {

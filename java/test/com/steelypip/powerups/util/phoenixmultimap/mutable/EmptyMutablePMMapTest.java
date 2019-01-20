@@ -20,6 +20,16 @@ public class EmptyMutablePMMapTest {
 	public void setUp() {
 		this.pmmap = new EmptyMutablePMMap< String, String >();
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertTrue( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertFalse( this.pmmap.isFrozen() );
+	}
 
 	@Test
 	public void testClearAllEntries() {

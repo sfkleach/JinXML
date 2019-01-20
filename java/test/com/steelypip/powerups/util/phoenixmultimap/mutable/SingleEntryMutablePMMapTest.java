@@ -21,6 +21,18 @@ public class SingleEntryMutablePMMapTest {
 	public void setUp() {
 		this.pmmap = new SingleEntryMutablePMMap< String, String >( "key0", "value0" );
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertTrue( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertFalse( this.pmmap.isFrozen() );
+	}
+
+
 
 	@Test
 	public void testClearAllEntries() {

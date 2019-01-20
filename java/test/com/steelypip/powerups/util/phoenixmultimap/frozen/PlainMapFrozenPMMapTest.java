@@ -25,6 +25,17 @@ public class PlainMapFrozenPMMapTest {
 		this.pmmap = new PlainMapFrozenPMMap<>( m );
 	}
 
+	@Test
+	public void testIsMutable() {
+		assertFalse( this.pmmap.isMutable() );
+	}
+	
+	@Test
+	public void testIsFrozen() {
+		assertTrue( this.pmmap.isFrozen() );
+	}
+
+	
 	@Test( expected=UnsupportedOperationException.class )
 	public void testClearAllEntries() {
 		assertFalse( this.pmmap.isEmpty() );

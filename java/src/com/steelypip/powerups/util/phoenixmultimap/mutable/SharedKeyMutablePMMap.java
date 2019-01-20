@@ -2,10 +2,11 @@ package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
 import java.util.Map.Entry;
 
+import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.SharedKeyFrozenPMMap;
 
-public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMap< Key, Value > {
+public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMap< Key, Value > implements MutableMarkerInterface {
 	
 	public SharedKeyMutablePMMap( Key key ) {
 		super();

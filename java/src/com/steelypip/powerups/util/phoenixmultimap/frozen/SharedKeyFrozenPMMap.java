@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsSharedKeyMutablePMMap;
 
-public class SharedKeyFrozenPMMap< Key, Value > extends AbsSharedKeyMutablePMMap< Key, Value > {
+public class SharedKeyFrozenPMMap< Key, Value > extends AbsSharedKeyMutablePMMap< Key, Value > implements FrozenMarkerInterface {
 	
 	public SharedKeyFrozenPMMap( Key key, Collection< ? extends Value > values ) {
 		super();

@@ -26,6 +26,17 @@ public class SharedKeyFrozenPMMapTest {
 		values.add( "value1" );
 		this.pmmap = new SharedKeyFrozenPMMap< String, String >( "key0", values );
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertFalse( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertTrue( this.pmmap.isFrozen() );
+	}
+
 
 	@Test( expected=UnsupportedOperationException.class )
 	public void testClearAllEntries() {

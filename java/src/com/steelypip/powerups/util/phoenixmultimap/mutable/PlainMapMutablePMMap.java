@@ -3,10 +3,11 @@ package com.steelypip.powerups.util.phoenixmultimap.mutable;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.PlainMapFrozenPMMap;
 
-public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap< Key, Value > {
+public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap< Key, Value > implements MutableMarkerInterface {
 	
 	private static final long serialVersionUID = -2697005333497258559L;
 	

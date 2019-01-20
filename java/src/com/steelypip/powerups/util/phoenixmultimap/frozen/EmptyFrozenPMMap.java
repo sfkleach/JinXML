@@ -1,10 +1,11 @@
 package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
+import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsEmptyMutablePMMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.SingleEntryMutablePMMap;
 
-public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > {
+public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > implements FrozenMarkerInterface {
 	
 	@SuppressWarnings("rawtypes")
 	public static EmptyFrozenPMMap INSTANCE = new EmptyFrozenPMMap< Object, Object >();

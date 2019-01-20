@@ -23,6 +23,28 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
  * @param <V>
  */
 public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
+		
+	default PhoenixMultiMap< K, V > copyIfMutable() {
+		if ( this instanceof MutableMarkerInterface ) {
+			PhoenixMultiMap< K, V > sofar = new EmptyMutablePMMap< K, V >();
+			for ( Map.Entry< ? extends K, ? extends V > e : this ) {
+				sofar.add(  e.getKey(), e.getValue() );
+			}
+			return sofar;
+		} else if ( this instanceof FrozenMarkerInterface ) {
+			return this;
+		} else {
+			throw new RuntimeException( "Internal error: a concrete instance of PhoenixMultiMap is neither tagged as Mutable nor Frozen" );
+		}
+	}
+	
+	default boolean isMutable() {
+		return this instanceof MutableMarkerInterface;
+	}
+	
+	default boolean isFrozen() {
+		return this instanceof FrozenMarkerInterface;
+	}
 	
 	static < K, V > PhoenixMultiMap< K, V > newEmptyPhoenixMultiMap() {
 		return new EmptyMutablePMMap< K, V >();
@@ -99,7 +121,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 
 	/* Returns true if this multimap contains at least one key-value pair with the value value.*/
 	default boolean	hasValue( V value ) {
-		for ( Map.Entry< K, V > p : this.entriesToList() ) {
+		for ( Map.Entry< ? extends K, ? extends V > p : this.entriesToList() ) {
 			V v = p.getValue();
 			if ( v == null ? value == null : v.equals( value ) ) return true;
 		}
@@ -171,7 +193,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * Returns the set of all distinct keys contained in this multimap.
 	 */
 	default Set< K > keySet() {
-		return this.entriesToList().stream().map( ( Map.Entry< K, V > p ) -> p.getKey() ).collect( Collectors.toSet() );
+		return this.entriesToList().stream().map( ( Map.Entry< ? extends K, ? extends V > p ) -> p.getKey() ).collect( Collectors.toSet() );
 	}
 		
 	/**
@@ -293,7 +315,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * contained in this multimap, without collapsing duplicates (so values().size() == size()). 
 	 */
 	default List< V > valuesList() {
-		return this.entriesToList().stream().map( ( Map.Entry< K, V > p ) -> p.getValue() ).collect( Collectors.toList() );
+		return this.entriesToList().stream().map( ( Map.Entry< ? extends K, ? extends V > p ) -> p.getValue() ).collect( Collectors.toList() );
 	}
 	
 	PhoenixMultiMap< K, V > freezeByPhoenixing();

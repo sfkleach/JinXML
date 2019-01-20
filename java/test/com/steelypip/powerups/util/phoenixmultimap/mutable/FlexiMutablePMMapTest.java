@@ -24,6 +24,18 @@ public class FlexiMutablePMMapTest {
 		m = m.add( "key1", "value0" );
 		this.pmmap = m;
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertTrue( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertFalse( this.pmmap.isFrozen() );
+	}
+
+
 
 	@Test
 	public void testClearAllEntries() {

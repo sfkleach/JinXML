@@ -24,6 +24,18 @@ public class PlainMapMutablePMMapTest {
 		m = (PlainMapMutablePMMap< String, String >) m.add( "key1", "value0" );
 		this.pmmap = new PlainMapMutablePMMap<>( m );
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertTrue( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertFalse( this.pmmap.isFrozen() );
+	}
+
+
 
 	@Test
 	public void testClearAllEntries() {

@@ -20,6 +20,18 @@ public class SharedKeyMutablePMMapTest {
 	public void setUp() {
 		this.pmmap = new SharedKeyMutablePMMap< String, String >( "sharedkey" );
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertTrue( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertFalse( this.pmmap.isFrozen() );
+	}
+
+
 
 	@Test
 	public void testClearAllEntries() {

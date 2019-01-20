@@ -17,6 +17,18 @@ public class EmptyFrozenPMMapTest {
 	public void setUp() {
 		this.pmmap = new EmptyFrozenPMMap< String, String >();
 	}
+	
+	@Test
+	public void testIsMutable() {
+		assertFalse( this.pmmap.isMutable() );
+	}
+
+	@Test
+	public void testIsFrozen() {
+		assertTrue( this.pmmap.isFrozen() );
+	}
+
+
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testClearAllEntries() {

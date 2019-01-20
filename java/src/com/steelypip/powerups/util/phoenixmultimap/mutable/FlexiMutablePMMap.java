@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.FlexiFrozenPMMap;
 
-public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, Value > {
+public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, Value > implements MutableMarkerInterface {
 
 	private static final long serialVersionUID = 7434046523595764233L;
 

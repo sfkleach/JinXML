@@ -2,10 +2,11 @@ package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
 import java.util.Iterator;
 
+import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.EmptyFrozenPMMap;
 
-public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > {
+public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > implements MutableMarkerInterface {
 	
 	public static EmptyMutablePMMap< Object, Object > INSTANCE = new EmptyMutablePMMap< Object, Object >();
 	

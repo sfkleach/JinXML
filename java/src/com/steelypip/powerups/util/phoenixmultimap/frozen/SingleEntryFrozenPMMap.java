@@ -1,9 +1,10 @@
 package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
+import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsSingleEntryMutablePMMap;
 
-public class SingleEntryFrozenPMMap< K, V > extends AbsSingleEntryMutablePMMap< K, V > {
+public class SingleEntryFrozenPMMap< K, V > extends AbsSingleEntryMutablePMMap< K, V > implements FrozenMarkerInterface {
 	
 	private K key;
 	private V value;
