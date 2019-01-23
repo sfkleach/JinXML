@@ -6,7 +6,7 @@ JinXML has a whitespace insensitive layout, which means that it is a good idea t
 ## Upper-Level Grammar in EBNF, corresponds to parse phase
 ```
 JinXML ::= Element | JSON
-Element ::= StartTag ( Entry* | JinXML* ) EndTag | FusedTag
+Element ::= StartTag ( ( Entry Terminator? )* | ( JinXML Terminator? )* ) EndTag | FusedTag
 StartTag ::= '<' ElementName Attribute* '>'
 EndTag ::= '</' ElementName Attribute* '>'
 FusedTag ::= '<' ElementName Attribute* '/>'
@@ -15,10 +15,11 @@ Attribute ::= FieldPrefix String
 NCName ::= [http://www.w3.org/TR/xml-names/#NT-NCName]
 JSON ::= Reserved | Number | String | Array | Object
 Reserved ::= 'null' | 'true' | 'false'
-Array ::= '[' JinXML*  ']'
-Object ::= '{' Entry* '}'
+Array ::= '[' ( JinXML Terminator? )*  ']'
+Object ::= '{' ( Entry Terminator? )* '}'
 Entry ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' ) JinXML 
 Entry ::= '&' ( ':' | '=' | '+:' | '+=' ) Element
+Terminator ::= ',' | ';'
 ```
 
 The following side-conditions apply:
@@ -80,6 +81,11 @@ __Entry__: Member of JSON-style object
 
 ![Image of Entry rule](grammar/images/Entry.png "Member of JSON-style object")
 
+__Terminator__: Optional comma or semi between members of arrays, objects or elements.
+
+![Image of Terminator rule](grammar/images/Terminator.png "Optional comma or semi between members of arrays, objects or elements")
+
+
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 Note that Shebang sequences may only occur at the start of a stream. 
@@ -94,7 +100,7 @@ StringQuotedString ::= "'" ([^&>"]|XEscape)* "'"
 XEscape ::= '&' (NamedCharacterReference|'#' [0-9]+|'#x' Hex+|'\' BEscape)';'
 NamedCharacterReference ::= [http://www.w3.org/TR/html5/syntax.html#named-character-references]
 Hex ::= [0-9a-fA-F]
-Discard ::= ( Whitespace | XComment | XOther | JComment | ',' )+
+Discard ::= ( Whitespace | XComment | XOther | JComment )+
 XComment ::= '<!--' ( [^-]* | '-'+ [^->] )* '-'* '-->' 
 XOther ::= '<' [?!] [^>]* '>' 
 JComment ::= LongComment | EoLComment

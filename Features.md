@@ -59,13 +59,24 @@ Example:
 > :notebook: Design note: this arises from the desire to unify element attributes and string valued objects.
 
 ## Trailing and optional commas
-Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. They are treated as a 1-character comment! Hence the following are both permitted, although the latter is not recommended.
+Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. A single occurence may appear between or after JinXML terms. Hence the following are all permitted. 
 ```
 { size: 8 size+: 19 }
-{ ,, size: , 8, size,,+: 19, }
+{ size: 8, size+: 19 }
+{ size: 8 size+: 19, }
+{ size: 8, size+: 19, }
 ```
 
-> :notebook: Design note: this is the most direct way to unify the syntactic behaviour of comma-free XML with Relaxed JSON.
+> :notebook: Design note: this is the most direct way to unify the syntactic behaviour of comma-free XML with Relaxed JSON while preserving much of their visual appeal.
+
+## Semi-colons as alternatives to commas
+Semi-colons are acceptable alternatives to commas when separating/terminating JinXML expressions. Between or after an expression there be a maximum of a single comma and/or semicolon.
+```
+{ size: 8, size+: 19; }   // Allowed
+[ true, false,;]          // Not allowed
+```
+
+> :notebook: Design note: when terminating a expression a semi-colon can be more readable than a trailing comma and some of the relaxed JSONs have taken this route. It does not conflict with any of the features on the roadmap, so it is included despite having only modest justification.
 
 ## End of line comments
 End-of-line comments are started with a pair of slashes and are discarded.
