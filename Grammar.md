@@ -81,6 +81,11 @@ __Entry__: Member of JSON-style object
 
 ![Image of Entry rule](grammar/images/Entry.png "Member of JSON-style object")
 
+__Terminator__: Optional comma or semi between members of arrays, objects or elements.
+
+![Image of Terminator rule](grammar/images/Terminator.png "Optional comma or semi between members of arrays, objects or elements")
+
+
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase
 Note that Shebang sequences may only occur at the start of a stream. 
