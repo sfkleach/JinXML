@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.multimap.MultiMap;
 import com.steelypip.powerups.util.multimap.ViewPhoenixMultiMapAsMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -32,6 +34,11 @@ public class FlexiElement implements Element {
 		return this.name;
 	}
 	
+	@Override
+	public void setName( String _name ) {
+		this.name = Objects.requireNonNull( _name );
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Attributes
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +56,11 @@ public class FlexiElement implements Element {
 	@Override
 	public void setAttributes( final MultiMap< String, String > attributes ) {
 		this.attributes = this.attributes.clearAllEntries().addAllEntries( attributes.entriesToList() );
+	}
+	
+	@Override
+	public void setValue( String key, String value  ) {
+		this.attributes = this.attributes.setSingletonValue( key, value );
 	}
 	
 	@Override
@@ -147,5 +159,35 @@ public class FlexiElement implements Element {
 			return this.getAttributesAsMultiMap( mutable ); 
 		}
 	}
-
+	
+	@Override
+	public String getValue( @NonNull String key ) {
+		return this.attributes.getElse( key, null );
+	}
+	
+	@Override
+	public String getValue( @NonNull String key, String otherwise ) {
+		return this.attributes.getElse( key, otherwise );
+	}
+	
+	@Override
+	public String getValue( @NonNull String key, int position ) {
+		return this.attributes.getElse( key, position, null );
+	}
+	
+	@Override
+	public String getValue( @NonNull String key, int position, String otherwise ) {
+		return this.attributes.getElse( key, position, otherwise );
+	}
+	
+	@Override
+	public String getValue( @NonNull String key, boolean reverse, int position, String otherwise ) {
+		return this.attributes.getElse( key, reverse, position, otherwise );
+	}
+	
+	@Override
+	public void addValue( @NonNull String key, @NonNull String value ) {
+		this.attributes = this.attributes.add( key, value );
+	}
+	
 }

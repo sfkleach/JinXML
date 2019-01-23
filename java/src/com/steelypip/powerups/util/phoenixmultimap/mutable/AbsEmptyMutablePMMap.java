@@ -89,4 +89,9 @@ public abstract class AbsEmptyMutablePMMap< K, V > extends AbsPhoenixMultiMap< K
 		return otherwise;
 	}
 	
+	@Override
+	public V getElse( K key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException {
+		return otherwise;
+	}
+	
 }

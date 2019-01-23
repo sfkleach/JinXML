@@ -72,6 +72,15 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	}
 
 	@Override
+	public Value getElse( Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
+		if ( reverse ) {
+			final List< Value > list = this.get( key );
+			N = list.size() - N - 1;
+		}
+		return this.getElse( key, N, otherwise );
+	}
+
+	@Override
 	public int sizeEntries() {
 		int n = 0;
 		for ( Map.Entry< Key, List< Value > > e : this.entrySet() ) {

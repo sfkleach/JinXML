@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.frozen.EmptyFrozenPMMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
 
@@ -27,7 +29,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	default PhoenixMultiMap< K, V > mutableCopy() {
 		PhoenixMultiMap< K, V > sofar = new EmptyMutablePMMap< K, V >();
 		for ( Map.Entry< ? extends K, ? extends V > e : this ) {
-			sofar.add(  e.getKey(), e.getValue() );
+			sofar = sofar.add(  e.getKey(), e.getValue() );
 		}
 		return sofar;
 	}
@@ -159,30 +161,39 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param key
 	 * @return first value associated with key
 	 */
-	V getOrFail( K key ) throws IllegalArgumentException;
+	V getOrFail( @NonNull K key ) throws IllegalArgumentException;
 	
 	/** Returns the first value associated with key in 
 	 * this multimap
-	 * @param key
+	 * @param key the key to look up, may not be null
 	 * @return first value associated with key
 	 */
-	V getElse( K key, V otherwise ) throws IllegalArgumentException;
+	V getElse( @NonNull K key, V otherwise ) throws IllegalArgumentException;
 	
 	/** Returns the Nth values associated with key in 
 	 * this multimap, if any, that is guaranteed to be a new list.
-	 * @param key
+	 * @param key the key to look up, may not be null
 	 * @param N the position of the value in the list of values associated with key
 	 * @return the Nth value associated with key
 	 */
-	V getOrFail( K key, int N ) throws IllegalArgumentException;
+	V getOrFail( @NonNull K key, int N ) throws IllegalArgumentException;
 	
 	/** Returns the Nth values associated with key in 
 	 * this multimap, if any, that is guaranteed to be a new list.
-	 * @param key
+	 * @param key the key to look up, may not be null
 	 * @param N the position of the value in the list of values associated with key
 	 * @return the Nth value associated with key
 	 */
-	V getElse( K key, int N, V otherwise ) throws IllegalArgumentException;
+	V getElse( @NonNull K key, int N, V otherwise ) throws IllegalArgumentException;
+	
+	/** Returns the Nth values associated with key in 
+	 * this multimap, if any, that is guaranteed to be a new list.
+	 * @param key the key to look up, may not be null
+	 * @param reverse a flag indicating that the position is taken from the end of the list
+	 * @param N the position of the value in the list of values associated with key
+	 * @return the Nth value associated with key
+	 */
+	V getElse( @NonNull K key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException;
 	
 	/**
 	 * Returns true if this multimap contains no key-value pairs. 

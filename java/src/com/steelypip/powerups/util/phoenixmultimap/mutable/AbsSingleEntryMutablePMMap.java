@@ -86,6 +86,12 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
+	public V getElse( K _key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException {
+		//	If there is a single entry it makes no difference which end we are searching from.
+		return this.getElse( _key,  N, otherwise );
+	}
+
+	@Override
 	public boolean isEmpty() {
 		return false;
 	}

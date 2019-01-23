@@ -3,6 +3,8 @@ package com.steelypip.powerups.jinxml;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
@@ -12,6 +14,13 @@ public interface Element {
 	 * @return the name of the object
 	 */
 	String getName();
+	
+	/**
+	 * Sets the element name to a non-empty string.
+	 * @param _name the new name, which may not be null
+	 */
+	void setName( String _name );
+
 	
 	/**
 	 * returns the total number of key-value attributes, including duplicates.
@@ -40,6 +49,14 @@ public interface Element {
 	 * @param values a set of values provided as an iterable
 	 */
 	void setValues( String key, Iterable< String > values );
+	
+	/**
+	 * Sets the attributes of an element to the value supplied  - all sharing
+	 * the same key. Any previous attributes are removed.
+	 * @param key the shared key
+	 * @param value the value to add
+	 */
+	void setValue( String key, String value );
 	
 	/**
 	 * Adds an entry to the attributes of an element.
@@ -72,6 +89,61 @@ public interface Element {
 	 */
 	MultiMap< String, String > getAttributesAsMultiMap( boolean view, boolean mutable );
 
+	/**
+	 * Gets the first attribute value with given key , if such an attribute
+	 * exists. If not, it returns null.  
+	 * @param key the key of the attribute entry to filter by
+	 * @return the attribute value
+	 */
+	String getValue( @NonNull String key );
+	
+	/**
+	 * Gets the first attribute value with given key , if such an attribute
+	 * exists. If not, it returns the fallack value otherwise.  
+	 * @param key the key of the attribute entry to filter by
+	 * @param otherwise fallback value	 
+	 * @return the attribute value
+	 */
+	String getValue( @NonNull String key, String otherwise );
+	
+	/**
+	 * Gets the attribute value with given key at a given position, if such an attribute
+	 * exists. If not, it returns null.  
+	 * @param key the key of the attribute entry to filter by
+	 * @param position attributes with the same key are ordered
+	 * @return the attribute value
+	 */
+	String getValue( @NonNull String key, int position );
+	
+	/**
+	 * Gets the attribute value with given key at a given position, if such an attribute
+	 * exists. If not, it returns the fallack value otherwise.  
+	 * @param key the key of the attribute entry to filter by
+	 * @param position attributes with the same key are ordered
+	 * @param otherwise fallback value
+	 * @return the attribute value
+	 */
+	String getValue( @NonNull String key, int position, String otherwise );
+	
+	/**
+	 * Gets the attribute value with given key at a given position, if such an attribute
+	 * exists. If not, it returns the fallack value otherwise.  
+	 * @param key the key of the attribute entry to filter by
+	 * @param reverse if true then the position indexes from the last entry, not the first
+	 * @param position attributes with the same key are ordered
+	 * @param otherwise fallback value
+	 * @return the attribute value
+	 */
+	String getValue( @NonNull String key, boolean reverse, int position, String otherwise );
+	
+	/**
+	 * Adds the attribute key-value pair to the Element.
+	 * @param key
+	 * @param value
+	 */
+	void addValue( @NonNull String key, @NonNull String value );
+
+	
 	
 /**class Element
 Quick Note on Terminology

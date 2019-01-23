@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.common.StdPair;
 import com.steelypip.powerups.util.phoenixmultimap.AbsPhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -54,7 +56,7 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 	}
 
 	@Override
-	public Value getOrFail( Key key ) throws IllegalArgumentException {
+	public Value getOrFail( @NonNull Key key ) throws IllegalArgumentException {
 		if ( this.hasKey( key ) && ! this.values_list.isEmpty() ) {
 			return this.values_list.get( 0 );
 		} else {
@@ -63,7 +65,7 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 	}
 
 	@Override
-	public Value getOrFail( Key key, int N ) throws IllegalArgumentException {
+	public Value getOrFail( @NonNull Key key, int N ) throws IllegalArgumentException {
 		if ( this.hasKey( key ) ) {
 			try {
 				return this.values_list.get( N );
@@ -110,7 +112,7 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 	}
 
 	@Override
-	public Value getElse( Key key, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, Value otherwise ) throws IllegalArgumentException {
 		if ( this.hasKey( key ) && ! this.values_list.isEmpty() ) {
 			return this.values_list.get( 0 );
 		} else {
@@ -119,11 +121,25 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 	}
 
 	@Override
-	public Value getElse( Key key, int N, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, int N, Value otherwise ) throws IllegalArgumentException {
 		if ( this.hasKey( key ) && ! this.values_list.isEmpty() && 0 <= N && N < this.values_list.size() ) {
 			return this.values_list.get( N );
 		} else {
 			return otherwise;
+		}
+	}
+
+	@Override
+	public Value getElse( @NonNull Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
+		if ( reverse ) {
+			if ( this.hasKey( key ) ) {
+				N = this.values_list.size() - N - 1;
+				return this.getElse( key, N, otherwise );
+			} else {
+				return otherwise;
+			}
+		} else {
+			return this.getElse(  key, N, otherwise );
 		}
 	}
 

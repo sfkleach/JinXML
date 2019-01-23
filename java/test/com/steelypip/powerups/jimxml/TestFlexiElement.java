@@ -82,11 +82,101 @@ public class TestFlexiElement {
 		e.addLastValue( "two", "2" );
 		e.addLastValue( "three", "3" );
 		e.addLastValue( "four", "4" );
+		int count = 0;
 		Iterator< Map.Entry< String, String > > it = e.getAttributesIterator();
-		for ( Map.Entry< String, String > e1 : (Iterable<Map.Entry<String, String>>) () -> it ) {
-			
+		for ( Map.Entry< String, String > n : (Iterable<Map.Entry<String, String>>) () -> it ) {
+			if ( "one".equals( n.getKey() ) ) {
+				assertEquals( "1", n.getValue() );
+			} else if ( "two".equals( n.getKey() ) ) {
+				assertEquals( "2", n.getValue() );
+			} else if ( "three".equals( n.getKey() ) ) {
+				assertEquals( "3", n.getValue() );
+			} else if ( "four".equals( n.getKey() ) ) {
+				assertEquals( "4", n.getValue() );
+			} else {
+				fail();
+			}
+			count += 1;
 		}
-		
+		assertEquals( 4, count );
+	}
+	
+	@Test
+	public void getValue_onEmptyElement() {
+		Element e = new FlexiElement( "this is a name" );
+		assertNull( e.getValue( "" ) );
+		assertNull( e.getValue( "foo" ) );
+	}
+	
+	@Test
+	public void getValue_onSingleAttributeElement() {
+		Element e = new FlexiElement( "this is a name" );
+		e.setValue( "foo", "bar" );		
+		assertNull( e.getValue( "" ) );
+		assertEquals( "bar", e.getValue( "foo" ) );
+	}
+	
+	@Test
+	public void getValue_onTwoAttributeElement() {
+		Element e = new FlexiElement( "this is a name" );
+		e.setValue( "foo", "bar" );		
+		e.addValue( "gort", "trog" );		
+		assertNull( e.getValue( "" ) );
+		assertEquals( "bar", e.getValue( "foo" ) );
+		assertEquals( "trog", e.getValue( "gort" ) );
+	}
+	
+	@Test
+	public void getValue_otherwise_onEmptyElement() {
+		Element e = new FlexiElement( "this is a name" );
+		assertNull( e.getValue( "", null ) );
+		assertEquals( "bar", e.getValue( "foo", "bar" ) );
+	}
+	
+	@Test
+	public void getValue_otherwise_onSingleAttributeElement() {
+		Element e = new FlexiElement( "this is a name" );
+		e.setValue( "foo", "bar" );		
+		assertEquals( "no", e.getValue( "", "no" ) );
+		assertEquals( "bar", e.getValue( "foo", null ) );
+	}
+	
+	@Test
+	public void getValue_otherwise_onTwoAttributeElement() {
+		Element e = new FlexiElement( "this is a name" );
+		e.setValue( "foo", "bar" );		
+		e.addValue( "gort", "trog" );		
+		assertEquals( "no", e.getValue( "", "no" ) );
+		assertEquals( "bar", e.getValue( "foo", null ) );
+		assertEquals( "trog", e.getValue( "gort", "99" ) );
+		assertNull( e.getValue( "wiffle", null ) );
+	}
+	
+	@Test
+	public void getValue_position_onEmptyElement() {
+		Element e = new FlexiElement( "this is a name" );
+		assertNull( e.getValue( "", 0 ) );
+		assertNull( "bar", e.getValue( "foo", 1 ) );
+	}
+	
+	@Test
+	public void getValue_position_onSingleAttributeElement() {
+		Element e = new FlexiElement( "this is a name" );
+		e.setValue( "foo", "bar" );		
+		assertNull( e.getValue( "", 0 ) );
+		assertEquals( "bar", e.getValue( "foo", 0 ) );
+		assertNull( e.getValue( "foo", 1 ) );
+	}
+	
+	@Test
+	public void getValue_position_onTwoAttributeElement() {
+		Element e = new FlexiElement( "this is a name" );
+		e.setValue( "foo", "bar" );		
+		e.addValue( "foo", "trog" );		
+		assertNull( e.getValue( "", 0 ) );
+		assertEquals( "bar", e.getValue( "foo", 0 ) );
+		assertEquals( "trog", e.getValue( "foo", 1 ) );
+		assertNull( e.getValue( "wiffle", 1 ) );
 	}
 	
 }

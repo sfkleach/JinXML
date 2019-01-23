@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.TreeMapSingleValuePhoenixMultiMap;
 
@@ -46,7 +48,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public Value getElse( Key key, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, Value otherwise ) throws IllegalArgumentException, NullPointerException {
 		return this.getOrDefault( key, otherwise );
 	}
 
@@ -61,12 +63,19 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public Value getElse( Key key, int N, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( Key key, int N, Value otherwise ) {
 		if ( N == 0 ) {
 			return this.getOrDefault( key, otherwise );
 		} else {
-			throw new IllegalArgumentException();			
+			return otherwise;
 		}
+	}
+
+	@Override
+	public Value getElse( Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
+		//	There is either 1 or 0 entries, so reverse makes no difference. If there are no entries then
+		//	return the default.
+		return this.getElse( key, N, otherwise );
 	}
 
 	@Override
