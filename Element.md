@@ -38,9 +38,9 @@ object.
 
 * Method ```getChild( String sel = "", Boolen reverse = false, Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the maplet with selector ```sel``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```countChildren( sel ) - 1 - position```.
 
-* Method ```getFirstChild( String sel, String? default = null ) -> String?``` - returns the first child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
+* Method ```getFirstChild( String sel, String? default = null ) -> Element?``` - returns the first child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
 
-* Method ```getLastChild String sel, String? default = null ) -> String?``` - returns the last child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
+* Method ```getLastChild String sel, String? default = null ) -> Element?``` - returns the last child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
 
 * Method ```countChildren( String sel ) -> Int``` - returns the number of children that share
 the selector ```sel```.
