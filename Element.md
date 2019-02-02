@@ -34,7 +34,7 @@ object.
 
 * Method ```getMembersAsMultiMap() -> MultiMap< String, Element >``` - returns a multi-map representing the members of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the members and changes to the multi-map immediately affect the membrs. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
-* Method ```getMemberIterator() -> Iterator< Maplet< String, Element > >``` 
+* Method ```getMembersIterator() -> Iterator< Maplet< String, Element > >``` 
 
 * Method ```getChild( String sel = "", Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the maplet with selector ```sel``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```countChildren( sel ) - 1 - position```.
 
