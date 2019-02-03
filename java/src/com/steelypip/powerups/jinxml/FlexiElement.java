@@ -623,6 +623,36 @@ public class FlexiElement implements Element {
 		values.add( 0, value );		
 	}	
 
+	@Override
+	public String removeFirstValue( @NonNull String selector ) {
+		//	TODO: unit test
+		return this.removeFirstValue( selector, null );
+	}
+	
+	@Override
+	public String removeFirstValue( @NonNull String selector, String otherwise ) {
+		//	TODO: unit test
+		final List< String > children = this.getValuesAsList( selector, true, true );
+		return children.isEmpty() ? otherwise : children.remove( 0 );		
+	}
+
+	public String removeLastValue( @NonNull String selector ) {
+		//	TODO: unit test
+		return this.removeLastValue( selector, null );
+	}
+	
+	@Override
+	public String removeLastValue( @NonNull String selector, String otherwise ) {
+		//	TODO: unit test
+		final List< String > children = this.getValuesAsList( selector, true, true );
+		if ( children.isEmpty() ) {
+			return otherwise;
+		} else {
+			return children.remove( children.size() - 1 );
+		}
+	}
+
+
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members - Imperative Methods
@@ -656,6 +686,35 @@ public class FlexiElement implements Element {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( selector, true, true );
 		children.add( 0, e );		
+	}
+
+	@Override
+	public Element removeFirstChild( @NonNull String selector ) {
+		//	TODO: unit test
+		return this.removeFirstChild( selector, null );
+	}
+	
+	@Override
+	public Element removeFirstChild( @NonNull String selector, Element otherwise ) {
+		//	TODO: unit test
+		final List< Element > children = this.getChildrenAsList( selector, true, true );
+		return children.isEmpty() ? otherwise : children.remove( 0 );		
+	}
+
+	public Element removeLastChild( @NonNull String selector ) {
+		//	TODO: unit test
+		return this.removeLastChild( selector, null );
+	}
+	
+	@Override
+	public Element removeLastChild( @NonNull String selector, Element otherwise ) {
+		//	TODO: unit test
+		final List< Element > children = this.getChildrenAsList( selector, true, true );
+		if ( children.isEmpty() ) {
+			return otherwise;
+		} else {
+			return children.remove( children.size() - 1 );
+		}
 	}
 
 	

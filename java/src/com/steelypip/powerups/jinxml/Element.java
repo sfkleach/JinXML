@@ -390,12 +390,15 @@ public interface Element {
 	 */
 	void addFirstValue( @NonNull String key, @NonNull String value );
 
+	String removeFirstValue( @NonNull String key );
+	String removeFirstValue( @NonNull String key, String otherwise );
+	
+	String removeLastValue( @NonNull String key );
+	String removeLastValue( @NonNull String key, String otherwise );
 	
 	
 	/** TODO
 	Method setAttributes( MultiMap< String, String > attributes )
-	Method removeFirstValue( String key ) -> String
-	Method removeLastValue( String key ) -> String
 	 */	
 	
 	
@@ -413,11 +416,15 @@ public interface Element {
 	
 	void addFirstChild( @NonNull String selector, @NonNull Element child );
 	
+	Element removeFirstChild( @NonNull String selector );
+	Element removeFirstChild( @NonNull String selector, Element otherwise );
+	
+	Element removeLastChild( @NonNull String selector );
+	Element removeLastChild( @NonNull String selector, Element otherwise );
+	
 	
 	/** TODO
 	Method setMembers( MultiMap< String, Element > members )
-	Method removeFirstChild( String sel ) -> Element
-	Method removeLastValue( String sel ) -> Element
 	 */
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
