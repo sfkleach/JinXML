@@ -1,5 +1,6 @@
 package com.steelypip.powerups.jinxml;
 
+import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -321,6 +322,31 @@ public interface Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Primitive Values
 	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	boolean isIntValue();
+	int getIntValue();
+	int getIntValue( int otherwise );
+	
+	boolean isLongValue();
+	int getLongValue();
+	int getLongValue( int otherwise );
+	
+	boolean isBigIntegerValue();
+	BigInteger getBigIntegerValue();
+	BigInteger getBigIntegerValue( BigInteger otherwise );
+	
+	boolean isFloatValue();
+	double getFloatValue();
+	double getFloatValue( double otherwise );
+	
+	boolean isSingleValue();
+	String getStringValue();
+	String getStringValue( String otherwise );
+	
+	boolean isBooleanValue();
+	boolean getBooleanValue();
+	boolean getBooleanValue( boolean otherwise );
+	
 	
 	/**
 	Method isIntValue() -> Boolean - returns true if the object represents an integer. This test is only required to check the name of the object.
