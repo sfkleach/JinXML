@@ -380,12 +380,20 @@ public interface Element {
 	 * @param key key of the entry being added
 	 * @param value value of the entry being added
 	 */
-	void addLastValue( String key, String value );	
+	void addLastValue( @NonNull String key, @NonNull String value );
 	
 	/**
+	 * Adds an entry to the attributes of an element.
+	 * This entry will be inserted before any attribute with the same key.
+	 * @param key key of the entry being added
+	 * @param value value of the entry being added
+	 */
+	void addFirstValue( @NonNull String key, @NonNull String value );
+
+	
+	/** TODO
 	Method setAttributes( MultiMap< String, String > attributes )
 	Method addFirstValue( String key, String value )
-	Method addLastValue( String key, String value )
 	Method removeFirstValue( String key, String? value = null ) -> String?
 	Method removeLastValue( String key, String? value = null ) -> String?
 	 */	
@@ -403,8 +411,10 @@ public interface Element {
 
 	void addLastChild( @NonNull String selector, @NonNull Element child );
 	
+	void addFirstChild( @NonNull String selector, @NonNull Element child );
 	
-	/**
+	
+	/** TODO
 	Method setMembers( MultiMap< String, Element > members )
 	Method setChildren( String sel, Iterable< Element > )
 	Method setChild( String sel, Boolean reverse = false, Int position = 0, Element child )
@@ -418,11 +428,9 @@ public interface Element {
 	//	Builder-related Methods
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
+	/** TODO
 	Builder Related Methods
 	Method toEventIterator() -> Iterator< PushParser.Event >
 	 */
-
-	
 
 }

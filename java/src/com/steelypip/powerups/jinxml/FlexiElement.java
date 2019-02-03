@@ -612,10 +612,16 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public void addLastValue( String key, String value ) {
+	public void addLastValue( @NonNull String key, @NonNull String value ) {
 		this.attributes = this.attributes.add( key, value );
 	}
 	
+	@Override
+	public void addFirstValue( @NonNull String key, @NonNull String value ) {
+		//	TODO: unit test
+		final List< String > values = this.getValuesAsList( key, true, true );
+		values.add( 0, value );		
+	}	
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -643,7 +649,13 @@ public class FlexiElement implements Element {
 	@Override
 	public void addLastChild( @NonNull String selector, @NonNull Element e ) {
 		this.members = this.members.add( selector, e );
-		
+	}
+
+	@Override
+	public void addFirstChild( @NonNull String selector, @NonNull Element e ) {
+		//	TODO: unit test
+		final List< Element > children = this.getChildrenAsList( selector, true, true );
+		children.add( 0, e );		
 	}
 
 	
