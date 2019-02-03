@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.common.StdPair;
 import com.steelypip.powerups.util.phoenixmultimap.TreeMapPhoenixMultiMap;
 
@@ -37,21 +40,21 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	}
 
 	@Override
-	public Value getOrFail( Key key ) throws IllegalArgumentException {
+	public Value getOrFail( @NonNull Key key ) throws IllegalArgumentException {
 		final List< Value > list = this.get( key );
 		if ( list == null ) throw new IllegalArgumentException();
 		return list.get( 0 );
 	}
 
 	@Override
-	public Value getElse( Key key, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, Value otherwise ) throws IllegalArgumentException {
 		final List< Value > list = this.get( key );
 		if ( list == null ) return otherwise;
 		return list.get( 0 );
 	}
 
 	@Override
-	public Value getOrFail( Key key, int N ) throws IllegalArgumentException {
+	public Value getOrFail( @NonNull Key key, int N ) throws IllegalArgumentException {
 		final List< Value > list = this.get( key );
 		if ( list == null ) throw new IllegalArgumentException();
 		try {
@@ -75,9 +78,15 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	public Value getElse( Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
 		if ( reverse ) {
 			final List< Value > list = this.get( key );
-			N = list.size() - N - 1;
+			if ( list == null ) {
+				return otherwise;
+			} else {
+				N = list.size() - N - 1;
+				return this.getElse( key, N, otherwise );
+			}
+		} else {
+			return this.getElse( key, N, otherwise );
 		}
-		return this.getElse( key, N, otherwise );
 	}
 
 	@Override

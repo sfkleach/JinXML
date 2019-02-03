@@ -1,10 +1,11 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.steelypip.powerups.common.EmptyList;
-import com.steelypip.powerups.common.SingletonList;
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.common.StdPair;
 import com.steelypip.powerups.util.phoenixmultimap.AbsPhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -37,20 +38,20 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 
 	@Override
 	public List< Map.Entry< K, V > > entriesToList() {
-		return new SingletonList<>( new StdPair<>( this.getKey(), this.getValue() ) );
+		return Collections.singletonList( new StdPair<>( this.getKey(), this.getValue() ) );
 	}
 
 	@Override
 	public List< V > getAll( K _key ) {
 		if ( _key == null ? this.getKey() == null : _key.equals( this.getKey() ) ) {
-			return new SingletonList<>( this.getValue() );
+			return Collections.singletonList( this.getValue() );
 		} else {
-			return new EmptyList<>();
+			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public V getOrFail( K _key ) throws IllegalArgumentException {
+	public V getOrFail( @NonNull K _key ) throws IllegalArgumentException {
 		if ( _key == null ? this.getKey() == null : _key.equals( this.getKey() ) ) {
 			return this.getValue();
 		} else {
@@ -59,7 +60,7 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public V getElse( K _key, V otherwise ) throws IllegalArgumentException {
+	public V getElse( @NonNull K _key, V otherwise ) throws IllegalArgumentException {
 		if ( _key == null ? this.getKey() == null : _key.equals( this.getKey() ) ) {
 			return this.getValue();
 		} else {
@@ -68,7 +69,7 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public V getOrFail( K _key, int N ) throws IllegalArgumentException {
+	public V getOrFail( @NonNull K _key, int N ) throws IllegalArgumentException {
 		if ( N == 0 && ( _key == null ? this.getKey() == null : _key.equals( this.getKey() ) ) ) {
 			return this.getValue();
 		} else {
@@ -77,7 +78,7 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public V getElse( K _key, int N, V otherwise ) throws IllegalArgumentException {
+	public V getElse( @NonNull K _key, int N, V otherwise ) throws IllegalArgumentException {
 		if ( N == 0 && ( _key == null ? this.getKey() == null : _key.equals( this.getKey() ) ) ) {
 			return this.getValue();
 		} else {
@@ -86,7 +87,7 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public V getElse( K _key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException {
+	public V getElse( @NonNull K _key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException {
 		//	If there is a single entry it makes no difference which end we are searching from.
 		return this.getElse( _key,  N, otherwise );
 	}

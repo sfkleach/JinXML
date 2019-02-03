@@ -41,7 +41,6 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 			return this;
 		}
 	}
-
 	
 	default boolean isMutable() {
 		return this instanceof MutableMarkerInterface;
