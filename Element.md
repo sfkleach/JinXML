@@ -42,7 +42,7 @@ object.
 
 * Method ```getLastChild String sel, String? default = null ) -> String?``` - returns the last child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
 
-* Method ```countChildren( String sel ) -> Int``` - returns the number of children that share
+* Method ```countChildren( String sel = "" ) -> Int``` - returns the number of children that share
 the selector ```sel```.
 
 * Method ```getChildrenAsMultiMap( Boolean view = false, Boolean mutable = false ) -> MultiMap< String, String >``` - returns a multi-map representing the children of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the children and changes to the multi-map immediately affect the children. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
