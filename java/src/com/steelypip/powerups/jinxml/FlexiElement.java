@@ -73,11 +73,6 @@ public class FlexiElement implements Element {
 		return this.name;
 	}
 	
-	@Override
-	public void setName( String _name ) {
-		this.name = Objects.requireNonNull( _name );
-	}
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Attributes
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,29 +90,6 @@ public class FlexiElement implements Element {
 	@Override
 	public void setAttributes( final MultiMap< String, String > attributes ) {
 		this.attributes = this.attributes.clearAllEntries().addAllEntries( attributes.entriesToList() );
-	}
-	
-	@Override
-	public void setValue( String key, String value  ) {
-		this.attributes = this.attributes.updateValue( key, 0, value );
-	}
-	
-	@Override
-	public void setValue( String key, int position, String value  ) {
-		this.attributes = this.attributes.updateValue( key, position, value );
-	}
-	
-	@Override
-	public void setValues( String key, Iterable< String> values ) {
-		this.attributes = this.attributes.clearAllEntries();
-		for ( String v : values ) {
-			this.attributes = this.attributes.add( key, v );
-		}
-	}
-
-	@Override
-	public void addLastValue( String key, String value ) {
-		this.attributes = this.attributes.add( key, value );
 	}
 	
 	static class PMMapMultiMap< K, V > extends ViewPhoenixMultiMapAsMultiMap< K, V > {
@@ -330,12 +302,13 @@ public class FlexiElement implements Element {
 		}
 	}
 
+	@Override 
 	public List< String > getValuesAsList( @NonNull String key ) {
 		return this.attributes.getAll( key );	
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	//	Links
+	//	Members
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
@@ -410,14 +383,14 @@ public class FlexiElement implements Element {
 	}	
 	
 	@Override
-	public void addLastChild( @NonNull String selector, @NonNull Element e ) {
-		this.members = this.members.add( selector, e );
+	public int countChildren( @NonNull String selector  ) {
+		return this.members.sizeEntriesWithKey( selector );
 		
 	}
 	
 	@Override
-	public int countChildren( @NonNull String selector  ) {
-		return this.members.sizeEntriesWithKey( selector );
+	public int countChildren() {
+		return this.members.sizeEntriesWithKey( DEFAULT_SELECTOR );
 		
 	}
 	
@@ -485,5 +458,193 @@ public class FlexiElement implements Element {
 	public Element getLastChild() {
 		return this.members.getElse( DEFAULT_SELECTOR, true, 0, null );
 	}
+
+	@Override
+	public MultiMap< String, Element > getChildrenAsMultiMap() {
+		//	Neither a view nor mutable - so this is a frozen copy.
+		return new PMMapMultiMap< String, Element >( this.members.frozenCopyUnlessFrozen() );	}
+
+	@Override
+	public MultiMap< String, Element > getChildrenAsMultiMap( boolean mutable ) {
+		if ( mutable ) {
+			//	Not a view but mutable - so this is a mutable copy.
+			return new PMMapMultiMap< String, Element >( this.members.mutableCopy() );
+		} else {
+			//	Not a view and not mutable - frozen copy.
+			return this.getMembersAsMultiMap();
+		}
+	}
+
+	@Override
+	public MultiMap< String, Element > getChildrenAsMultiMap( boolean view, boolean mutable ) {
+		//	TODO - add unit tests
+		if ( view ) {
+			if ( mutable ) {
+				return new MutableViewOntoMembers( this );
+			} else {
+				return new FrozenViewOntoMembers( this );
+			}
+		} else {
+			return this.getMembersAsMultiMap( mutable ); 	
+		}
+	}
+	
+	@Override
+	public List< @NonNull Element > getChildrenAsList( @NonNull String selector, boolean view, boolean mutable ) {
+		if ( !view ) {
+			if ( !mutable ) {
+				return this.getChildrenAsList( selector );
+			} else {
+				return new ArrayList<>( this.getChildrenAsList( selector ) );				
+			}
+		} else {
+			return new ChildrenListView( this, selector, mutable );				
+		}
+	}
+
+	@Override 
+	public List< @NonNull Element > getChildrenAsList( @NonNull String selector ) {
+		return this.members.getAll( selector );	
+	}
+
+	
+	@Override 
+	public List< @NonNull Element > getChildrenAsList( boolean view, boolean mutable ) {
+		return this.getChildrenAsList( DEFAULT_SELECTOR, view, mutable );	
+	}
+
+	
+	@Override 
+	public List< @NonNull Element > getChildrenAsList() {
+		return this.members.getAll( DEFAULT_SELECTOR );	
+	}
+
+	static class ChildrenListView extends AbstractList< Element > {
+		
+		@NonNull Element element;
+		@NonNull String selector;
+		final boolean mutable;
+		
+		public ChildrenListView( @NonNull Element element, @NonNull String selector, boolean mutable ) {
+			this.element = element;
+			this.selector = selector;
+			this.mutable = mutable;
+		}
+
+		@Override
+		public Element get( final int index ) {
+			return this.element.getChild( this.selector, index );
+		}
+
+		@Override
+		public int size() {
+			return this.element.countValues( this.selector );
+		}
+		
+		private void checkPermissionToUpdate() {
+			if ( ! this.mutable ) throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Element set( int index, Element value ) {
+			this.checkPermissionToUpdate();
+			final Element old_value = this.element.getChild( this.selector, index );
+			this.element.setChild( this.selector, index, value );
+			return old_value;
+		}
+
+		@Override
+		public Element remove( int index ) {
+			this.checkPermissionToUpdate();
+			List< Element > values_list = new ArrayList<>( this.element.getChildrenAsList( this.selector ) );
+			Element removed = values_list.remove( index );
+			this.element.setChildren( this.selector, values_list );
+			return removed;
+		}
+
+		@Override
+		public void add( int index, Element value ) {
+			this.checkPermissionToUpdate();
+			final int N = this.element.countChildren( this.selector );
+			if ( index < N  ) {
+				if ( index < 0 ) throw new IndexOutOfBoundsException();
+				List< @NonNull Element > children_list = new ArrayList<>( this.element.getChildrenAsList( this.selector ) );
+				children_list.add( index, value );
+				this.element.setChildren( this.selector, children_list );
+			} else if ( index > N ) {
+				throw new IndexOutOfBoundsException();
+			} else {
+				this.element.addLastChild( this.selector, Objects.requireNonNull( value ) );
+			}
+		}
+	
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Name - Imperative Methods
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	public void setName( String _name ) {
+		this.name = Objects.requireNonNull( _name );
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Attributes - Imperative Methods
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public void setValue( String key, String value  ) {
+		this.attributes = this.attributes.updateValue( key, 0, value );
+	}
+	
+	@Override
+	public void setValue( String key, int position, String value  ) {
+		this.attributes = this.attributes.updateValue( key, position, value );
+	}
+	
+	@Override
+	public void setValues( String key, Iterable< String> values ) {
+		this.attributes = this.attributes.clearAllEntries();
+		for ( String v : values ) {
+			this.attributes = this.attributes.add( key, v );
+		}
+	}
+
+	@Override
+	public void addLastValue( String key, String value ) {
+		this.attributes = this.attributes.add( key, value );
+	}
+	
+
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Members - Imperative Methods
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	public void setChild( @NonNull String key, @NonNull Element child  ) {
+		this.members = this.members.updateValue( key, 0, child );
+	}
+	
+	@Override
+	public void setChild( @NonNull String key, int position, @NonNull Element child  ) {
+		this.members = this.members.updateValue( key, position, child );
+	}
+	
+	@Override
+	public void setChildren( @NonNull String key, Iterable< @NonNull Element > children ) {
+		this.members = this.members.clearAllEntries();
+		for ( Element v : children ) {
+			this.members = this.members.add( key, v );
+		}
+	}
+
+	@Override
+	public void addLastChild( @NonNull String selector, @NonNull Element e ) {
+		this.members = this.members.add( selector, e );
+		
+	}
+
 	
 }
