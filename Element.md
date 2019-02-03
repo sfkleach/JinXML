@@ -10,6 +10,8 @@ be thought of as a collection of key-value pairs and the members as a collection
 
 * Method ```getName() -> String``` - returns the name of the object, which is typically intended to be a type-name. 
 
+* Method ```hasName( String? name )``` - returns true if the object has name `name`, otherwise false.
+
 * Method ```countAttributes() -> Int``` - returns the total number of key-value pairs in the 
 object.
 
