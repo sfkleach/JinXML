@@ -350,13 +350,6 @@ public interface Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Sets the attributes of an element sequentially to the entries of a multi-map
-	 * preserving the order.
-	 * @param attributes the multi-map containing the entries to add
-	 */
-	void setAttributes( MultiMap< String, String > attributes );
-	
-	/**
 	 * Sets the attributes of an element to the values supplied  - all sharing
 	 * the same key. Any previous attributes are removed.
 	 * @param key the shared key
@@ -396,11 +389,12 @@ public interface Element {
 	String removeLastValue( @NonNull String key );
 	String removeLastValue( @NonNull String key, String otherwise );
 	
-	
-	/** TODO
-	Method setAttributes( MultiMap< String, String > attributes )
-	 */	
-	
+	/**
+	 * Sets the attributes of an element sequentially to the entries of a multi-map
+	 * preserving the order.
+	 * @param attributes the multi-map containing the entries to add
+	 */
+	void setAttributes( MultiMap< String, String > attributes );	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members - Imperative Methods
@@ -422,10 +416,12 @@ public interface Element {
 	Element removeLastChild( @NonNull String selector );
 	Element removeLastChild( @NonNull String selector, Element otherwise );
 	
-	
-	/** TODO
-	Method setMembers( MultiMap< String, Element > members )
+	/**
+	 * Sets the members of an element sequentially to the entries of a multi-map
+	 * preserving the order.
+	 * @param members the multi-map containing the entries to add
 	 */
+	void setMembers( MultiMap< String, Element > members );
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Builder-related Methods

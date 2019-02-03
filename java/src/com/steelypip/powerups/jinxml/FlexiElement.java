@@ -87,11 +87,6 @@ public class FlexiElement implements Element {
 		return this.attributes.frozenCopyUnlessFrozen().iterator();
 	}
 	
-	@Override
-	public void setAttributes( final MultiMap< String, String > attributes ) {
-		this.attributes = this.attributes.clearAllEntries().addAllEntries( attributes.entriesToList() );
-	}
-	
 	static class PMMapMultiMap< K, V > extends ViewPhoenixMultiMapAsMultiMap< K, V > {
 		
 		PhoenixMultiMap< K, V > pmmap;
@@ -652,6 +647,11 @@ public class FlexiElement implements Element {
 		}
 	}
 
+	@Override
+	public void setAttributes( final MultiMap< String, String > attributes ) {
+		this.attributes = this.attributes.clearAllEntries().addAllEntries( attributes.entriesToList() );
+	}
+	
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -716,6 +716,12 @@ public class FlexiElement implements Element {
 			return children.remove( children.size() - 1 );
 		}
 	}
+
+	@Override
+	public void setMembers( final MultiMap< String, Element > _members ) {
+		this.members = this.members.clearAllEntries().addAllEntries( _members.entriesToList() );
+	}
+	
 
 	
 }
