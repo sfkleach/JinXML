@@ -77,7 +77,7 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```setAttributes( MultiMap< String, String > attributes )```
 
-* Methid ```setValues( String key, Iterable< String > )```
+* Method ```setValues( String key, Iterable< String > )```
 
 * Method ```setValue( String key, Boolean reverse = false, Int position = 0, String value )```
 
