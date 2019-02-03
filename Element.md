@@ -85,9 +85,9 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```addLastValue( String key, String value )```
 
-* Method ```removeFirstValue( String key, String? value = null ) -> String?```
+* Method ```removeFirstValue( String key ) -> String```
 
-* Method ```removeLastValue( String key, String? value = null ) -> String?```
+* Method ```removeLastValue( String key ) -> String```
 
 * Method ```setMembers( MultiMap< String, Element > members )```
 
@@ -99,9 +99,9 @@ If ```strict``` is false then integral values will return true for this test.
 
 * Method ```addLastChild( String sel, Element child )```
 
-* Method ```removeFirstChild( String sel, Element? value = null ) -> Element?```
+* Method ```removeFirstChild( String sel ) -> Element```
 
-* Method ```removeLastValue( String sel, Element? value = null ) -> Element?```
+* Method ```removeLastChild( String sel ) -> Element```
 
 
 ## Builder Related Methods
