@@ -47,6 +47,9 @@ public interface Element {
 	 */
 	String getName();
 	
+	default boolean hasName( String name ) {
+		return name != null && name.equals( this.getName() );
+	}
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -324,29 +327,30 @@ public interface Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	boolean isIntValue();
-	int getIntValue();
-	int getIntValue( int otherwise );
-	
-	boolean isLongValue();
-	int getLongValue();
-	int getLongValue( int otherwise );
-	
-	boolean isBigIntegerValue();
-	BigInteger getBigIntegerValue();
-	BigInteger getBigIntegerValue( BigInteger otherwise );
+	Long getIntValue();
+	Long getIntValue( boolean allowOutOfRange );
+	Long getIntValue( Long otherwise );
+	Long getIntValue( boolean allowOutOfRange, Long otherwise );
+	BigInteger getBigIntValue();
+	BigInteger getBigIntValue( boolean allowOutOfRange );
+	BigInteger getBigIntValue( BigInteger otherwise );
+	BigInteger getBigIntValue( boolean allowOutOfRange, BigInteger otherwise );
 	
 	boolean isFloatValue();
-	double getFloatValue();
-	double getFloatValue( double otherwise );
+	Double getFloatValue();
+	Double getFloatValue( Double otherwise );
 	
-	boolean isSingleValue();
+	boolean isStringValue();
 	String getStringValue();
 	String getStringValue( String otherwise );
 	
 	boolean isBooleanValue();
-	boolean getBooleanValue();
-	boolean getBooleanValue( boolean otherwise );
+	Boolean getBooleanValue();
+	Boolean getBooleanValue( Boolean otherwise );
 	
+	boolean isNullValue();
+	<T> T getNullValue();	
+	<T> T getNullValue( T defaultValue );	
 	
 	/**
 	Method isIntValue() -> Boolean - returns true if the object represents an integer. This test is only required to check the name of the object.

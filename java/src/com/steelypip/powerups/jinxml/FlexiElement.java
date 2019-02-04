@@ -1,15 +1,14 @@
 package com.steelypip.powerups.jinxml;
 
+import java.math.BigInteger;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.w3c.dom.ranges.RangeException;
 
 import com.steelypip.powerups.util.multimap.MultiMap;
 import com.steelypip.powerups.util.multimap.ViewPhoenixMultiMapAsMultiMap;
@@ -18,6 +17,12 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
 
 public class FlexiElement implements Element {
 	
+	private static final String NULL_ELEMENT_NAME = "null";
+	private static final String BOOLEAN_ELEMENT_NAME = "boolean";
+	private static final String STRING_ELEMENT_NAME = "string";
+	private static final @NonNull String VALUE_KEY_FOR_LITERAL_CONSTANTS = "value";
+	private static final @NonNull String INT_ELEMENT_NAME = "int";
+	private static final @NonNull String FLOAT_ELEMENT_NAME = "float";
 	private static final @NonNull String DEFAULT_SELECTOR = "";
 	protected String name;
 	protected PhoenixMultiMap< String, String > attributes = EmptyMutablePMMap.getInstance();
@@ -721,7 +726,159 @@ public class FlexiElement implements Element {
 	public void setMembers( final MultiMap< String, Element > _members ) {
 		this.members = this.members.clearAllEntries().addAllEntries( _members.entriesToList() );
 	}
-	
 
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Primitive Values
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@Override
+	public boolean isIntValue() {
+		return this.hasName( INT_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS );
+	}
+
+	@Override
+	public Long getIntValue() {
+		return this.getIntValue( false, null );
+	}
+
+	@Override
+	public Long getIntValue( boolean allowOutOfRange ) {
+		return this.getIntValue( allowOutOfRange, null );
+	}
+
+	@Override
+	public Long getIntValue( Long otherwise ) {
+		return this.getIntValue( false, otherwise );
+	}
+
+	@Override
+	public Long getIntValue( boolean allowOutOfRange, Long otherwise ) {
+		if ( ! this.hasName( INT_ELEMENT_NAME ) ) return otherwise;
+		String value = this.attributes.getElse( VALUE_KEY_FOR_LITERAL_CONSTANTS, null );
+		if ( value == null ) return otherwise;
+		try {
+			return Long.parseLong( value );
+		} catch ( NumberFormatException e ) {
+			if ( value.matches( "[+-]?[0-9]+" ) ) {
+				if ( allowOutOfRange ) {
+					return otherwise;
+				} else {
+					throw e;
+				}
+			} else {
+				return otherwise;
+			}
+		}
+	}
+
+	@Override
+	public BigInteger getBigIntValue() {
+		return this.getBigIntValue( null );
+	}
+
+	@Override
+	public BigInteger getBigIntValue( boolean allowOutOfRange ) {
+		return this.getBigIntValue( null );
+	}
+
+	@Override
+	public BigInteger getBigIntValue( BigInteger otherwise ) {
+		if ( ! this.hasName( INT_ELEMENT_NAME ) ) return otherwise;
+		String value = this.attributes.getElse( VALUE_KEY_FOR_LITERAL_CONSTANTS, null );
+		if ( value == null ) return otherwise;
+		try {
+			return new BigInteger( value );
+		} catch ( NumberFormatException e ) {
+			return otherwise;
+		}
+	}
+
+	@Override
+	public BigInteger getBigIntValue( boolean allowOutOfRange, BigInteger otherwise ) {
+		return this.getBigIntValue( otherwise );
+	}
+
+	@Override
+	public boolean isFloatValue() {
+		if ( ! this.hasName( FLOAT_ELEMENT_NAME ) ) return false;
+		String value = this.attributes.getElse( VALUE_KEY_FOR_LITERAL_CONSTANTS, null );
+		if ( value == null ) return false;
+		try {
+			Double.parseDouble( value );
+			return true;
+		} catch ( NumberFormatException e ) {
+			return false;
+		}
+	}
+
+	@Override
+	public Double getFloatValue() {
+		return this.getFloatValue( null );
+	}
+
+	@Override
+	public Double getFloatValue( Double otherwise ) {
+		if ( ! this.hasName( FLOAT_ELEMENT_NAME ) ) return otherwise;
+		String value = this.attributes.getElse( VALUE_KEY_FOR_LITERAL_CONSTANTS, null );
+		if ( value == null ) return otherwise;
+		try {
+			return Double.parseDouble( value );
+		} catch ( NumberFormatException e ) {
+			return otherwise;
+		}
+	}
+
+	@Override
+	public boolean isStringValue() {
+		return this.hasName( STRING_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS );
+	}
+
+	@Override
+	public String getStringValue() {
+		return this.getStringValue( null );
+	}
+
+	@Override
+	public String getStringValue( String otherwise ) {
+		return this.attributes.getElse( VALUE_KEY_FOR_LITERAL_CONSTANTS, otherwise );
+	}
+
+	@Override
+	public boolean isBooleanValue() {
+		return this.hasName( BOOLEAN_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS );
+	}
+
+	@Override
+	public Boolean getBooleanValue() {
+		return this.getBooleanValue( null );
+	}
+
+	@Override
+	public Boolean getBooleanValue( Boolean otherwise ) {
+		String b = this.attributes.getElse( VALUE_KEY_FOR_LITERAL_CONSTANTS, null );
+		if ( b == null ) return otherwise;
+		try {
+			return Boolean.parseBoolean( b );
+		} catch ( Exception e ) {
+			return otherwise;
+		}
+	}
+	
+	@Override
+	public boolean isNullValue() {
+		return this.hasName( NULL_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS );
+	}
+	
+	@SuppressWarnings("null")
+	@Override
+	public <T> T getNullValue() {
+		return (T)null;
+	}
+	
+	@SuppressWarnings("null")
+	@Override
+	public <T> T getNullValue( T otherwise ) {
+		return this.hasName( NULL_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS ) ? (T)null : otherwise;
+	}
 	
 }
