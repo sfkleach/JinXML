@@ -10,7 +10,7 @@
 
 * Method ```next() -> Element``` - constructs the next Element if one is ready for construction, otherwise will raise an exception. Use ```this.hasNext()``` to determine whether it is safe to call this method.
 
-* Method ```tryNext( Element? orElse = null )``` - if an Element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
+* Method ```tryNext( Element? orElse = null ) -> Element?``` - if an Element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
 
 * Method ```snapshot() -> Element``` - all open states are automatically but temporarily completed;
 if an Element is ready for construction after the auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the temporarily closed states are restored to their previous state. Use ```this.isInProgress()``` to check whether it is safe to call this method.
