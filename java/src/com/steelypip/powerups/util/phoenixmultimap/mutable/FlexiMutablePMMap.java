@@ -1,5 +1,6 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	public PhoenixMultiMap< Key, Value > add( Key key, Value value ) {
 		List< Value > list = this.get( key );
 		if ( list == null ) {
-			list = new ArrayList<>( 1 );
+			list = new ArrayList< Value >();
 			this.put( key, list );
 		}
 		list.add( value );

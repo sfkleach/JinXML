@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -140,6 +141,10 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	
 	default Iterator< Map.Entry< K, V > > iterator() {
 		return this.entriesToList().iterator();
+	}
+	
+	default Stream< Map.Entry< K, V > > stream() {
+		return this.entriesToList().stream();
 	}
 	
 	/**

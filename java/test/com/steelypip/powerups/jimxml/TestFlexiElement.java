@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -114,28 +115,31 @@ public class TestFlexiElement {
 	}
 	
 	@Test
-	public void getAttributesIterator() {
+	public void getAttributesStream() {
 		Element e = new FlexiElement( "" );
 		e.addLastValue( "one", "1" );
 		e.addLastValue( "two", "2" );
 		e.addLastValue( "three", "3" );
 		e.addLastValue( "four", "4" );
-		int count = 0;
-		Iterator< Map.Entry< String, String > > it = e.getAttributesIterator();
-		for ( Map.Entry< String, String > n : (Iterable<Map.Entry<String, String>>) () -> it ) {
-			if ( "one".equals( n.getKey() ) ) {
-				assertEquals( "1", n.getValue() );
-			} else if ( "two".equals( n.getKey() ) ) {
-				assertEquals( "2", n.getValue() );
-			} else if ( "three".equals( n.getKey() ) ) {
-				assertEquals( "3", n.getValue() );
-			} else if ( "four".equals( n.getKey() ) ) {
-				assertEquals( "4", n.getValue() );
-			} else {
-				fail();
-			}
-			count += 1;
-		}
+		Stream< Map.Entry< String, String > > it = e.getAttributesStream();
+		long count = ( 
+			it.map( 
+				n -> {
+				if ( "one".equals( n.getKey() ) ) {
+					assertEquals( "1", n.getValue() );
+				} else if ( "two".equals( n.getKey() ) ) {
+					assertEquals( "2", n.getValue() );
+				} else if ( "three".equals( n.getKey() ) ) {
+					assertEquals( "3", n.getValue() );
+				} else if ( "four".equals( n.getKey() ) ) {
+					assertEquals( "4", n.getValue() );
+				} else {
+					fail();
+				}
+				return 1;
+				}
+			)
+		).count();
 		assertEquals( 4, count );
 	}
 	
@@ -431,7 +435,7 @@ public class TestFlexiElement {
 	@Test
 	public void getMembersIterator_OnThree() {
 		List< Map.Entry< String, Element > > list = new ArrayList<>();
-		members_three.getMembersIterator().forEachRemaining( list::add );
+		members_three.getMembersStream().forEach( list::add );
 		assertEquals( 6, list.size() ); 
 		
 		{

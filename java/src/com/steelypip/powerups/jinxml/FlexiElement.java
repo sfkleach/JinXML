@@ -3,13 +3,15 @@ package com.steelypip.powerups.jinxml;
 import java.math.BigInteger;
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.common.StdPair;
 import com.steelypip.powerups.util.multimap.MultiMap;
 import com.steelypip.powerups.util.multimap.ViewPhoenixMultiMapAsMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -17,13 +19,14 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
 
 public class FlexiElement implements Element {
 	
-	private static final String NULL_ELEMENT_NAME = "null";
-	private static final String BOOLEAN_ELEMENT_NAME = "boolean";
-	private static final String STRING_ELEMENT_NAME = "string";
+	private static final @NonNull String NULL_ELEMENT_NAME = "null";
+	private static final @NonNull String BOOLEAN_ELEMENT_NAME = "boolean";
+	private static final @NonNull String STRING_ELEMENT_NAME = "string";
 	private static final @NonNull String VALUE_KEY_FOR_LITERAL_CONSTANTS = "value";
 	private static final @NonNull String INT_ELEMENT_NAME = "int";
 	private static final @NonNull String FLOAT_ELEMENT_NAME = "float";
 	private static final @NonNull String DEFAULT_SELECTOR = "";
+	
 	protected String name;
 	protected PhoenixMultiMap< String, String > attributes = EmptyMutablePMMap.getInstance();
 	protected PhoenixMultiMap< String, Element > members = EmptyMutablePMMap.getInstance();
@@ -49,24 +52,51 @@ public class FlexiElement implements Element {
 	}
 	
 	// TODO - write unit tests
-	public Element freeze() {
-		FlexiElement e = new FlexiElement( this.name );
-		e.attributes = this.attributes.frozenCopyUnlessFrozen();
-		e.members = this.members.frozenCopyUnlessFrozen();
-		return e;
+	public void freezeSelf() {
+		this.attributes = this.attributes.frozenCopyUnlessFrozen();
+		this.members = this.members.frozenCopyUnlessFrozen();
 	}
 	
 	// TODO - write unit tests
-	public Element freeze( boolean returnSelf ) {
-		if ( returnSelf ) {
-			this.attributes = this.attributes.freezeByPhoenixing();
-			this.members = this.members.freezeByPhoenixing();
+	public Element freeze() {
+		if ( this.attributes.isFrozen() ) {
 			return this;
 		} else {
-			return this.freeze();
+			FlexiElement e = new FlexiElement( this.getName() );
+			e.attributes = this.attributes.frozenCopyUnlessFrozen();
+			e.members = this.members.frozenCopyUnlessFrozen();
+			return this;
 		}
 	}
 	
+	// TODO - write unit tests
+	public Element deepFreeze() {
+		List< StdPair< Map.Entry< String, Element >, Element> > pairs = this.getMembersStream().map( e -> new StdPair<>( e, e.getValue().deepFreeze() ) ).collect( Collectors.toList() );
+		boolean no_need_to_copy = this.isFrozen() && pairs.stream().allMatch( p -> p.getFirst().getValue() == p.getSecond() );
+		if ( no_need_to_copy ) {
+			return this;
+		} else {
+			Element new_element = new FlexiElement( this.getName() );
+			this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );
+			pairs.forEach( e -> new_element.addLastChild( e.getFirst().getKey(), e.getSecond() ) );
+			new_element.freeze();
+			return new_element;
+		}
+	}
+	
+	public Element deepMutableCopy() {
+		final Element new_element = new FlexiElement( this.getName() );
+		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
+		this.getMembersStream().map( e -> new StdPair<>( e.getKey(), e.getValue().deepMutableCopy() ) ).forEachOrdered( e -> new_element.addLastChild( e.getKey(), e.getValue() ) );
+		return new_element;
+	}
+	
+	public Element mutableCopy() {
+		final Element new_element = new FlexiElement( this.getName() );
+		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
+		this.getMembersStream().forEachOrdered( e -> new_element.addLastChild( e.getKey(), e.getValue() ) );
+		return new_element;
+	}
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,8 +118,8 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Iterator< Map.Entry< String, String > > getAttributesIterator() {
-		return this.attributes.frozenCopyUnlessFrozen().iterator();
+	public Stream< Map.Entry< String, String > > getAttributesStream() {
+		return this.attributes.frozenCopyUnlessFrozen().stream();
 	}
 	
 	static class PMMapMultiMap< K, V > extends ViewPhoenixMultiMapAsMultiMap< K, V > {
@@ -177,64 +207,64 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public String getValue( @NonNull String key ) {
-		return this.attributes.getElse( key, null );
+	public String getValue( String key ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), null );
 	}
 	
 	@Override
-	public String getValue( @NonNull String key, String otherwise ) {
-		return this.attributes.getElse( key, otherwise );
+	public String getValue( String key, String otherwise ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), otherwise );
 	}
 	
 	@Override
-	public String getValue( @NonNull String key, int position ) {
-		return this.attributes.getElse( key, position, null );
+	public String getValue( String key, int position ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), position, null );
 	}
 	
 	@Override
-	public String getValue( @NonNull String key, int position, String otherwise ) {
-		return this.attributes.getElse( key, position, otherwise );
+	public String getValue( String key, int position, String otherwise ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), position, otherwise );
 	}
 	
 	@Override
-	public String getValue( final @NonNull String key, final boolean reverse, final int position, final String otherwise ) {
-		return this.attributes.getElse( key, reverse, position, otherwise );
+	public String getValue( final String key, final boolean reverse, final int position, final String otherwise ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), reverse, position, otherwise );
 	}
 	
 	@Override
-	public String getFirstValue( final @NonNull String key, final String otherwise ) {
-		return this.attributes.getElse( key, otherwise );
+	public String getFirstValue( final String key, final String otherwise ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), otherwise );
 	}
 	
 	@Override
-	public String getFirstValue( final @NonNull String key ) {
-		return this.attributes.getElse( key, null );
+	public String getFirstValue( final String key ) {
+		return this.attributes.getElse( Objects.requireNonNull( key ), null );
 	}
 	
 	@Override
-	public String getLastValue( final @NonNull String key, final String otherwise ) {
+	public String getLastValue( final String key, final String otherwise ) {
 		int N = this.attributes.sizeEntriesWithKey( key );
-		return this.attributes.getElse( key, N - 1, otherwise );
+		return this.attributes.getElse( Objects.requireNonNull( key ), N - 1, otherwise );
 	}
 	
 	@Override
-	public String getLastValue( final @NonNull String key ) {
+	public String getLastValue( final String key ) {
 		int N = this.attributes.sizeEntriesWithKey( key );
-		return this.attributes.getElse( key, N - 1, null );
+		return this.attributes.getElse( Objects.requireNonNull( key ), N - 1, null );
 	}
 	
 	@Override
-	public int countValues( final @NonNull String key ) {
-		return this.attributes.sizeEntriesWithKey( key );
+	public int countValues( final String key ) {
+		return this.attributes.sizeEntriesWithKey( Objects.requireNonNull( key ) );
 	}
 	
 	static class ValuesListView extends AbstractList< String > {
 		
 		@NonNull Element element;
-		@NonNull String key;
+		String key;
 		final boolean mutable;
 		
-		public ValuesListView( @NonNull Element element, @NonNull String key, boolean mutable ) {
+		public ValuesListView( @NonNull Element element, String key, boolean mutable ) {
 			this.element = element;
 			this.key = key;
 			this.mutable = mutable;
@@ -290,7 +320,7 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public List< String > getValuesAsList( @NonNull String key, boolean view, boolean mutable ) {
+	public List< String > getValuesAsList( String key, boolean view, boolean mutable ) {
 		if ( !view ) {
 			if ( !mutable ) {
 				return this.getValuesAsList( key );
@@ -303,7 +333,7 @@ public class FlexiElement implements Element {
 	}
 
 	@Override 
-	public List< String > getValuesAsList( @NonNull String key ) {
+	public List< String > getValuesAsList( String key ) {
 		return this.attributes.getAll( key );	
 	}
 	
@@ -383,7 +413,7 @@ public class FlexiElement implements Element {
 	}	
 	
 	@Override
-	public int countChildren( @NonNull String selector  ) {
+	public int countChildren( String selector  ) {
 		return this.members.sizeEntriesWithKey( selector );
 		
 	}
@@ -395,23 +425,23 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Iterator< Map.Entry< String, Element > > getMembersIterator() {
-		return this.members.frozenCopyUnlessFrozen().iterator();
+	public Stream< Map.Entry< String, Element > > getMembersStream() {
+		return this.members.frozenCopyUnlessFrozen().stream();
 	}
 
 	@Override
-	public Element getChild( @NonNull String selector, boolean reverse, int position, Element otherwise ) {
-		return this.members.getElse( selector, reverse, position, otherwise );
+	public Element getChild( String selector, boolean reverse, int position, Element otherwise ) {
+		return this.members.getElse( Objects.requireNonNull( selector ), reverse, position, otherwise );
 	}
 
 	@Override
-	public Element getChild( @NonNull String selector, Element otherwise ) {
-		return this.members.getElse( selector, 0, otherwise );
+	public Element getChild( String selector, Element otherwise ) {
+		return this.members.getElse( Objects.requireNonNull( selector ), 0, otherwise );
 	}
 
 	@Override
-	public Element getChild( @NonNull String selector, int position ) {
-		return this.members.getElse( selector, position, null );
+	public Element getChild( String selector, int position ) {
+		return this.members.getElse( Objects.requireNonNull( selector ), position, null );
 	}
 
 	@Override
@@ -430,8 +460,8 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public Element getFirstChild( @NonNull String selector, Element otherwise ) {
-		return this.members.getElse( selector, otherwise );
+	public Element getFirstChild( String selector, Element otherwise ) {
+		return this.members.getElse( Objects.requireNonNull( selector ), otherwise );
 	}
 
 	@Override
@@ -445,8 +475,8 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public Element getLastChild( @NonNull String selector, Element otherwise ) {
-		return this.members.getElse( selector, true, 0, otherwise );
+	public Element getLastChild( String selector, Element otherwise ) {
+		return this.members.getElse( Objects.requireNonNull( selector ), true, 0, otherwise );
 	}
 
 	@Override
@@ -490,32 +520,32 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public List< @NonNull Element > getChildrenAsList( @NonNull String selector, boolean view, boolean mutable ) {
+	public List< Element > getChildrenAsList( String selector, boolean view, boolean mutable ) {
 		if ( !view ) {
 			if ( !mutable ) {
-				return this.getChildrenAsList( selector );
+				return this.getChildrenAsList( Objects.requireNonNull( selector ) );
 			} else {
 				return new ArrayList<>( this.getChildrenAsList( selector ) );				
 			}
 		} else {
-			return new ChildrenListView( this, selector, mutable );				
+			return new ChildrenListView( this, Objects.requireNonNull( selector ), mutable );				
 		}
 	}
 
 	@Override 
-	public List< @NonNull Element > getChildrenAsList( @NonNull String selector ) {
-		return this.members.getAll( selector );	
+	public List< Element > getChildrenAsList( String selector ) {
+		return this.members.getAll( Objects.requireNonNull( selector ) );	
 	}
 
 	
 	@Override 
-	public List< @NonNull Element > getChildrenAsList( boolean view, boolean mutable ) {
+	public List< Element > getChildrenAsList( boolean view, boolean mutable ) {
 		return this.getChildrenAsList( DEFAULT_SELECTOR, view, mutable );	
 	}
 
 	
 	@Override 
-	public List< @NonNull Element > getChildrenAsList() {
+	public List< Element > getChildrenAsList() {
 		return this.members.getAll( DEFAULT_SELECTOR );	
 	}
 
@@ -538,7 +568,7 @@ public class FlexiElement implements Element {
 
 		@Override
 		public int size() {
-			return this.element.countValues( this.selector );
+			return this.element.countChildren( this.selector );
 		}
 		
 		private void checkPermissionToUpdate() {
@@ -556,9 +586,9 @@ public class FlexiElement implements Element {
 		@Override
 		public Element remove( int index ) {
 			this.checkPermissionToUpdate();
-			List< Element > values_list = new ArrayList<>( this.element.getChildrenAsList( this.selector ) );
-			Element removed = values_list.remove( index );
-			this.element.setChildren( this.selector, values_list );
+			List< Element > children = new ArrayList<>( this.element.getChildrenAsList( this.selector ) );
+			Element removed = children.remove( index );
+			this.element.setChildren( this.selector, children );
 			return removed;
 		}
 
@@ -568,9 +598,9 @@ public class FlexiElement implements Element {
 			final int N = this.element.countChildren( this.selector );
 			if ( index < N  ) {
 				if ( index < 0 ) throw new IndexOutOfBoundsException();
-				List< @NonNull Element > children_list = new ArrayList<>( this.element.getChildrenAsList( this.selector ) );
-				children_list.add( index, value );
-				this.element.setChildren( this.selector, children_list );
+				List< Element > children = new ArrayList<>( this.element.getChildrenAsList( this.selector ) );
+				children.add( index, Objects.requireNonNull( value ) );
+				this.element.setChildren( this.selector, children );
 			} else if ( index > N ) {
 				throw new IndexOutOfBoundsException();
 			} else {
@@ -612,37 +642,37 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public void addLastValue( @NonNull String key, @NonNull String value ) {
+	public void addLastValue( String key, String value ) {
 		this.attributes = this.attributes.add( key, value );
 	}
 	
 	@Override
-	public void addFirstValue( @NonNull String key, @NonNull String value ) {
+	public void addFirstValue( String key, String value ) {
 		//	TODO: unit test
 		final List< String > values = this.getValuesAsList( key, true, true );
 		values.add( 0, value );		
 	}	
 
 	@Override
-	public String removeFirstValue( @NonNull String selector ) {
+	public String removeFirstValue( String selector ) {
 		//	TODO: unit test
 		return this.removeFirstValue( selector, null );
 	}
 	
 	@Override
-	public String removeFirstValue( @NonNull String selector, String otherwise ) {
+	public String removeFirstValue( String selector, String otherwise ) {
 		//	TODO: unit test
 		final List< String > children = this.getValuesAsList( selector, true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
-	public String removeLastValue( @NonNull String selector ) {
+	public String removeLastValue( String selector ) {
 		//	TODO: unit test
 		return this.removeLastValue( selector, null );
 	}
 	
 	@Override
-	public String removeLastValue( @NonNull String selector, String otherwise ) {
+	public String removeLastValue( String selector, String otherwise ) {
 		//	TODO: unit test
 		final List< String > children = this.getValuesAsList( selector, true, true );
 		if ( children.isEmpty() ) {
@@ -664,17 +694,17 @@ public class FlexiElement implements Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
-	public void setChild( @NonNull String key, @NonNull Element child  ) {
+	public void setChild( String key, Element child  ) {
 		this.members = this.members.updateValue( key, 0, child );
 	}
 	
 	@Override
-	public void setChild( @NonNull String key, int position, @NonNull Element child  ) {
+	public void setChild( String key, int position, Element child  ) {
 		this.members = this.members.updateValue( key, position, child );
 	}
 	
 	@Override
-	public void setChildren( @NonNull String key, Iterable< @NonNull Element > children ) {
+	public void setChildren( String key, Iterable< Element > children ) {
 		this.members = this.members.clearAllEntries();
 		for ( Element v : children ) {
 			this.members = this.members.add( key, v );
@@ -682,39 +712,28 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public void addLastChild( @NonNull String selector, @NonNull Element e ) {
+	public void addLastChild( String selector, Element e ) {
 		this.members = this.members.add( selector, e );
 	}
 
 	@Override
-	public void addFirstChild( @NonNull String selector, @NonNull Element e ) {
+	public void addFirstChild( String selector, Element e ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( selector, true, true );
 		children.add( 0, e );		
 	}
 
 	@Override
-	public Element removeFirstChild( @NonNull String selector ) {
+	public Element removeFirstChild( String selector, Element otherwise ) {
 		//	TODO: unit test
-		return this.removeFirstChild( selector, null );
-	}
-	
-	@Override
-	public Element removeFirstChild( @NonNull String selector, Element otherwise ) {
-		//	TODO: unit test
-		final List< Element > children = this.getChildrenAsList( selector, true, true );
+		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
-	public Element removeLastChild( @NonNull String selector ) {
-		//	TODO: unit test
-		return this.removeLastChild( selector, null );
-	}
-	
 	@Override
-	public Element removeLastChild( @NonNull String selector, Element otherwise ) {
+	public Element removeLastChild( String selector, Element otherwise ) {
 		//	TODO: unit test
-		final List< Element > children = this.getChildrenAsList( selector, true, true );
+		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		if ( children.isEmpty() ) {
 			return otherwise;
 		} else {
