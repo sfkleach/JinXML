@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.StdBuilder;
+import com.steelypip.powerups.jinxml.implementation.StdBuilder;
 
 public class TestStdBuilder {
 	
@@ -98,10 +98,10 @@ public class TestStdBuilder {
 	@Test
 	public void testSelectors() {
 		builder.startTagEvent( "ElementName" );
-		builder.startEntryEvent( "Selector" );
-		builder.startTagEvent( "SubElementName" );
+//		builder.startEntryEvent( "Selector" );
+		builder.startTagEvent( "Selector", "SubElementName" );
 		builder.endTagEvent();
-		builder.endEntryEvent();
+//		builder.endEntryEvent();
 		builder.endTagEvent();				
 		Element e = builder.next();
 		Element s = e.getChild( "Selector" );
@@ -109,15 +109,15 @@ public class TestStdBuilder {
 		assertNull( e.getChild() );
 	}
 	
-	@Test( expected=IllegalStateException.class )
-	public void startEntryEvent_MismatchedSelectors() {
-		builder.startEntryEvent( "Selector" );		
-	}
-	
-	@Test( expected=IllegalStateException.class )
-	public void endEntryEvent_MismatchedSelectors() {
-		builder.endEntryEvent();		
-	}
+//	@Test( expected=IllegalStateException.class )
+//	public void startEntryEvent_MismatchedSelectors() {
+//		builder.startEntryEvent( "Selector" );		
+//	}
+//	
+//	@Test( expected=IllegalStateException.class )
+//	public void endEntryEvent_MismatchedSelectors() {
+//		builder.endEntryEvent();		
+//	}
 	
 	@Test
 	public void testPrimitives() {

@@ -2,6 +2,8 @@ package com.steelypip.powerups.jinxml;
 
 import java.util.stream.Stream;
 
+import com.steelypip.powerups.jinxml.implementation.ConstructingEventHandler;
+
 public interface PushParser {
 	
 	default Event readEvent() {
@@ -9,19 +11,19 @@ public interface PushParser {
 	}
 	
 	default Event readEvent( Event otherwise ) {
-		return this.readHandledEvent( ConstructingEventHandler.INSTANCE, otherwise );
+		return this.readHandledEvent( new ConstructingEventHandler(), otherwise );
 	}
 	
 	<T> T readHandledEvent( EventHandler< T > handler, T otherwise );
 	
 	default Stream< Event > readExpression() {
-		return this.readHandledExpression( ConstructingEventHandler.INSTANCE );
+		return this.readHandledExpression( new ConstructingEventHandler() );
 	}
 	
 	<T> Stream< T > readHandledExpression( EventHandler< T > handler ); 
 	
 	default Stream< Event > readInput() {
-		return this.readHandledInput( ConstructingEventHandler.INSTANCE );
+		return this.readHandledInput( new ConstructingEventHandler() );
 	}
 	
 	<T> Stream< T > readHandledInput( EventHandler< T > handler ); 

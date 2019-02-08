@@ -1,9 +1,13 @@
-package com.steelypip.powerups.jinxml;
+package com.steelypip.powerups.jinxml.implementation;
 
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 
 import org.eclipse.jdt.annotation.NonNull;
+
+import com.steelypip.powerups.jinxml.Builder;
+import com.steelypip.powerups.jinxml.Element;
+import com.steelypip.powerups.jinxml.FlexiElement;
 
 public class StdBuilder implements Builder {
 	
@@ -32,18 +36,18 @@ public class StdBuilder implements Builder {
 	protected String selector = ROOT_CHILD_SELECTOR;	
 	protected Element focus = this.root;
 	
-	private void pushSelector( String x ) {
-		this.dump.addLast( this.selector );
-		this.selector = x;
-	}
-
-	private void popSelector() {
-		try {
-			this.selector = (String)this.dump.removeLast();
-		} catch ( ClassCastException e ) {
-			throw new IllegalStateException();
-		}
-	}
+//	private void pushSelector( String x ) {
+//		this.dump.addLast( this.selector );
+//		this.selector = x;
+//	}
+//
+//	private void popSelector() {
+//		try {
+//			this.selector = (String)this.dump.removeLast();
+//		} catch ( ClassCastException e ) {
+//			throw new IllegalStateException();
+//		}
+//	}
 
 	private void pushChild( Element x ) {
 		this.dump.addLast( this.focus );
@@ -64,10 +68,10 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Void startTagEvent( @NonNull String key ) {
+	public Void startTagEvent( String selector, @NonNull String key ) {
 		//	TODO: Check context
 		final Element new_child = new FlexiElement( key );
-		this.focus.addLastChild( this.selector, new_child );
+		this.focus.addLastChild( selector, new_child );
 		this.pushChild( new_child );
 		return null;
 	}
@@ -96,9 +100,9 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Void startArrayEvent() {
+	public Void startArrayEvent( String selector ) {
 		//	TODO: check state, set state.
-		this.startTagEvent( "array" );
+		this.startTagEvent( selector, "array" );
 		return null;
 	}
 
@@ -110,32 +114,32 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Void startObjectEvent() {
+	public Void startObjectEvent( String selector ) {
 		//	TODO: check state, set state.
-		this.startTagEvent( "object" );
+		this.startTagEvent( selector, "object" );
 		return null;
 	}
 
-	@Override
-	public Void startEntryEvent( String key, Boolean solo ) {
-		//	TODO: check state, set state.
-		//	TODO: sort out nullability
-		//	TODO: solo
-		if ( this.dump.isEmpty() ) {
-			throw new IllegalStateException( "startEntryEvent: Used outside of a pair of start/end tags" );
-		}
-		this.pushSelector( key );
-		return null;
-	}
-
-	@Override
-	public Void endEntryEvent() {
-		if ( this.dump.isEmpty() ) {
-			throw new IllegalStateException( "endEntryEvent: Used outside of a pair of start/end tags" );
-		}
-		this.popSelector();
-		return null;
-	}
+//	@Override
+//	public Void startEntryEvent( String key, Boolean solo ) {
+//		//	TODO: check state, set state.
+//		//	TODO: sort out nullability
+//		//	TODO: solo
+//		if ( this.dump.isEmpty() ) {
+//			throw new IllegalStateException( "startEntryEvent: Used outside of a pair of start/end tags" );
+//		}
+//		this.pushSelector( key );
+//		return null;
+//	}
+//
+//	@Override
+//	public Void endEntryEvent() {
+//		if ( this.dump.isEmpty() ) {
+//			throw new IllegalStateException( "endEntryEvent: Used outside of a pair of start/end tags" );
+//		}
+//		this.popSelector();
+//		return null;
+//	}
 
 	@Override
 	public Void endObjectEvent() {
@@ -144,40 +148,40 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Void intEvent( String value ) {
-		this.startTagEvent( "int" );
+	public Void intEvent( String selector, String value ) {
+		this.startTagEvent( selector, "int" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "int" );
 		return null;
 	}
 
 	@Override
-	public Void floatEvent( String value ) {
-		this.startTagEvent( "float" );
+	public Void floatEvent( String selector, String value ) {
+		this.startTagEvent( selector,"float" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "float" );
 		return null;
 	}
 
 	@Override
-	public Void stringEvent( String value ) {
-		this.startTagEvent( "string" );
+	public Void stringEvent( String selector, String value ) {
+		this.startTagEvent( selector, "string" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "string" );
 		return null;
 	}
 
 	@Override
-	public Void booleanEvent( String value ) {
-		this.startTagEvent( "boolean" );
+	public Void booleanEvent( String selector, String value ) {
+		this.startTagEvent( selector,"boolean" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "boolean" );
 		return null;
 	}
 
 	@Override
-	public Void nullEvent( String value ) {
-		this.startTagEvent( "null" );
+	public Void nullEvent( String selector, String value ) {
+		this.startTagEvent( selector, "null" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "null" );
 		return null;

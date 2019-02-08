@@ -3,13 +3,24 @@ package com.steelypip.powerups.jinxml;
 public abstract class Event {
 	
 	public abstract <T> T sendTo( EventHandler< T > handler );
+	
+	abstract static class SelectorEvent extends Event {
+		String selector;
+		SelectorEvent( String selector ) {
+			this.selector = selector;
+		}
+	}
 
-	public static class StartTagEvent extends Event {
+	public static class StartTagEvent extends SelectorEvent {
 		
 		String key;
 
 		public StartTagEvent( String key ) {
-			super();
+			this( "", key );
+		}
+		
+		public StartTagEvent( String selector, String key ) {
+			super( selector );
 			this.key = key;
 		}
 
@@ -19,7 +30,7 @@ public abstract class Event {
 
 		@Override
 		public <T> T sendTo( EventHandler< T > handler ) {
-			return handler.startTagEvent( key );
+			return handler.startTagEvent( this.selector, this.key );
 		}
 		
 	}
@@ -82,10 +93,16 @@ public abstract class Event {
 		
 	}
 	
-	public static class StartArrayEvent extends Event {
+	public static class StartArrayEvent extends SelectorEvent {		
+		public StartArrayEvent() {
+			super( "" );
+		}
+		public StartArrayEvent( String selector ) {
+			super( selector );
+		}
 		@Override
 		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.startArrayEvent();
+			return handler.startArrayEvent( this.selector );
 		}		
 	}
 	
@@ -96,10 +113,16 @@ public abstract class Event {
 		}		
 	}
 	
-	public static class StartObjectEvent extends Event {
+	public static class StartObjectEvent extends SelectorEvent {
+		public StartObjectEvent() {
+			super( "" );
+		}
+		public StartObjectEvent( String selector ) {
+			super( selector );
+		}
 		@Override
 		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.startObjectEvent();
+			return handler.startObjectEvent( this.selector );
 		}		
 	}
 	
@@ -110,53 +133,16 @@ public abstract class Event {
 		}		
 	}
 	
-	public static class StartEntryEvent extends Event {
-		
-		String key = null;
-		boolean solo = true;
-		
-		public StartEntryEvent() {
-			super();
-		}
-	
-		public StartEntryEvent( String key ) {
-			super();
-			this.key = key;
-		}
-	
-		public StartEntryEvent( String key, boolean solo ) {
-			super();
-			this.key = key;
-			this.solo = solo;
-		}
-
-		public String getKey() {
-			return key;
-		}
-
-		public boolean isSolo() {
-			return solo;
-		}
-		
-		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.startEntryEvent( key, solo );
-		}
-	}
-	
-	public static class EndEntryEvent extends Event {
-		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.endEntryEvent();
-		}		
-	}
-	
-	public static abstract class LiteralConstantEvent extends Event {
+	public static abstract class LiteralConstantEvent extends SelectorEvent {
 		
 		String value;
-
+		
 		public LiteralConstantEvent( String value ) {
-			super();
+			this( "", value );
+		}
+
+		public LiteralConstantEvent( String selector, String value ) {
+			super( selector );
 			this.value = value;
 		}
 
@@ -169,7 +155,11 @@ public abstract class Event {
 	public static class IntEvent extends LiteralConstantEvent {
 		
 		public IntEvent( String value ) {
-			super( value );
+			super( "", value );
+		}
+
+		public IntEvent( String selector, String value ) {
+			super( selector, value );
 		}
 
 		@Override
@@ -181,7 +171,10 @@ public abstract class Event {
 	
 	public static class FloatEvent extends LiteralConstantEvent {
 		public FloatEvent( String value ) {
-			super( value );
+			super( "", value );
+		}
+		public FloatEvent( String selector, String value ) {
+			super( selector, value );
 		}
 		@Override
 		public <T> T sendTo( EventHandler<T> handler ) {
@@ -191,7 +184,10 @@ public abstract class Event {
 	
 	public static class StringEvent extends LiteralConstantEvent {
 		public StringEvent( String value ) {
-			super( value );
+			super( "", value );
+		}
+		public StringEvent( String selector, String value ) {
+			super( selector, value );
 		}
 		@Override
 		public <T> T sendTo( EventHandler<T> handler ) {
@@ -201,7 +197,10 @@ public abstract class Event {
 	
 	public static class BooleanEvent extends LiteralConstantEvent {
 		public BooleanEvent( String value ) {
-			super( value );
+			super( "", value );
+		}
+		public BooleanEvent( String selector, String value ) {
+			super( selector, value );
 		}
 		@Override
 		public <T> T sendTo( EventHandler<T> handler ) {
@@ -211,7 +210,10 @@ public abstract class Event {
 	
 	public static class NullEvent extends LiteralConstantEvent {
 		public NullEvent( String value ) {
-			super( value );
+			super( "", value );
+		}
+		public NullEvent( String selector, String value ) {
+			super( selector, value );
 		}
 		@Override
 		public <T> T sendTo( EventHandler<T> handler ) {
