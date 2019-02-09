@@ -35,19 +35,6 @@ public class StdBuilder implements Builder {
 	//	to be the default to be used for new members added to the 
 	protected String selector = ROOT_CHILD_SELECTOR;	
 	protected Element focus = this.root;
-	
-//	private void pushSelector( String x ) {
-//		this.dump.addLast( this.selector );
-//		this.selector = x;
-//	}
-//
-//	private void popSelector() {
-//		try {
-//			this.selector = (String)this.dump.removeLast();
-//		} catch ( ClassCastException e ) {
-//			throw new IllegalStateException();
-//		}
-//	}
 
 	private void pushChild( Element x ) {
 		this.dump.addLast( this.focus );
@@ -68,16 +55,15 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Void startTagEvent( String selector, @NonNull String key ) {
+	public void startTagEvent( String selector, @NonNull String key ) {
 		//	TODO: Check context
 		final Element new_child = new FlexiElement( key );
 		this.focus.addLastChild( selector, new_child );
 		this.pushChild( new_child );
-		return null;
 	}
 
 	@Override
-	public Void attributeEvent( @NonNull String key, String value, boolean solo ) {
+	public void attributeEvent( @NonNull String key, String value, boolean solo ) {
 		//	TODO: use solo
 		//	TODO: deal with non-nullity
 		if ( this.dump.isEmpty() ) {
@@ -85,106 +71,75 @@ public class StdBuilder implements Builder {
 		} else {
 			this.focus.addLastValue( key, value );
 		}
-		return null;
 	}
 
 	@Override
-	public Void endTagEvent( String key ) {
+	public void endTagEvent( String key ) {
 		//	TODO: check balance, check match
 		if ( key == null || this.focus.hasName( key ) ) {
 			this.popChild();
 		} else {
 			throw new IllegalArgumentException( "Mismatched tag names: " + this.focus.getName() + " and " + key );
 		}
-		return null;
 	}
 
 	@Override
-	public Void startArrayEvent( String selector ) {
+	public void startArrayEvent( String selector ) {
 		//	TODO: check state, set state.
 		this.startTagEvent( selector, "array" );
-		return null;
 	}
 
 	@Override
-	public Void endArrayEvent() {
+	public void endArrayEvent() {
 		// 	TODO: check state, set state.
 		this.endTagEvent( "array" );
-		return null;
 	}
 
 	@Override
-	public Void startObjectEvent( String selector ) {
+	public void startObjectEvent( String selector ) {
 		//	TODO: check state, set state.
 		this.startTagEvent( selector, "object" );
-		return null;
 	}
 
-//	@Override
-//	public Void startEntryEvent( String key, Boolean solo ) {
-//		//	TODO: check state, set state.
-//		//	TODO: sort out nullability
-//		//	TODO: solo
-//		if ( this.dump.isEmpty() ) {
-//			throw new IllegalStateException( "startEntryEvent: Used outside of a pair of start/end tags" );
-//		}
-//		this.pushSelector( key );
-//		return null;
-//	}
-//
-//	@Override
-//	public Void endEntryEvent() {
-//		if ( this.dump.isEmpty() ) {
-//			throw new IllegalStateException( "endEntryEvent: Used outside of a pair of start/end tags" );
-//		}
-//		this.popSelector();
-//		return null;
-//	}
 
 	@Override
-	public Void endObjectEvent() {
+	public void endObjectEvent() {
 		this.endTagEvent( "object" );
-		return null;
 	}
 
 	@Override
-	public Void intEvent( String selector, String value ) {
+	public void intEvent( String selector, String value ) {
 		this.startTagEvent( selector, "int" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "int" );
-		return null;
 	}
 
 	@Override
-	public Void floatEvent( String selector, String value ) {
+	public void floatEvent( String selector, String value ) {
 		this.startTagEvent( selector,"float" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "float" );
-		return null;
 	}
 
 	@Override
-	public Void stringEvent( String selector, String value ) {
+	public void stringEvent( String selector, String value ) {
 		this.startTagEvent( selector, "string" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "string" );
-		return null;
 	}
 
 	@Override
-	public Void booleanEvent( String selector, String value ) {
+	public void booleanEvent( String selector, String value ) {
 		this.startTagEvent( selector,"boolean" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "boolean" );
-		return null;
 	}
 
 	@Override
-	public Void nullEvent( String selector, String value ) {
+	public void nullEvent( String selector, String value ) {
 		this.startTagEvent( selector, "null" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "null" );
-		return null;
 	}
 
 	@Override

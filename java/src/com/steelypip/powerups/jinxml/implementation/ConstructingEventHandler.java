@@ -1,85 +1,97 @@
 package com.steelypip.powerups.jinxml.implementation;
 
+import java.util.ArrayDeque;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.EventHandler;
 
-public class ConstructingEventHandler implements EventHandler< Event > {
+public class ConstructingEventHandler implements EventHandler {
+	
+	ArrayDeque< Event > consumer = new ArrayDeque< Event >();
+	
+	private void accept( Event t ) {
+		this.consumer.addLast( t );
+	}
+	
+	public Event getEvent() {
+		return this.consumer.removeFirst();
+	}
 	
 	@Override
-	public Event startTagEvent( @NonNull String key ) {
-		return new Event.StartTagEvent( key );
+	public void startTagEvent( @NonNull String key ) {
+		this.accept( new Event.StartTagEvent( key ) );
 	}
 
 	@Override
-	public Event startTagEvent( String selector, @NonNull String key ) {
-		return new Event.StartTagEvent( selector, key );
+	public void startTagEvent( String selector, @NonNull String key ) {
+		this.accept( new Event.StartTagEvent( selector, key ) );
 	}
 
 	@Override
-	public Event attributeEvent( @NonNull String key, String value, boolean solo ) {
-		return new Event.AttributeEvent( key, value, solo );
+	public void attributeEvent( @NonNull String key, String value, boolean solo ) {
+		this.accept( new Event.AttributeEvent( key, value, solo ) );
 	}
 
 	@Override
-	public Event endTagEvent( String key ) {
-		return new Event.EndTagEvent( key );
+	public void endTagEvent( String key ) {
+		this.accept( new Event.EndTagEvent( key ) );
 	}
 
 	@Override
-	public Event startArrayEvent() {
-		return new Event.StartArrayEvent();
+	public void startArrayEvent() {
+		this.accept( new Event.StartArrayEvent() );
 	}
 
 	@Override
-	public Event startArrayEvent( String selector ) {
-		return new Event.StartArrayEvent( selector );
+	public void startArrayEvent( String selector ) {
+		this.accept( new Event.StartArrayEvent( selector ) );
 	}
 
 	@Override
-	public Event endArrayEvent() {
-		return new Event.EndArrayEvent();
+	public void endArrayEvent() {
+		this.accept( new Event.EndArrayEvent() );
 	}
 
 	@Override
-	public Event startObjectEvent() {
-		return new Event.StartObjectEvent();
+	public void startObjectEvent() {
+		this.accept( new Event.StartObjectEvent() );
 	}
 
 	@Override
-	public Event startObjectEvent( String selector ) {
-		return new Event.StartObjectEvent( selector );
+	public void startObjectEvent( String selector ) {
+		this.accept( new Event.StartObjectEvent( selector ) );
 	}
 
 	@Override
-	public Event endObjectEvent() {
-		return new Event.EndObjectEvent();
+	public void endObjectEvent() {
+		this.accept( new Event.EndObjectEvent() );
 	}
 
 	@Override
-	public Event intEvent( String selector, String value ) {
-		return new Event.IntEvent( selector, value );
+	public void intEvent( String selector, String value ) {
+		this.accept( new Event.IntEvent( selector, value ) );
 	}
 
 	@Override
-	public Event floatEvent( String selector, String value ) {
-		return new Event.FloatEvent( selector, value );
+	public void floatEvent( String selector, String value ) {
+		this.accept( new Event.FloatEvent( selector, value ) );
 	}
 
 	@Override
-	public Event stringEvent( String selector, String value ) {
-		return new Event.StringEvent( selector, value );
+	public void stringEvent( String selector, String value ) {
+		this.accept( new Event.StringEvent( selector, value ) );
 	}
 
 	@Override
-	public Event booleanEvent( String selector, String value ) {
-		return new Event.BooleanEvent( selector, value );
+	public void booleanEvent( String selector, String value ) {
+		this.accept( new Event.BooleanEvent( selector, value ) );
 	}
 
 	@Override
-	public Event nullEvent( String selector, String value ) {
-		return new Event.NullEvent( selector, value );
+	public void nullEvent( String selector, String value ) {
+		this.accept( new Event.NullEvent( selector, value ) );
 	}
 
 }

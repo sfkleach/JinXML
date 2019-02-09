@@ -27,6 +27,7 @@ import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.charrepeater.CharRepeater;
 import com.steelypip.powerups.charrepeater.ReaderCharRepeater;
 import com.steelypip.powerups.common.StdPair;
+import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.EventHandler;
 
 /**
@@ -39,21 +40,17 @@ import com.steelypip.powerups.jinxml.EventHandler;
  * readElement. Alternatively you can simply iterate 
  * over the parser.
  */
-public class PrototypeParser< Return > extends InputStreamProcessor implements LevelTracker, EventInterceptor< Return >  {
+public class PrototypeParser extends InputStreamProcessor implements LevelTracker  {
 	
 	private final CharRepeater cucharin;
 	
-//	private boolean pending_end_tag = false;
-	private EventHandler< Return > event_handler = null;
 	private String tag_name = null;	
 	
-	public PrototypeParser( CharRepeater rep, EventHandler< Return > handler ) {
-		this.event_handler = handler;
+	public PrototypeParser( CharRepeater rep ) {
 		this.cucharin = rep;
 	}
 
-	public PrototypeParser( Reader reader, EventHandler< Return > handler ) {
-		this.event_handler = handler;
+	public PrototypeParser( Reader reader ) {
 		this.cucharin = new ReaderCharRepeater( reader );
 	}
 	
@@ -68,26 +65,6 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 		return this.contexts_implementation;
 	}
 	
-	/*************************************************************************
-	* Implementation for the mixin EventInterceptor
-	*************************************************************************/
-	
-	boolean capturing = false;
-	
-	final ArrayDeque< Return > buffer = new ArrayDeque<>(); 
-	
-	@Override
-	public EventHandler< Return > handler() {
-		return this.event_handler;
-	}
-		
-	@Override
-	public void intercept( Return r ) {
-		if ( this.capturing ) {
-			this.buffer.addLast( r );
-		}
-	}
-
 	
 	/*************************************************************************
 	* Helper class for tracking field info
@@ -120,7 +97,7 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 	*************************************************************************/
 
 	
-	private void processAttributes() {
+	private void processAttributes( EventHandler handler ) {
 		for (;;) {
 			this.eatWhiteSpace();
 			char c = peekChar();
@@ -135,63 +112,63 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 				throw new Alert( "Expected = or :" ).culprit( "Received", nch );
 			}
 			final String value = nch == '=' ? this.gatherXMLAttributeValue() : this.gatherString();
-			this.attributeEvent( key, value, repeat_ok );
+			handler.attributeEvent( key, value, repeat_ok );
 		}
 	}
 
-	private boolean readString( final SelectorInfo selectorInfo ) {
-		this.stringEvent( selectorInfo.name, this.gatherString() );
+	private boolean readString( EventHandler handler, final SelectorInfo selectorInfo ) {
+		handler.stringEvent( selectorInfo.name, this.gatherString() );
 		return true;
 	}
 	
 	private String gatherNumber() {
-		return new NumParser< Return >( this ).process();			
+		return new NumParser( this ).process();			
 	}
 
-	private boolean readNumber( final SelectorInfo selectorInfo) {
+	private boolean readNumber( EventHandler handler, final SelectorInfo selectorInfo) {
 		final String number = this.gatherNumber();
 		// TODO: this is clumsy in the extreme. Restructure.
 		if ( ! number.matches( "[-+]?[0-9]+" ) ) {
-			this.floatEvent( selectorInfo.name, number );
+			handler.floatEvent( selectorInfo.name, number );
 		} else {
-			this.intEvent( selectorInfo.name, number );
+			handler.intEvent( selectorInfo.name, number );
 		}
 		return true;
 	}
 	
 	// Can only be invoked in a context where there is no explicit selector.
-	private boolean handleStringOrIdentifier( final boolean is_identifier, final String x ) {
-		return is_identifier ? this.handleIdentifier( SelectorInfo.DEFAULT, x ) : this.handleString( SelectorInfo.DEFAULT, x );
+	private boolean handleStringOrIdentifier( EventHandler handler, final boolean is_identifier, final String x ) {
+		return is_identifier ? this.handleIdentifier( handler, SelectorInfo.DEFAULT, x ) : this.handleString( handler, SelectorInfo.DEFAULT, x );
 	}
 
-	private boolean handleIdentifier( SelectorInfo selectorInfo, String identifier ) {
+	private boolean handleIdentifier( EventHandler handler, SelectorInfo selectorInfo, String identifier ) {
 		switch ( identifier ) {
 		case "null":
-			this.nullEvent( selectorInfo.name, identifier );
+			handler.nullEvent( selectorInfo.name, identifier );
 			return true;
 		case "true":
 		case "false":
-			this.booleanEvent( selectorInfo.name, identifier );
+			handler.booleanEvent( selectorInfo.name, identifier );
 			return true;
 		default:
 			throw new Alert( "Unrecognised identifier" ).culprit( "Identifier", identifier );
 		}
 	}
 	
-	private boolean handleString( SelectorInfo selectorInfo, String s ) {
-		this.stringEvent( selectorInfo.name, s );
+	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, String s ) {
+		handler.stringEvent( selectorInfo.name, s );
 		return true;
 	}
 
 
-	private boolean readCoreTag( @NonNull SelectorInfo selectorInfo ) {
+	private boolean readCoreTag( EventHandler handler, @NonNull SelectorInfo selectorInfo ) {
 		if ( this.tryReadChar( '[' ) ) {
 			this.pushArray();
-			this.startArrayEvent( selectorInfo.name );
+			handler.startArrayEvent( selectorInfo.name );
 			return true;
 		} else if ( this.tryReadChar( '{' ) ) {
 			this.pushObject();
-			this.startObjectEvent( selectorInfo.name );
+			handler.startObjectEvent( selectorInfo.name );
 			return true;
 		} else if ( this.tryReadChar( '<' ) ) {
 			
@@ -200,19 +177,19 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 			if ( ch == '/' ) {
 				this.eatWhiteSpace();
 				if ( this.tryReadChar( '>' ) ) {
-					this.endTagEvent( null );
+					handler.endTagEvent( null );
 				} else {
 					final String end_tag = this.gatherName();
-					this.processAttributes();
+					this.processAttributes( handler );
 					this.eatWhiteSpace();
 					this.mustReadChar( '>' );
-					this.endTagEvent( end_tag );
+					handler.endTagEvent( end_tag );
 				}
 				this.popElement();
 				return true;
 			} else if ( ch == '!' || ch == '?' ) {
 				this.eatComment( ch  );
-				return this.readNextTag( selectorInfo );
+				return this.readNextTag( handler, selectorInfo );
 			} else {
 				this.cucharin.pushChar( ch );
 			}
@@ -221,15 +198,15 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 			this.eatWhiteSpace();
 			this.tag_name = this.gatherNameOrQuotedName();
 			
-			this.startTagEvent( selectorInfo.name, this.tag_name );
-			this.processAttributes();
+			handler.startTagEvent( selectorInfo.name, this.tag_name );
+			this.processAttributes( handler );
 			
 			this.eatWhiteSpace();					
 			ch = nextChar();
 			if ( ch == '/' ) {
 				//	This is a standalone tag.
 				this.mustReadChar( '>' );
-				this.endTagEvent( this.tag_name );
+				handler.endTagEvent( this.tag_name );
 				this.popElement();
 				return true;
 			} else if ( ch == '>' ) {
@@ -245,43 +222,43 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 	}
 
 	
-	private boolean readLabelledTagOrSymbol( final boolean is_identifier, final String name ) {
+	private boolean readLabelledTagOrSymbol( EventHandler handler, final boolean is_identifier, final String name ) {
 		this.eatWhiteSpace();
 		boolean plus = this.tryReadChar( '+' );
 		boolean colon = this.tryReadChar( ':' );
 		if ( colon ) {
 			boolean solo = !plus;
 			this.eatWhiteSpace();
-			return readUnlabelledTag( new SelectorInfo( name, solo ) );
+			return readUnlabelledTag( handler, new SelectorInfo( name, solo ) );
 		} else if ( plus ) {
 			//	:+ is not allowed - we want to raise the alarm.
 			this.mustReadChar( ':' ); 	//	This will throw an exception (the one we want).
 			throw Alert.unreachable();	//	So compiler doesn't complain.
 		} else {
-			return handleStringOrIdentifier( is_identifier, name );
+			return handleStringOrIdentifier( handler, is_identifier, name );
 		}
 	}
 	
-	private boolean readUnlabelledTag( @NonNull SelectorInfo selectorInfo ) {
+	private boolean readUnlabelledTag( EventHandler handler, @NonNull SelectorInfo selectorInfo ) {
 		final char pch = this.peekChar( '\0' );
 		if ( pch == '<' || pch == '[' || pch == '{' ) {
-			return this.readCoreTag( selectorInfo );
+			return this.readCoreTag( handler, selectorInfo );
 		} else if ( Character.isDigit( pch ) || pch == '+' || pch == '-' ) {
-			return this.readNumber( selectorInfo );
+			return this.readNumber( handler, selectorInfo );
 		} else if ( pch == '"' || pch == '\'' ) {
-			return this.readString( selectorInfo );
+			return this.readString( handler, selectorInfo );
 		} else if ( pch == ']' ) {
 			this.mustReadChar( ']' );
 			this.popArray();
-			this.endArrayEvent();
+			handler.endArrayEvent();
 			return true;
 		} else if ( pch == '}' ) {
 			this.mustReadChar( '}' );
 			this.popObject();
-			this.endObjectEvent();
+			handler.endObjectEvent();
 			return true;
 		} else if ( Character.isLetter( pch ) ) {
-			return this.handleIdentifier( selectorInfo, this.gatherName() );
+			return this.handleIdentifier( handler, selectorInfo, this.gatherName() );
 		} else {
 			throw new Alert( "Unexpected character while reading tag or constant" ).culprit( "Character", pch );
 		}
@@ -294,24 +271,24 @@ public class PrototypeParser< Return > extends InputStreamProcessor implements L
 	 * @param selectorInfo null if no selector has been read yet, otherwise the selector info.
 	 * @return true if it read a tag, false at end of stream.
 	 */
-	boolean readNextTag( SelectorInfo selectorInfo ) {
+	boolean readNextTag( EventHandler handler, SelectorInfo selectorInfo ) {
 		this.eatWhiteSpaceIncludingOneComma();
 		if ( !this.cucharin.hasNextChar() ) {
 			return false;
 		} else {	
 			final char pch = this.peekChar( '\0' );
 			if ( Character.isLetter( pch ) && selectorInfo == null ) {
-				return readLabelledTagOrSymbol( true, this.gatherName() );
+				return readLabelledTagOrSymbol( handler, true, this.gatherName() );
 			} else if ( ( pch == '"' || pch == '\'' ) && selectorInfo == null ) {
-				return readLabelledTagOrSymbol( false, this.gatherString() );
+				return readLabelledTagOrSymbol( handler, false, this.gatherString() );
 			} else {
-				return readUnlabelledTag( SelectorInfo.DEFAULT );
+				return readUnlabelledTag( handler, SelectorInfo.DEFAULT );
 			}
 		}
 	}
 	
-	boolean readNextTag() {
-		return this.readNextTag( null );
+	boolean readNextTag( EventHandler handler ) {
+		return this.readNextTag( handler, null );
 	}
 
 	

@@ -2,68 +2,66 @@ package com.steelypip.powerups.jinxml;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-public interface EventHandler< T > {
+public interface EventHandler {
 	
-	default T handleEvent( Event e ) {
-		return e.sendTo( this );
+	default void handleEvent( Event e ) {
+		e.sendTo( this );
 	}
 	
-	T startTagEvent( String selector, @NonNull String key );
-	default T startTagEvent( @NonNull String key ) {
-		return this.startTagEvent( "", key );
+	void startTagEvent( String selector, @NonNull String key );
+	default void startTagEvent( @NonNull String key ) {
+		this.startTagEvent( "", key );
 	}
 	
-	default T attributeEvent( @NonNull String key, String value ) {
-		return this.attributeEvent( key, value, true );
+	default void attributeEvent( @NonNull String key, String value ) {
+		this.attributeEvent( key, value, true );
 	}
 	
-	T attributeEvent( @NonNull String key, String value, boolean solo );
+	void attributeEvent( @NonNull String key, String value, boolean solo );
 			
-	default T endTagEvent() {
-		return this.endTagEvent( null );
+	default void endTagEvent() {
+		this.endTagEvent( null );
 	}
 	
-	T endTagEvent( String key );	
+	void endTagEvent( String key );	
 		
-	T startArrayEvent( String selector );
-	default T startArrayEvent() {
-		return this.startArrayEvent( "" );
+	void startArrayEvent( String selector );
+	default void startArrayEvent() {
+		this.startArrayEvent( "" );
 	}
 	
-	T endArrayEvent();
+	void endArrayEvent();
 	
-	T startObjectEvent( String selector );
-	default T startObjectEvent() {
-		return this.startObjectEvent( "" );
-
+	void startObjectEvent( String selector );
+	default void startObjectEvent() {
+		this.startObjectEvent( "" );
 	}	
 	
-	T endObjectEvent();
+	void endObjectEvent();
 	
-	T intEvent( String selector, String value );
-	default T intEvent( String value ) {
-		return this.intEvent( "", value );
+	void intEvent( String selector, String value );
+	default void intEvent( String value ) {
+		this.intEvent( "", value );
 	}
 	
-	T floatEvent( String selector, String value );
-	default T floatEvent( String value ) {
-		return this.floatEvent( value );
+	void floatEvent( String selector, String value );
+	default void floatEvent( String value ) {
+		this.floatEvent( value );
 	}
 	
-	
-	T stringEvent( String selector, String value );
-	default T stringEvent( String value ) {
-		return this.stringEvent( "", value );
+	void stringEvent( String selector, String value );
+	default void stringEvent( String value ) {
+		this.stringEvent( "", value );
 	}
 	
-	T booleanEvent( String selector, String value );
-	default T booleanEvent( String value ) {
-		return this.booleanEvent( "", value );
+	void booleanEvent( String selector, String value );
+	default void booleanEvent( String value ) {
+		this.booleanEvent( "", value );
 	}
 	
-	T nullEvent( String selector, String value );	
-	default T nullEvent( String value ) {
-		return this.nullEvent( "", value );
+	void nullEvent( String selector, String value );	
+	default void nullEvent( String value ) {
+		this.nullEvent( "", value );
 	}
 
 }

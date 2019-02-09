@@ -3,7 +3,7 @@ package com.steelypip.powerups.jinxml;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public interface Builder extends Iterator< Element >, EventHandler< Void > {
+public interface Builder extends Iterator< Element >, EventHandler {
 	
 	/**
 	 * returns true if enough events have been received to construct an element.

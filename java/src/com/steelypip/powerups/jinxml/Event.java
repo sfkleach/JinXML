@@ -2,7 +2,7 @@ package com.steelypip.powerups.jinxml;
 
 public abstract class Event {
 	
-	public abstract <T> T sendTo( EventHandler< T > handler );
+	public abstract void sendTo( EventHandler handler );
 	
 	abstract static class SelectorEvent extends Event {
 		String selector;
@@ -29,8 +29,8 @@ public abstract class Event {
 		}
 
 		@Override
-		public <T> T sendTo( EventHandler< T > handler ) {
-			return handler.startTagEvent( this.selector, this.key );
+		public void sendTo( EventHandler handler ) {
+			handler.startTagEvent( this.selector, this.key );
 		}
 		
 	}
@@ -65,8 +65,8 @@ public abstract class Event {
 		}
 
 		@Override
-		public <T> T sendTo( EventHandler< T > handler ) {
-			return handler.attributeEvent( key, value, solo );
+		public void sendTo( EventHandler handler ) {
+			handler.attributeEvent( key, value, solo );
 		}
 		
 	}
@@ -87,8 +87,8 @@ public abstract class Event {
 		}
 
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.endTagEvent( key );
+		public void sendTo( EventHandler handler ) {
+			handler.endTagEvent( key );
 		}
 		
 	}
@@ -101,15 +101,15 @@ public abstract class Event {
 			super( selector );
 		}
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.startArrayEvent( this.selector );
+		public void sendTo( EventHandler handler ) {
+			handler.startArrayEvent( this.selector );
 		}		
 	}
 	
 	public static class EndArrayEvent extends Event {		
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.endArrayEvent();
+		public void sendTo( EventHandler handler ) {
+			handler.endArrayEvent();
 		}		
 	}
 	
@@ -121,15 +121,15 @@ public abstract class Event {
 			super( selector );
 		}
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.startObjectEvent( this.selector );
+		public void sendTo( EventHandler handler ) {
+			handler.startObjectEvent( this.selector );
 		}		
 	}
 	
 	public static class EndObjectEvent extends Event {
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.endObjectEvent();
+		public void sendTo( EventHandler handler ) {
+			handler.endObjectEvent();
 		}		
 	}
 	
@@ -163,8 +163,8 @@ public abstract class Event {
 		}
 
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.intEvent( value );
+		public void sendTo( EventHandler handler ) {
+			handler.intEvent( value );
 		}
 		
 	}
@@ -177,8 +177,8 @@ public abstract class Event {
 			super( selector, value );
 		}
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.floatEvent( value );
+		public void sendTo( EventHandler handler ) {
+			handler.floatEvent( value );
 		}		
 	}
 	
@@ -190,8 +190,8 @@ public abstract class Event {
 			super( selector, value );
 		}
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.stringEvent( value );
+		public void sendTo( EventHandler handler ) {
+			handler.stringEvent( value );
 		}	
 	}
 	
@@ -203,8 +203,8 @@ public abstract class Event {
 			super( selector, value );
 		}
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.booleanEvent( value );
+		public void sendTo( EventHandler handler ) {
+			handler.booleanEvent( value );
 		}			
 	}
 	
@@ -216,8 +216,8 @@ public abstract class Event {
 			super( selector, value );
 		}
 		@Override
-		public <T> T sendTo( EventHandler<T> handler ) {
-			return handler.booleanEvent( value );
+		public void sendTo( EventHandler handler ) {
+			handler.booleanEvent( value );
 		}	
 	}
 		

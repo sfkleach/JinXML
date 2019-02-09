@@ -10,35 +10,17 @@ public interface PushParser {
 		return this.readEvent( null );
 	}
 	
-	default Event readEvent( Event otherwise ) {
-		return this.readHandledEvent( new ConstructingEventHandler(), otherwise );
-	}
+	Event readEvent( Event otherwise );
+		
+	Stream< Event > readExpression();
 	
-	<T> T readHandledEvent( EventHandler< T > handler, T otherwise );
+	Stream< Event > readInput();
+		
+	void sendEvent( EventHandler handler );
 	
-	default Stream< Event > readExpression() {
-		return this.readHandledExpression( new ConstructingEventHandler() );
-	}
+	void sendExpression( EventHandler handler );
 	
-	<T> Stream< T > readHandledExpression( EventHandler< T > handler ); 
-	
-	default Stream< Event > readInput() {
-		return this.readHandledInput( new ConstructingEventHandler() );
-	}
-	
-	<T> Stream< T > readHandledInput( EventHandler< T > handler ); 
-	
-	default void sendEvent( EventHandler< Void > handler ) {
-		this.readHandledEvent( handler, null );
-	}
-	
-	default void sendExpression( EventHandler< Void > handler ) {
-		this.readHandledExpression( handler );
-	}
-	
-	default void sendInput( EventHandler< Void > handler ) {
-		this.readHandledInput( handler );
-	}
+	void sendInput( EventHandler handler );
 	
 	Stream< Element > readElementStream();
 	Element readElement();

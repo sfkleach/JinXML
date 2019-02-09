@@ -2,15 +2,15 @@ package com.steelypip.powerups.jinxml.implementation;
 
 import com.steelypip.powerups.alert.Alert;
 
-class NumParser< Return > {
-	PrototypeParser< Return > fparser;
+class NumParser {
+	PrototypeParser fparser;
 	
 	StringBuilder b = new StringBuilder();
 	
 	int radix = 10;
 	boolean floating_point = false;
 	
-	public NumParser( PrototypeParser< Return > fparser ) {
+	public NumParser( PrototypeParser fparser ) {
 		super();
 		this.fparser = fparser;
 	}

@@ -20,10 +20,7 @@ package com.steelypip.powerups.charrepeater;
 
 /**
  * This is an interface for a char based stream that
- * supports unlimited pushback. With Java 8 streams this
- * might be a bit superfluous - I haven't quite got the
- * full sense of what Streams are meant to be. 
- * 
+ * supports unlimited pushback. 
  */
 public interface CharRepeater {
 	/**
