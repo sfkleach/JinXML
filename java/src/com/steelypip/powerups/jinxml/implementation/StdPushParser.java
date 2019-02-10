@@ -16,13 +16,14 @@ import com.steelypip.powerups.jinxml.PushParser;
 public class StdPushParser implements PushParser {
 	
 	final PrototypeParser pp;
+	boolean expandLiteralConstants = false;
 	
-	public StdPushParser( Reader reader ) {
-		this.pp = new PrototypeParser( reader );
+	public StdPushParser( Reader reader, boolean expandLiteralConstants ) {
+		this.pp = new PrototypeParser( reader, expandLiteralConstants );
 	}
 	
-	public StdPushParser( CharRepeater rep ) {
-		this.pp = new PrototypeParser( rep );
+	public StdPushParser( CharRepeater rep, boolean expandLiteralConstants ) {
+		this.pp = new PrototypeParser( rep, expandLiteralConstants );
 	}
 	
 	/*************************************************************************

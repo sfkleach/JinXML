@@ -42,15 +42,18 @@ import com.steelypip.powerups.jinxml.EventHandler;
 public class PrototypeParser extends InputStreamProcessor implements LevelTracker  {
 	
 	private final CharRepeater cucharin;
+	private boolean expandLiteralConstants;
 	
 	private String tag_name = null;	
 	
-	public PrototypeParser( CharRepeater rep ) {
+	public PrototypeParser( CharRepeater rep, boolean expandLiteralConstants ) {
 		this.cucharin = rep;
+		this.expandLiteralConstants = expandLiteralConstants;
 	}
 
-	public PrototypeParser( Reader reader ) {
+	public PrototypeParser( Reader reader, boolean expandLiteralConstants ) {
 		this.cucharin = new ReaderCharRepeater( reader );
+		this.expandLiteralConstants = expandLiteralConstants;
 	}
 	
 	/*************************************************************************
@@ -91,6 +94,56 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 		return this.cucharin;
 	}
 	
+	
+	/*************************************************************************
+	* Handling literal constants
+	*************************************************************************/
+	
+	private void sendLiteralConstant( EventHandler handler, @NonNull String selector, @NonNull String typeName, @NonNull String value ) {
+		handler.startTagEvent( selector, typeName );
+		handler.attributeEvent( "value", value );
+		handler.endTagEvent();		
+	}
+	
+	private void sendIntEvent( EventHandler handler, @NonNull String selector, @NonNull String value ) {
+		if ( this.expandLiteralConstants ) {
+			this.sendLiteralConstant( handler, selector, "int", value );
+		} else {
+			handler.intEvent( selector, value );
+		}
+	}
+	
+	private void sendFloatEvent( EventHandler handler, @NonNull String selector, @NonNull String value ) {
+		if ( this.expandLiteralConstants ) {
+			this.sendLiteralConstant( handler, selector, "float", value );
+		} else {
+			handler.floatEvent( selector, value );
+		}
+	}
+	
+	private void sendNullEvent( EventHandler handler, @NonNull String selector, @NonNull String identifier ) {
+		if ( this.expandLiteralConstants ) {
+			this.sendLiteralConstant( handler, selector, "null", identifier );
+		} else {
+			handler.nullEvent( selector, identifier );
+		}
+	}
+
+	private void sendBooleanEvent( EventHandler handler, @NonNull String selector, @NonNull String value ) {
+		if ( this.expandLiteralConstants ) {
+			this.sendLiteralConstant( handler, selector, "boolean", value );
+		} else {
+			handler.booleanEvent( selector, value );
+		}
+	}
+	
+	private void sendStringEvent( EventHandler handler, @NonNull String selector, @NonNull String value ) {
+		if ( this.expandLiteralConstants ) {
+			this.sendLiteralConstant( handler, selector, "string", value );
+		} else {
+			handler.stringEvent( selector, value );
+		}
+	}
 
 	/*************************************************************************
 	* Main Section
@@ -129,9 +182,9 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 		final String number = this.gatherNumber();
 		// TODO: this is clumsy in the extreme. Restructure.
 		if ( ! number.matches( "[-+]?[0-9]+" ) ) {
-			handler.floatEvent( selectorInfo.name, number );
+			sendFloatEvent( handler, selectorInfo.name, number );
 		} else {
-			handler.intEvent( selectorInfo.name, number );
+			sendIntEvent( handler, selectorInfo.name, number );
 		}
 		return true;
 	}
@@ -140,26 +193,28 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 	private boolean handleStringOrIdentifier( EventHandler handler, final boolean is_identifier, final @NonNull String x ) {
 		return is_identifier ? this.handleIdentifier( handler, SelectorInfo.DEFAULT, x ) : this.handleString( handler, SelectorInfo.DEFAULT, x );
 	}
+	
+
+	
+	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, @NonNull String s ) {
+		this.sendStringEvent( handler, selectorInfo.name, s );
+		return true;
+	}
 
 	private boolean handleIdentifier( EventHandler handler, @NonNull SelectorInfo selectorInfo, String identifier ) {
 		switch ( identifier ) {
 		case "null":
-			handler.nullEvent( selectorInfo.name, identifier );
+			this.sendNullEvent( handler, selectorInfo.name, identifier );
 			return true;
 		case "true":
 		case "false":
-			handler.booleanEvent( selectorInfo.name, identifier );
+			this.sendBooleanEvent( handler, selectorInfo.name, identifier );
 			return true;
 		default:
 			throw new Alert( "Unrecognised identifier" ).culprit( "Identifier", identifier );
 		}
 	}
 	
-	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, @NonNull String s ) {
-		handler.stringEvent( selectorInfo.name, s );
-		return true;
-	}
-
 
 	private boolean readCoreTag( EventHandler handler, @NonNull SelectorInfo selectorInfo ) {
 		if ( this.tryReadChar( '[' ) ) {
