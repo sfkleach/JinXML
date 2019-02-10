@@ -1,5 +1,7 @@
 package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsEmptyMutablePMMap;
@@ -44,22 +46,22 @@ public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > imple
 	}
 
 	@Override
-	public EmptyFrozenPMMap< K, V > removeEntries( Object key ) {
+	public EmptyFrozenPMMap< K, V > removeEntries( @NonNull Object key ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > setValues( K key, Iterable< ? extends V > values ) {
+	public PhoenixMultiMap< K, V > setValues( @NonNull K key, Iterable< ? extends V > values ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > setSingletonValue( K key, V value ) {
+	public PhoenixMultiMap< K, V > setSingletonValue( @NonNull K key, V value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > updateValue( K key, int n, V value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< K, V > updateValue( @NonNull K key, int n, V value ) throws IllegalArgumentException {
 		throw new UnsupportedOperationException();
 	}
 

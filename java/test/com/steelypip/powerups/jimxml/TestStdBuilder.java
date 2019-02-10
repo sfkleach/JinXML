@@ -109,16 +109,6 @@ public class TestStdBuilder {
 		assertNull( e.getChild() );
 	}
 	
-//	@Test( expected=IllegalStateException.class )
-//	public void startEntryEvent_MismatchedSelectors() {
-//		builder.startEntryEvent( "Selector" );		
-//	}
-//	
-//	@Test( expected=IllegalStateException.class )
-//	public void endEntryEvent_MismatchedSelectors() {
-//		builder.endEntryEvent();		
-//	}
-	
 	@Test
 	public void testPrimitives() {
 		builder.intEvent( "123" );
@@ -149,6 +139,12 @@ public class TestStdBuilder {
 				throw new RuntimeException();
 			}
 		}
+	}
+	
+	@Test
+	public void hasNext_AfterPrimitive() {
+		builder.intEvent( "456" );
+		assertTrue( builder.hasNext() );
 	}
 
 	

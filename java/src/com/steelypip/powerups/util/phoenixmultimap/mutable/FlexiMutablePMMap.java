@@ -1,9 +1,10 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -26,7 +27,7 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > add( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > add( @NonNull Key key, Value value ) {
 		List< Value > list = this.get( key );
 		if ( list == null ) {
 			list = new ArrayList< Value >();
@@ -37,7 +38,7 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntry( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > removeEntry( @NonNull Key key, Value value ) {
 		final List< Value > list = this.get( key );
 		if ( list != null ) {
 			list.remove( value );
@@ -46,7 +47,7 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntryAt( Key key, int N ) {
+	public PhoenixMultiMap< Key, Value > removeEntryAt( @NonNull Key key, int N ) {
 		final List< Value > list = this.get( key );
 		if ( list != null ) {
 			list.remove( N );
@@ -55,13 +56,13 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntries( Key key ) {
+	public PhoenixMultiMap< Key, Value > removeEntries( @NonNull Key key ) {
 		this.remove( key );
 		return this;
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setValues( Key key, Iterable< ? extends Value > values ) {
+	public PhoenixMultiMap< Key, Value > setValues( @NonNull Key key, Iterable< ? extends Value > values ) {
 		List< Value > list = this.get( key );
 		if ( list == null ) {
 			list = new ArrayList<>();
@@ -76,7 +77,7 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setSingletonValue( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > setSingletonValue( @NonNull Key key, Value value ) {
 		List< Value > list = this.get( key );
 		if ( list == null ) {
 			list = new ArrayList<>();
@@ -89,7 +90,7 @@ public class FlexiMutablePMMap< Key, Value > extends AbsFlexiMutablePMMap< Key, 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > updateValue( Key key, int n, Value value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< Key, Value > updateValue( @NonNull Key key, int n, Value value ) throws IllegalArgumentException {
 		List< Value > list = this.get( key );
 		if ( list == null ) throw new IllegalArgumentException();
 		try {

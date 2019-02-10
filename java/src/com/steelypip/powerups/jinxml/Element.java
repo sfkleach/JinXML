@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
@@ -116,7 +118,7 @@ public interface Element {
 	 * @param key the key of the attribute entry to filter by, may not be null
 	 * @return the attribute value
 	 */
-	String getValue( String key );
+	String getValue( @NonNull String key );
 	
 	/**
 	 * Gets the first attribute value with given key , if such an attribute
@@ -125,7 +127,7 @@ public interface Element {
 	 * @param otherwise fallback value	 
 	 * @return the attribute value
 	 */
-	String getValue( String key, String otherwise );
+	String getValue( @NonNull String key, String otherwise );
 	
 	/**
 	 * Gets the attribute value with given key at a given position, if such an attribute
@@ -134,7 +136,7 @@ public interface Element {
 	 * @param position attributes with the same key are ordered
 	 * @return the attribute value
 	 */
-	String getValue( String key, int position );
+	String getValue( @NonNull String key, int position );
 	
 	/**
 	 * Gets the attribute value with given key at a given position, if such an attribute
@@ -144,7 +146,7 @@ public interface Element {
 	 * @param otherwise fallback value
 	 * @return the attribute value
 	 */
-	String getValue( String key, int position, String otherwise );
+	String getValue( @NonNull String key, int position, String otherwise );
 	
 	/**
 	 * Gets the attribute value with given key at a given position, if such an attribute
@@ -164,7 +166,7 @@ public interface Element {
 	 * @param otherwise fallback value
 	 * @return the attribute value
 	 */
-	String getFirstValue( String key );
+	String getFirstValue( @NonNull String key );
 
 	/**
 	 * Gets the first attribute value with given key, if such an attribute
@@ -172,7 +174,7 @@ public interface Element {
 	 * @param key the key of the attribute entry to filter by, may not be null
 	 * @return the attribute value
 	 */
-	String getFirstValue( String key, String otherwise );
+	String getFirstValue( @NonNull String key, String otherwise );
 	
 	/**
 	 * Gets the last attribute value with given key, if such an attribute
@@ -181,7 +183,7 @@ public interface Element {
 	 * @param otherwise fallback value
 	 * @return the attribute value
 	 */
-	String getLastValue( String key );
+	String getLastValue( @NonNull String key );
 
 	/**
 	 * Gets the last attribute value with given key, if such an attribute
@@ -189,14 +191,14 @@ public interface Element {
 	 * @param key the key of the attribute entry to filter by, may not be null.
 	 * @return the attribute value
 	 */
-	String getLastValue( String key, String otherwise );
+	String getLastValue( @NonNull String key, String otherwise );
 	
 	/**
 	 * Retunrs the number of entries for a given key 
 	 * @param key may not be null
 	 * @return
 	 */
-	int countValues( String key );
+	int countValues( @NonNull String key );
 	
 	/**
 	 * Given a key, return an ordered list of the values of entries with matching key. 
@@ -205,7 +207,7 @@ public interface Element {
 	 * @param mutable a flag indicating whether the returned list supports update operations
 	 * @return the ordered list
 	 */
-	List< String > getValuesAsList( String key, boolean view, boolean mutable );
+	List< String > getValuesAsList( @NonNull String key, boolean view, boolean mutable );
 
 	/**
 	 * Given a key, return an immutable ordered list of the values of entries with matching key.
@@ -213,7 +215,7 @@ public interface Element {
 	 * @param key the given key, may not be null.
 	 * @return the ordered list
 	 */
-	List< String > getValuesAsList( String key );
+	List< String > getValuesAsList( @NonNull String key );
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members
@@ -230,7 +232,7 @@ public interface Element {
 	 * @param selector a non-null selector
 	 * @return number of children
 	 */
-	int countChildren( String selector  );
+	int countChildren( @NonNull String selector  );
 	
 	/**
 	 * Returns the number of children with the default selector (empty string)
@@ -276,7 +278,7 @@ public interface Element {
 	 * @param otherwise fallback value
 	 * @return the child
 	 */
-	Element getChild( String selector, boolean reverse, int position, Element otherwise );
+	Element getChild( @NonNull String selector, boolean reverse, int position, Element otherwise );
 		
 	/**
 	 * Gets the first child from member with given selector, if such an member
@@ -285,7 +287,7 @@ public interface Element {
 	 * @param otherwise fallback value
 	 * @return the child
 	 */
-	Element getChild( String selector, Element otherwise );
+	Element getChild( @NonNull String selector, Element otherwise );
 	
 	/**
 	 * Gets the first child from member with given selector, if such an member
@@ -293,7 +295,7 @@ public interface Element {
 	 * @param selector the non-null selector of the member entry to filter by
 	 * @return the child
 	 */
-	default Element getChild( String selector ) {
+	default Element getChild( @NonNull String selector ) {
 		return this.getChild( selector, null );
 	}
 	
@@ -304,7 +306,7 @@ public interface Element {
 	 * @param position members with the same key are ordered
 	 * @return the child or null
 	 */
-	Element getChild( String selector, int position );
+	Element getChild( @NonNull String selector, int position );
 	
 	/**
 	 * Gets the first child from member with the empty selector, if such an member
@@ -329,11 +331,11 @@ public interface Element {
 	 */	
 	Element getChild();
 	
-	Element getFirstChild( String selector, Element otherwise );
+	Element getFirstChild( @NonNull String selector, Element otherwise );
 	Element getFirstChild( Element otherwise );
 	Element getFirstChild();
 	
-	Element getLastChild( String selector, Element otherwise );
+	Element getLastChild( @NonNull String selector, Element otherwise );
 	Element getLastChild( Element otherwise );
 	Element getLastChild();
 	
@@ -342,9 +344,9 @@ public interface Element {
 	MultiMap< String, Element > getChildrenAsMultiMap( boolean view, boolean mutable );
 
 	List< Element > getChildrenAsList();
-	List< Element > getChildrenAsList( String selector );
+	List< Element > getChildrenAsList( @NonNull String selector );
 	List< Element > getChildrenAsList( boolean view, boolean mutable );
-	List< Element > getChildrenAsList( String selector, boolean view, boolean mutable );
+	List< Element > getChildrenAsList( @NonNull String selector, boolean view, boolean mutable );
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Primitive Values
@@ -397,7 +399,7 @@ public interface Element {
 	 * Sets the element name to a non-empty string.
 	 * @param _name the new name, which may not be null
 	 */
-	void setName( String _name );	
+	void setName( @NonNull String _name );	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Attributes - Imperative Methods
@@ -409,7 +411,7 @@ public interface Element {
 	 * @param key the shared key
 	 * @param values a set of values provided as an iterable
 	 */
-	void setValues( String key, Iterable< String > values );
+	void setValues( @NonNull String key, Iterable< String > values );
 	
 	/**
 	 * Sets the first attribute of an element with the given key to the given value
@@ -417,17 +419,17 @@ public interface Element {
 	 * @param key the shared key
 	 * @param value the value to add
 	 */
-	void setValue( String key, String value );
+	void setValue( @NonNull String key, String value );
 	
 	//	TODO
-	void setValue( String key, int position, String value );
+	void setValue( @NonNull String key, int position, String value );
 	
 	/**
 	 * Adds an entry to the attributes of an element.
 	 * @param key key of the entry being added
 	 * @param value value of the entry being added
 	 */
-	void addLastValue( String key, String value );
+	void addLastValue( @NonNull String key, String value );
 	
 	/**
 	 * Adds an entry to the attributes of an element.
@@ -435,13 +437,13 @@ public interface Element {
 	 * @param key key of the entry being added
 	 * @param value value of the entry being added
 	 */
-	void addFirstValue( String key, String value );
+	void addFirstValue( @NonNull String key, String value );
 
-	String removeFirstValue( String key );
-	String removeFirstValue( String key, String otherwise );
+	String removeFirstValue( @NonNull String key );
+	String removeFirstValue( @NonNull String key, String otherwise );
 	
-	String removeLastValue( String key );
-	String removeLastValue( String key, String otherwise );
+	String removeLastValue( @NonNull String key );
+	String removeLastValue( @NonNull String key, String otherwise );
 	
 	/**
 	 * Sets the attributes of an element sequentially to the entries of a multi-map
@@ -454,15 +456,15 @@ public interface Element {
 	//	Members - Imperative Methods
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
-	void setChild( String key, Element child  );
+	void setChild( @NonNull String key, Element child  );
 	
-	void setChild( String key, int position, Element child  );
+	void setChild( @NonNull String key, int position, Element child  );
 	
-	void setChildren( String key, Iterable< Element > children );
+	void setChildren( @NonNull String key, Iterable< Element > children );
 
-	void addLastChild( String selector, Element child );
+	void addLastChild( @NonNull String selector, Element child );
 	
-	void addFirstChild( String selector, Element child );
+	void addFirstChild( @NonNull String selector, Element child );
 	
 	default Element removeFirstChild() {
 		return this.removeFirstChild( "", null );
@@ -470,10 +472,10 @@ public interface Element {
 	default Element removeFirstChild( Element otherwise ) {
 		return this.removeFirstChild( "", otherwise );
 	}
-	default Element removeFirstChild( String selector ) {
+	default Element removeFirstChild( @NonNull String selector ) {
 		return this.removeFirstChild( selector, null );
 	}
-	Element removeFirstChild( String selector, Element otherwise );
+	Element removeFirstChild( @NonNull String selector, Element otherwise );
 	
 	default Element removeLastChild() {
 		return this.removeLastChild( "", null );
@@ -481,10 +483,10 @@ public interface Element {
 	default Element removeLastChild( Element otherwise ) {
 		return this.removeLastChild( "", otherwise );
 	}
-	default Element removeLastChild( String selector ) {
+	default Element removeLastChild( @NonNull String selector ) {
 		return this.removeLastChild( selector, null );		
 	}
-	Element removeLastChild( String selector, Element otherwise );
+	Element removeLastChild( @NonNull String selector, Element otherwise );
 	
 	/**
 	 * Sets the members of an element sequentially to the entries of a multi-map

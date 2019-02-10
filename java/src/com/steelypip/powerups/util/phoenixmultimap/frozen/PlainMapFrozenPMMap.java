@@ -3,6 +3,8 @@ package com.steelypip.powerups.util.phoenixmultimap.frozen;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsPlainMapMutablePMMap;
@@ -26,7 +28,7 @@ public class PlainMapFrozenPMMap< Key, Value > extends AbsPlainMapMutablePMMap< 
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > add( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > add( @NonNull Key key, Value value ) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -37,32 +39,32 @@ public class PlainMapFrozenPMMap< Key, Value > extends AbsPlainMapMutablePMMap< 
 
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntry( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > removeEntry( @NonNull Key key, Value value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntryAt( Key key, int N ) {
+	public PhoenixMultiMap< Key, Value > removeEntryAt( @NonNull Key key, int N ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntries( Key key ) {
+	public PhoenixMultiMap< Key, Value > removeEntries( @NonNull Key key ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setValues( Key key, Iterable< ? extends Value > values ) {
+	public PhoenixMultiMap< Key, Value > setValues( @NonNull Key key, Iterable< ? extends Value > values ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setSingletonValue( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > setSingletonValue( @NonNull Key key, Value value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > updateValue( Key key, int n, Value value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< Key, Value > updateValue( @NonNull Key key, int n, Value value ) throws IllegalArgumentException {
 		throw new UnsupportedOperationException();
 	}
 

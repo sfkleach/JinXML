@@ -242,7 +242,7 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public String getLastValue( final String key, final String otherwise ) {
+	public String getLastValue( final @NonNull String key, final String otherwise ) {
 		int N = this.attributes.sizeEntriesWithKey( key );
 		return this.attributes.getElse( Objects.requireNonNull( key ), N - 1, otherwise );
 	}

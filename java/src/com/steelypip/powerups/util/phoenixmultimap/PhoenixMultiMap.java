@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,7 +31,8 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	default PhoenixMultiMap< K, V > mutableCopy() {
 		PhoenixMultiMap< K, V > sofar = new EmptyMutablePMMap< K, V >();
 		for ( Map.Entry< ? extends K, ? extends V > e : this ) {
-			sofar = sofar.add(  e.getKey(), e.getValue() );
+			final K key = e.getKey();
+			sofar = sofar.add( Objects.requireNonNull( key ), e.getValue() );
 		}
 		return sofar;
 	}
@@ -97,11 +99,11 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param value
 	 * @return
 	 */
-	default boolean	hasEntry( K key, V value ) {
+	default boolean	hasEntry( @NonNull K key, V value ) {
 		return this.getAll( key ).contains( value );
 	}
 	
-	default boolean	hasEntry( K key, int index, V value ) {
+	default boolean	hasEntry( @NonNull K key, int index, V value ) {
 		try {
 			V v = this.getAll( key ).get( index );
 			return v == null ? value == null : v.equals( value );
@@ -113,7 +115,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	/** 
 	 * Returns true if this multimap contains at least one key-value pair with the key key.
 	 */
-	default boolean	hasKey( K key ) {
+	default boolean	hasKey( @NonNull K key ) {
 		try {
 			this.getOrFail( key );
 			return true;
@@ -157,7 +159,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param key
 	 * @return list of the values associated with key
 	 */
-	List< V > getAll( K key );
+	List< V > getAll( @NonNull K key );
 
 	
 	/** Returns the first value associated with key in 
@@ -217,13 +219,14 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	/**
 	 * Stores a key-value pair in this multimap.
 	 */
-	PhoenixMultiMap< K, V > add( K key, V value );
+	PhoenixMultiMap< K, V > add( @NonNull K key, V value );
 	
 	/**
 	 * Stores a key-value pair in this multimap.
 	 */
 	default PhoenixMultiMap< K, V > add( Entry< ? extends K, ? extends V > e  ) {
-		return this.add( e.getKey(), e.getValue() );
+		final K key = e.getKey();
+		return this.add( Objects.requireNonNull( key ), e.getValue() );
 	}
 	
 	/**
@@ -232,7 +235,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param values
 	 * @return
 	 */
-	default PhoenixMultiMap< K, V > addAll( K key, Iterable< ? extends V > values ) {
+	default PhoenixMultiMap< K, V > addAll( @NonNull K key, Iterable< ? extends V > values ) {
 		PhoenixMultiMap< K, V > self = this;
 		for ( V v : values ) {
 			self = self.add( key, v );
@@ -270,13 +273,13 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * Removes a single key-value pair with the key key and the value value 
 	 * from this multimap, if such exists.
 	 */
-	PhoenixMultiMap< K, V > removeEntry( K key, V value );
+	PhoenixMultiMap< K, V > removeEntry( @NonNull K key, V value );
 	
 	/** 
 	 * Removes a single key-value pair with the key key and the Nth value 
 	 * from this multimap, if such exists.
 	 */
-	PhoenixMultiMap< K, V > removeEntryAt( K key, int N );
+	PhoenixMultiMap< K, V > removeEntryAt( @NonNull K key, int N );
 	
 		
 	/**
@@ -284,7 +287,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param key
 	 * @return
 	 */
-	PhoenixMultiMap< K, V > removeEntries( K key );
+	PhoenixMultiMap< K, V > removeEntries( @NonNull K key );
 	
 	/**
 	 * Stores a collection of values with the same key, replacing any existing 
@@ -293,7 +296,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param values
 	 * @return
 	 */
-	PhoenixMultiMap< K, V > setValues( K key, Iterable<? extends V> values );
+	PhoenixMultiMap< K, V > setValues( @NonNull K key, Iterable<? extends V> values );
 	
 	/**
 	 * After this assignment, the key has one and only one value, regardless of previous values.
@@ -301,7 +304,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param value the value to replace all other values
 	 * @return the assigned value (the subject is now defunct)
 	 */
-	PhoenixMultiMap< K, V > setSingletonValue( K key, V value );
+	PhoenixMultiMap< K, V > setSingletonValue( @NonNull K key, V value );
 	
 	/**
 	 * updateValue requires that there is already an n-th entry with the specified key. 
@@ -310,7 +313,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 * @param value the replacement value
 	 * @return the assigned value (the subject is now defunct)
 	 */
-	PhoenixMultiMap< K, V > updateValue( K key, int n, V value );
+	PhoenixMultiMap< K, V > updateValue( @NonNull K key, int n, V value );
 
 
 	
@@ -322,7 +325,7 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	/**
 	 * Returns the number of key-value pairs in this multimap that share key key.
 	 */
-	int	sizeEntriesWithKey( K key );
+	int	sizeEntriesWithKey( @NonNull K key );
 	
 	default int sizeKeys() {
 		return this.keySet().size();

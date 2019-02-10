@@ -28,7 +28,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public List< Value > getAll( Key key ) {
+	public List< Value > getAll( @NonNull Key key ) {
 		final Value v = this.get( key );
 		if ( v == null && ! this.containsKey( key ) ) {
 			return Collections.emptyList();
@@ -38,7 +38,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public Value getOrFail( Key key ) throws IllegalArgumentException {
+	public Value getOrFail( @NonNull Key key ) throws IllegalArgumentException {
 		final Value v = this.get( key );
 		if ( v == null && ! this.containsKey( key ) ) {
 			throw new IllegalArgumentException();
@@ -53,7 +53,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public Value getOrFail( Key key, int N ) throws IllegalArgumentException {
+	public Value getOrFail( @NonNull Key key, int N ) throws IllegalArgumentException {
 		Value v = this.get( key );
 		if ( N != 0 || ( v == null && ! this.containsKey( key ) ) ) {
 			throw new IllegalArgumentException();
@@ -63,7 +63,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public Value getElse( Key key, int N, Value otherwise ) {
+	public Value getElse( @NonNull Key key, int N, Value otherwise ) {
 		if ( N == 0 ) {
 			return this.getOrDefault( key, otherwise );
 		} else {
@@ -72,7 +72,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public Value getElse( Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
 		//	There is either 1 or 0 entries, so reverse makes no difference. If there are no entries then
 		//	return the default.
 		return this.getElse( key, N, otherwise );
@@ -89,7 +89,7 @@ public abstract class AbsPlainMapMutablePMMap< Key, Value > extends TreeMapSingl
 	}
 
 	@Override
-	public int sizeEntriesWithKey( Key _key ) {
+	public int sizeEntriesWithKey( @NonNull Key _key ) {
 		return this.hasKey( _key ) ? 1 : 0;
 	}
 

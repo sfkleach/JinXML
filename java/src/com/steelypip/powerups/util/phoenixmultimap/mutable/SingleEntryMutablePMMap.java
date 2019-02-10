@@ -1,5 +1,7 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.SingleEntryFrozenPMMap;
@@ -37,7 +39,7 @@ public class SingleEntryMutablePMMap< K, V > extends AbsSingleEntryMutablePMMap<
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > add( K _key, V _value ) {
+	public PhoenixMultiMap< K, V > add( @NonNull K _key, V _value ) {
 		if ( _key == null ? this.key == null : _key.equals(  this.key ) ) {
 			return new SharedKeyMutablePMMap< K, V >( key ).add( this.value ).add(  _value );
 		} else {

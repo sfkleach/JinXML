@@ -1,5 +1,7 @@
 package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsSingleEntryMutablePMMap;
@@ -42,7 +44,7 @@ public class SingleEntryFrozenPMMap< K, V > extends AbsSingleEntryMutablePMMap< 
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > add( K _key, V _value ) {
+	public PhoenixMultiMap< K, V > add( @NonNull K _key, V _value ) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -52,32 +54,32 @@ public class SingleEntryFrozenPMMap< K, V > extends AbsSingleEntryMutablePMMap< 
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > removeEntry( K _key, V _value ) {
+	public PhoenixMultiMap< K, V > removeEntry( @NonNull K _key, V _value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > removeEntryAt( K _key, int N ) {
+	public PhoenixMultiMap< K, V > removeEntryAt( @NonNull K _key, int N ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > removeEntries( K _key ) {
+	public PhoenixMultiMap< K, V > removeEntries( @NonNull K _key ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > setValues( K _key, Iterable< ? extends V > values ) {
+	public PhoenixMultiMap< K, V > setValues( @NonNull K _key, Iterable< ? extends V > values ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > setSingletonValue( K _key, V _value ) {
+	public PhoenixMultiMap< K, V > setSingletonValue( @NonNull K _key, V _value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > updateValue( K _key, int n, V _value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< K, V > updateValue( @NonNull K _key, int n, V _value ) throws IllegalArgumentException {
 		throw new UnsupportedOperationException();
 	}
 

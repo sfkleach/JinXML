@@ -1,25 +1,27 @@
 package com.steelypip.powerups.jinxml;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 public abstract class Event {
 	
 	public abstract void sendTo( EventHandler handler );
 	
 	abstract static class SelectorEvent extends Event {
-		String selector;
-		SelectorEvent( String selector ) {
+		@NonNull String selector;
+		SelectorEvent( @NonNull String selector ) {
 			this.selector = selector;
 		}
 	}
 
 	public static class StartTagEvent extends SelectorEvent {
 		
-		String key;
+		@NonNull String key;
 
-		public StartTagEvent( String key ) {
+		public StartTagEvent( @NonNull String key ) {
 			this( "", key );
 		}
 		
-		public StartTagEvent( String selector, String key ) {
+		public StartTagEvent( @NonNull String selector, @NonNull String key ) {
 			super( selector );
 			this.key = key;
 		}
@@ -37,26 +39,26 @@ public abstract class Event {
 	
 	public static class AttributeEvent extends Event {
 		
-		String key;
-		String value;
+		@NonNull String key;
+		@NonNull String value;
 		boolean solo = true;
 		
-		public AttributeEvent( String key, String value ) {
+		public AttributeEvent( @NonNull String key, @NonNull String value ) {
 			super();
 			this.key = key;
 			this.value = value;
 		}
 		
-		public AttributeEvent( String key, String value, boolean solo ) {
+		public AttributeEvent( @NonNull String key, @NonNull String value, boolean solo ) {
 			this( key, value );
 			this.solo = solo;
 		}
 
-		public String getKey() {
+		public @NonNull String getKey() {
 			return key;
 		}
 
-		public String getValue() {
+		public @NonNull String getValue() {
 			return value;
 		}
 
@@ -97,7 +99,7 @@ public abstract class Event {
 		public StartArrayEvent() {
 			super( "" );
 		}
-		public StartArrayEvent( String selector ) {
+		public StartArrayEvent( @NonNull String selector ) {
 			super( selector );
 		}
 		@Override
@@ -117,7 +119,7 @@ public abstract class Event {
 		public StartObjectEvent() {
 			super( "" );
 		}
-		public StartObjectEvent( String selector ) {
+		public StartObjectEvent( @NonNull String selector ) {
 			super( selector );
 		}
 		@Override
@@ -135,13 +137,13 @@ public abstract class Event {
 	
 	public static abstract class LiteralConstantEvent extends SelectorEvent {
 		
-		String value;
+		@NonNull String value;
 		
-		public LiteralConstantEvent( String value ) {
+		public LiteralConstantEvent( @NonNull String value ) {
 			this( "", value );
 		}
 
-		public LiteralConstantEvent( String selector, String value ) {
+		public LiteralConstantEvent( @NonNull String selector, @NonNull String value ) {
 			super( selector );
 			this.value = value;
 		}
@@ -154,11 +156,11 @@ public abstract class Event {
 
 	public static class IntEvent extends LiteralConstantEvent {
 		
-		public IntEvent( String value ) {
+		public IntEvent( @NonNull String value ) {
 			super( "", value );
 		}
 
-		public IntEvent( String selector, String value ) {
+		public IntEvent( @NonNull String selector, @NonNull String value ) {
 			super( selector, value );
 		}
 
@@ -170,10 +172,10 @@ public abstract class Event {
 	}
 	
 	public static class FloatEvent extends LiteralConstantEvent {
-		public FloatEvent( String value ) {
+		public FloatEvent( @NonNull String value ) {
 			super( "", value );
 		}
-		public FloatEvent( String selector, String value ) {
+		public FloatEvent( @NonNull String selector, @NonNull String value ) {
 			super( selector, value );
 		}
 		@Override
@@ -183,10 +185,10 @@ public abstract class Event {
 	}
 	
 	public static class StringEvent extends LiteralConstantEvent {
-		public StringEvent( String value ) {
+		public StringEvent( @NonNull String value ) {
 			super( "", value );
 		}
-		public StringEvent( String selector, String value ) {
+		public StringEvent( @NonNull String selector, @NonNull String value ) {
 			super( selector, value );
 		}
 		@Override
@@ -196,10 +198,10 @@ public abstract class Event {
 	}
 	
 	public static class BooleanEvent extends LiteralConstantEvent {
-		public BooleanEvent( String value ) {
+		public BooleanEvent( @NonNull String value ) {
 			super( "", value );
 		}
-		public BooleanEvent( String selector, String value ) {
+		public BooleanEvent( @NonNull String selector, @NonNull String value ) {
 			super( selector, value );
 		}
 		@Override
@@ -209,10 +211,10 @@ public abstract class Event {
 	}
 	
 	public static class NullEvent extends LiteralConstantEvent {
-		public NullEvent( String value ) {
+		public NullEvent( @NonNull String value ) {
 			super( "", value );
 		}
-		public NullEvent( String selector, String value ) {
+		public NullEvent( @NonNull String selector, @NonNull String value ) {
 			super( selector, value );
 		}
 		@Override

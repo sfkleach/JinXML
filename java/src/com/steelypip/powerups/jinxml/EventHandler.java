@@ -8,7 +8,7 @@ public interface EventHandler {
 		e.sendTo( this );
 	}
 	
-	void startTagEvent( String selector, @NonNull String key );
+	void startTagEvent( @NonNull String selector, @NonNull String key );
 	default void startTagEvent( @NonNull String key ) {
 		this.startTagEvent( "", key );
 	}
@@ -17,50 +17,49 @@ public interface EventHandler {
 		this.attributeEvent( key, value, true );
 	}
 	
-	void attributeEvent( @NonNull String key, String value, boolean solo );
+	void attributeEvent( @NonNull String key, @NonNull String value, boolean solo );
 			
+	void endTagEvent( String key );	
 	default void endTagEvent() {
 		this.endTagEvent( null );
 	}
-	
-	void endTagEvent( String key );	
 		
-	void startArrayEvent( String selector );
+	void startArrayEvent( @NonNull String selector );
 	default void startArrayEvent() {
 		this.startArrayEvent( "" );
 	}
 	
 	void endArrayEvent();
 	
-	void startObjectEvent( String selector );
+	void startObjectEvent( @NonNull String selector );
 	default void startObjectEvent() {
 		this.startObjectEvent( "" );
 	}	
 	
 	void endObjectEvent();
 	
-	void intEvent( String selector, String value );
-	default void intEvent( String value ) {
+	void intEvent( @NonNull String selector, @NonNull String value );
+	default void intEvent( @NonNull String value ) {
 		this.intEvent( "", value );
 	}
 	
-	void floatEvent( String selector, String value );
+	void floatEvent( @NonNull String selector, @NonNull String value );
 	default void floatEvent( String value ) {
 		this.floatEvent( value );
 	}
 	
-	void stringEvent( String selector, String value );
-	default void stringEvent( String value ) {
+	void stringEvent( @NonNull String selector, @NonNull String value );
+	default void stringEvent( @NonNull String value ) {
 		this.stringEvent( "", value );
 	}
 	
-	void booleanEvent( String selector, String value );
-	default void booleanEvent( String value ) {
+	void booleanEvent( @NonNull String selector, @NonNull String value );
+	default void booleanEvent( @NonNull String value ) {
 		this.booleanEvent( "", value );
 	}
 	
-	void nullEvent( String selector, String value );	
-	default void nullEvent( String value ) {
+	void nullEvent( @NonNull String selector, @NonNull String value );	
+	default void nullEvent( @NonNull String value ) {
 		this.nullEvent( "", value );
 	}
 

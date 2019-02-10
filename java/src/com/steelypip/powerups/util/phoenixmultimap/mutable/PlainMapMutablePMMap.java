@@ -3,6 +3,8 @@ package com.steelypip.powerups.util.phoenixmultimap.mutable;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.PlainMapFrozenPMMap;
@@ -26,7 +28,7 @@ public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap<
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > add( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > add( @NonNull Key key, Value value ) {
 		final Value v = this.get( key );
 		if ( v == value ) {
 			return this;
@@ -39,7 +41,7 @@ public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap<
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntry( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > removeEntry( @NonNull Key key, Value value ) {
 		final Value v = this.getOrDefault( key, value );
 		if ( v == null ? value == null : v.equals( value ) ) {
 			this.remove( key );
@@ -48,7 +50,7 @@ public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap<
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntryAt( Key key, int N ) {
+	public PhoenixMultiMap< Key, Value > removeEntryAt( @NonNull Key key, int N ) {
 		if ( N == 0 ) {
 			return this.removeEntries( key );
 		} else {
@@ -57,13 +59,13 @@ public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap<
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntries( Key key ) {
+	public PhoenixMultiMap< Key, Value > removeEntries( @NonNull Key key ) {
 		this.remove( key );
 		return this;
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setValues( Key key, Iterable< ? extends Value > values ) {
+	public PhoenixMultiMap< Key, Value > setValues( @NonNull Key key, Iterable< ? extends Value > values ) {
 		final Iterator< ? extends Value > it = values.iterator();
 		if ( ! it.hasNext() ) return this;
 		Value v = it.next();
@@ -76,13 +78,13 @@ public class PlainMapMutablePMMap< Key, Value > extends AbsPlainMapMutablePMMap<
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setSingletonValue( Key key, Value value ) {
+	public PhoenixMultiMap< Key, Value > setSingletonValue( @NonNull Key key, Value value ) {
 		this.put( key, value );
 		return this;
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > updateValue( Key key, int n, Value value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< Key, Value > updateValue( @NonNull Key key, int n, Value value ) throws IllegalArgumentException {
 		if ( n != 0 || ! this.hasKey( key ) ) throw new IllegalArgumentException();
 		this.put( key, value );
 		return this;

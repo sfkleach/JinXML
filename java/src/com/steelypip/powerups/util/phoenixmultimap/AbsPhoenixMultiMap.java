@@ -2,6 +2,7 @@ package com.steelypip.powerups.util.phoenixmultimap;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class AbsPhoenixMultiMap< K, V > implements PhoenixMultiMap< K, V > {
 	
@@ -12,7 +13,8 @@ public abstract class AbsPhoenixMultiMap< K, V > implements PhoenixMultiMap< K, 
 		Iterator< Map.Entry< K, V > > entries = this.iterator();
 		while ( entries.hasNext() ) {
 			Map.Entry< K, V > e = entries.next();
-			if (! ( that.hasEntry( e.getKey(), e.getValue() ) ) ) {
+			K key = e.getKey();
+			if ( ! ( that.hasEntry( Objects.requireNonNull( key ), e.getValue() ) ) ) {
 				return false;
 			}
 		}

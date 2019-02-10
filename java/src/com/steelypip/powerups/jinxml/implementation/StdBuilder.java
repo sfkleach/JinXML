@@ -2,6 +2,7 @@ package com.steelypip.powerups.jinxml.implementation;
 
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -11,9 +12,9 @@ import com.steelypip.powerups.jinxml.FlexiElement;
 
 public class StdBuilder implements Builder {
 	
-	final static String ROOT_ELEMENT_NAME = "";
-	final static String ROOT_CHILD_SELECTOR = "";
-	final static String DEFAULT_SELECTOR = "";
+	final static @NonNull String ROOT_ELEMENT_NAME = "";
+	final static @NonNull String ROOT_CHILD_SELECTOR = "";
+	final static @NonNull String DEFAULT_SELECTOR = "";
 
 	/**
 	 * The root element holds onto the entire in-progress tree. It is never exposed.
@@ -33,7 +34,7 @@ public class StdBuilder implements Builder {
 	
 	// 	These two variables represent the current context. The selector is always defined
 	//	to be the default to be used for new members added to the 
-	protected String selector = ROOT_CHILD_SELECTOR;	
+	protected @NonNull String selector = ROOT_CHILD_SELECTOR;	
 	protected Element focus = this.root;
 
 	private void pushChild( Element x ) {
@@ -45,7 +46,8 @@ public class StdBuilder implements Builder {
 
 	private void popChild() {
 		try {
-			this.selector = (String)this.dump.removeLast();
+			Object popped = this.dump.removeLast();
+			this.selector = Objects.requireNonNull( (String)popped );
 			this.focus = (Element)this.dump.removeLast();
 		} catch ( NoSuchElementException e ) {
 			throw new IllegalStateException( e );
@@ -55,7 +57,7 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public void startTagEvent( String selector, @NonNull String key ) {
+	public void startTagEvent( @NonNull String selector, @NonNull String key ) {
 		//	TODO: Check context
 		final Element new_child = new FlexiElement( key );
 		this.focus.addLastChild( selector, new_child );
@@ -63,7 +65,7 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public void attributeEvent( @NonNull String key, String value, boolean solo ) {
+	public void attributeEvent( @NonNull String key, @NonNull String value, boolean solo ) {
 		//	TODO: use solo
 		//	TODO: deal with non-nullity
 		if ( this.dump.isEmpty() ) {
@@ -84,7 +86,7 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public void startArrayEvent( String selector ) {
+	public void startArrayEvent( @NonNull String selector ) {
 		//	TODO: check state, set state.
 		this.startTagEvent( selector, "array" );
 	}
@@ -96,7 +98,7 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public void startObjectEvent( String selector ) {
+	public void startObjectEvent( @NonNull String selector ) {
 		//	TODO: check state, set state.
 		this.startTagEvent( selector, "object" );
 	}
@@ -108,35 +110,35 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public void intEvent( String selector, String value ) {
+	public void intEvent( @NonNull String selector, @NonNull String value ) {
 		this.startTagEvent( selector, "int" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "int" );
 	}
 
 	@Override
-	public void floatEvent( String selector, String value ) {
+	public void floatEvent( @NonNull String selector, @NonNull String value ) {
 		this.startTagEvent( selector,"float" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "float" );
 	}
 
 	@Override
-	public void stringEvent( String selector, String value ) {
+	public void stringEvent( @NonNull String selector, @NonNull String value ) {
 		this.startTagEvent( selector, "string" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "string" );
 	}
 
 	@Override
-	public void booleanEvent( String selector, String value ) {
+	public void booleanEvent( @NonNull String selector, @NonNull String value ) {
 		this.startTagEvent( selector,"boolean" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "boolean" );
 	}
 
 	@Override
-	public void nullEvent( String selector, String value ) {
+	public void nullEvent( @NonNull String selector, @NonNull String value ) {
 		this.startTagEvent( selector, "null" );
 		this.attributeEvent( "value", value );
 		this.endTagEvent( "null" );

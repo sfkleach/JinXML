@@ -2,21 +2,34 @@ package com.steelypip.powerups.jinxml.implementation;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
+import java.io.StringReader;
+
 import org.junit.Test;
+
+import com.steelypip.powerups.jinxml.Element;
+import com.steelypip.powerups.jinxml.Event;
 
 public class TestStdParser {
 	
-	
-	
-	@Before
-	public void setup() {
-		
+	StdPushParser parser( String s ) {
+		return new StdPushParser( new StringReader( s ) );
 	}
-
+	
 	@Test
-	public void test() {
-		fail( "Not yet implemented" );
+	public void readEvent_Int() {
+		StdPushParser p = this.parser( "99" );
+		Event e = p.readEvent();
+		assertTrue( e instanceof Event.IntEvent );
+		assertNull( p.readEvent() );
 	}
+	
+	@Test
+	public void readElement_Int() {
+		StdPushParser p = this.parser( "99" );
+		Element e = p.readElement();
+		assertNotNull( e );
+	}
+	
+	
 
 }

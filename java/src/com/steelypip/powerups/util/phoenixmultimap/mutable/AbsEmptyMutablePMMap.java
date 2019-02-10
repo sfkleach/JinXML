@@ -5,22 +5,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.AbsPhoenixMultiMap;
 
 public abstract class AbsEmptyMutablePMMap< K, V > extends AbsPhoenixMultiMap< K, V > {
 
 	@Override
-	public boolean hasEntry( K key, V value ) {
+	public boolean hasEntry( @NonNull K key, V value ) {
 		return false;
 	}
 	
 	@Override
-	public boolean hasEntry( K key, int index, V value ) {
+	public boolean hasEntry( @NonNull K key, int index, V value ) {
 		return false;
 	}
 
 	@Override
-	public boolean hasKey( K key ) {
+	public boolean hasKey( @NonNull K key ) {
 		return false;
 	}
 
@@ -35,17 +37,17 @@ public abstract class AbsEmptyMutablePMMap< K, V > extends AbsPhoenixMultiMap< K
 	}
 
 	@Override
-	public List< V > getAll( K key ) {
+	public List< V > getAll( @NonNull K key ) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public V getOrFail( K key ) throws IllegalArgumentException {
+	public V getOrFail( @NonNull K key ) throws IllegalArgumentException {
 		throw new IllegalArgumentException();
 	}
 
 	@Override
-	public V getOrFail( K key, int N ) throws IllegalArgumentException {
+	public V getOrFail( @NonNull K key, int N ) throws IllegalArgumentException {
 		throw new IllegalArgumentException();
 	}
 
@@ -65,7 +67,7 @@ public abstract class AbsEmptyMutablePMMap< K, V > extends AbsPhoenixMultiMap< K
 	}
 
 	@Override
-	public int sizeEntriesWithKey( K key ) {
+	public int sizeEntriesWithKey( @NonNull K key ) {
 		return 0;
 	}
 
@@ -80,17 +82,17 @@ public abstract class AbsEmptyMutablePMMap< K, V > extends AbsPhoenixMultiMap< K
 	}
 
 	@Override
-	public V getElse( K key, V otherwise ) throws IllegalArgumentException {
+	public V getElse( @NonNull K key, V otherwise ) throws IllegalArgumentException {
 		return otherwise;
 	}
 
 	@Override
-	public V getElse( K key, int N, V otherwise ) throws IllegalArgumentException {
+	public V getElse( @NonNull K key, int N, V otherwise ) throws IllegalArgumentException {
 		return otherwise;
 	}
 	
 	@Override
-	public V getElse( K key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException {
+	public V getElse( @NonNull K key, boolean reverse, int N, V otherwise ) throws IllegalArgumentException {
 		return otherwise;
 	}
 	

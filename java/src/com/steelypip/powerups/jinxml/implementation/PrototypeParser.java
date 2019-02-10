@@ -22,12 +22,11 @@ import java.io.Reader;
 import java.util.ArrayDeque;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.charrepeater.CharRepeater;
 import com.steelypip.powerups.charrepeater.ReaderCharRepeater;
-import com.steelypip.powerups.common.StdPair;
-import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.EventHandler;
 
 /**
@@ -70,13 +69,14 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 	* Helper class for tracking field info
 	*************************************************************************/
 
-	static class SelectorInfo extends StdPair< String, Boolean > {
+	static class SelectorInfo {
 		
-		public String name;
+		public @NonNull String name;
 		public boolean solo;
 		
-		public SelectorInfo( String name, boolean solo ) {
-			super( name, solo );
+		public SelectorInfo( @NonNull String name, boolean solo ) {
+			this.name = name;
+			this.solo = solo;
 		}
 		
 		static @NonNull SelectorInfo DEFAULT = new SelectorInfo( "", false );
@@ -116,7 +116,7 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 		}
 	}
 
-	private boolean readString( EventHandler handler, final SelectorInfo selectorInfo ) {
+	private boolean readString( EventHandler handler, final @NonNull SelectorInfo selectorInfo ) {
 		handler.stringEvent( selectorInfo.name, this.gatherString() );
 		return true;
 	}
@@ -125,7 +125,7 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 		return new NumParser( this ).process();			
 	}
 
-	private boolean readNumber( EventHandler handler, final SelectorInfo selectorInfo) {
+	private boolean readNumber( EventHandler handler, final @NonNull SelectorInfo selectorInfo) {
 		final String number = this.gatherNumber();
 		// TODO: this is clumsy in the extreme. Restructure.
 		if ( ! number.matches( "[-+]?[0-9]+" ) ) {
@@ -137,11 +137,11 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 	}
 	
 	// Can only be invoked in a context where there is no explicit selector.
-	private boolean handleStringOrIdentifier( EventHandler handler, final boolean is_identifier, final String x ) {
+	private boolean handleStringOrIdentifier( EventHandler handler, final boolean is_identifier, final @NonNull String x ) {
 		return is_identifier ? this.handleIdentifier( handler, SelectorInfo.DEFAULT, x ) : this.handleString( handler, SelectorInfo.DEFAULT, x );
 	}
 
-	private boolean handleIdentifier( EventHandler handler, SelectorInfo selectorInfo, String identifier ) {
+	private boolean handleIdentifier( EventHandler handler, @NonNull SelectorInfo selectorInfo, String identifier ) {
 		switch ( identifier ) {
 		case "null":
 			handler.nullEvent( selectorInfo.name, identifier );
@@ -155,7 +155,7 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 		}
 	}
 	
-	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, String s ) {
+	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, @NonNull String s ) {
 		handler.stringEvent( selectorInfo.name, s );
 		return true;
 	}
@@ -196,9 +196,10 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 			
 			// This is not an end-tag but a start-tag.
 			this.eatWhiteSpace();
-			this.tag_name = this.gatherNameOrQuotedName();
+			final @NonNull String tag = this.gatherNameOrQuotedName();
+			this.tag_name = tag;
 			
-			handler.startTagEvent( selectorInfo.name, this.tag_name );
+			handler.startTagEvent( selectorInfo.name, tag );
 			this.processAttributes( handler );
 			
 			this.eatWhiteSpace();					
@@ -222,7 +223,7 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 	}
 
 	
-	private boolean readLabelledTagOrSymbol( EventHandler handler, final boolean is_identifier, final String name ) {
+	private boolean readLabelledTagOrSymbol( EventHandler handler, final boolean is_identifier, final @NonNull String name ) {
 		this.eatWhiteSpace();
 		boolean plus = this.tryReadChar( '+' );
 		boolean colon = this.tryReadChar( ':' );
@@ -271,7 +272,7 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 	 * @param selectorInfo null if no selector has been read yet, otherwise the selector info.
 	 * @return true if it read a tag, false at end of stream.
 	 */
-	boolean readNextTag( EventHandler handler, SelectorInfo selectorInfo ) {
+	boolean readNextTag( EventHandler handler, @Nullable SelectorInfo selectorInfo ) {
 		this.eatWhiteSpaceIncludingOneComma();
 		if ( !this.cucharin.hasNextChar() ) {
 			return false;
@@ -290,46 +291,5 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 	boolean readNextTag( EventHandler handler ) {
 		return this.readNextTag( handler, null );
 	}
-
-	
-//	/**
-//	 * Read an element off the input stream or null if the stream is
-//	 * exhausted.
-//	 * @return the next element
-//	 */
-//	public Fusion readElement() {
-//		while ( this.readNextTag( true, "", true ) ) {
-//			if ( this.isAtTopLevel() ) break;
-//		}
-//		if ( ! this.isAtTopLevel() ) {
-//			throw new Alert( "Unmatched tags due to encountering end of input" );
-//		}
-//		return handler.build();
-//	}
-//	
-//	/**
-//	 * Returns an iterator that reads elements off sequentially
-//	 * from this parser.
-//	 */
-//	public Iterator< Fusion > iterator() {
-//		return new Iterator< Fusion >() {
-//
-//			@Override
-//			public boolean hasNext() {
-//				return FusionParser.this.hasNext();
-//			}
-//
-//			@Override
-//			public Fusion next() {
-//				return FusionParser.this.readElement();
-//			}
-//
-//			@Override
-//			public void remove() {
-//				throw new UnsupportedOperationException();
-//			}
-//			
-//		};
-//	}
 
 }

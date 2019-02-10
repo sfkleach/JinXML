@@ -1,6 +1,9 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
 import java.util.Iterator;
+import java.util.Objects;
+
+import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -20,12 +23,12 @@ public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > impl
 
 
 	@Override
-	public SingleEntryMutablePMMap< K, V > add( K key, V value ) {
+	public SingleEntryMutablePMMap< K, V > add( @NonNull K key, V value ) {
 		return new SingleEntryMutablePMMap< K, V >( key, value );
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > addAll( K key, Iterable< ? extends V > values ) {
+	public PhoenixMultiMap< K, V > addAll( @NonNull K key, Iterable< ? extends V > values ) {
 		final Iterator< ? extends V > it = values.iterator();
 		if ( ! it.hasNext() ) return this;
 		V value = it.next();
@@ -56,17 +59,17 @@ public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > impl
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > setValues( K key, Iterable< ? extends V > values ) {
+	public PhoenixMultiMap< K, V > setValues( @NonNull K key, Iterable< ? extends V > values ) {
 		return this.addAll( key, values );
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > setSingletonValue( K key, V value ) {
+	public PhoenixMultiMap< K, V > setSingletonValue( @NonNull K key, V value ) {
 		return new SingleEntryMutablePMMap< K, V >( key, value );
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > updateValue( K key, int n, V value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< K, V > updateValue( @NonNull K key, int n, V value ) throws IllegalArgumentException {
 		throw new IllegalArgumentException();
 	}
 

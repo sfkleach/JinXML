@@ -1,6 +1,7 @@
 package com.steelypip.powerups.jinxml.implementation;
 
 import java.util.ArrayDeque;
+import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -16,21 +17,25 @@ public class ConstructingEventHandler implements EventHandler {
 	}
 	
 	public Event getEvent() {
-		return this.consumer.removeFirst();
+		if ( this.consumer.isEmpty() ) {
+			return null;
+		} else {
+			return this.consumer.removeFirst();
+		}
 	}
 	
 	@Override
 	public void startTagEvent( @NonNull String key ) {
-		this.accept( new Event.StartTagEvent( key ) );
+		this.accept( new Event.StartTagEvent( Objects.requireNonNull( key ) ) );
 	}
 
 	@Override
-	public void startTagEvent( String selector, @NonNull String key ) {
+	public void startTagEvent( @NonNull String selector, @NonNull String key ) {
 		this.accept( new Event.StartTagEvent( selector, key ) );
 	}
 
 	@Override
-	public void attributeEvent( @NonNull String key, String value, boolean solo ) {
+	public void attributeEvent( @NonNull String key, @NonNull String value, boolean solo ) {
 		this.accept( new Event.AttributeEvent( key, value, solo ) );
 	}
 
@@ -45,7 +50,7 @@ public class ConstructingEventHandler implements EventHandler {
 	}
 
 	@Override
-	public void startArrayEvent( String selector ) {
+	public void startArrayEvent( @NonNull String selector ) {
 		this.accept( new Event.StartArrayEvent( selector ) );
 	}
 
@@ -60,7 +65,7 @@ public class ConstructingEventHandler implements EventHandler {
 	}
 
 	@Override
-	public void startObjectEvent( String selector ) {
+	public void startObjectEvent( @NonNull String selector ) {
 		this.accept( new Event.StartObjectEvent( selector ) );
 	}
 
@@ -70,27 +75,27 @@ public class ConstructingEventHandler implements EventHandler {
 	}
 
 	@Override
-	public void intEvent( String selector, String value ) {
+	public void intEvent( @NonNull String selector, @NonNull String value ) {
 		this.accept( new Event.IntEvent( selector, value ) );
 	}
 
 	@Override
-	public void floatEvent( String selector, String value ) {
+	public void floatEvent( @NonNull String selector, @NonNull String value ) {
 		this.accept( new Event.FloatEvent( selector, value ) );
 	}
 
 	@Override
-	public void stringEvent( String selector, String value ) {
+	public void stringEvent( @NonNull String selector, @NonNull String value ) {
 		this.accept( new Event.StringEvent( selector, value ) );
 	}
 
 	@Override
-	public void booleanEvent( String selector, String value ) {
+	public void booleanEvent( @NonNull String selector, @NonNull String value ) {
 		this.accept( new Event.BooleanEvent( selector, value ) );
 	}
 
 	@Override
-	public void nullEvent( String selector, String value ) {
+	public void nullEvent( @NonNull String selector, @NonNull String value ) {
 		this.accept( new Event.NullEvent( selector, value ) );
 	}
 

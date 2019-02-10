@@ -1,9 +1,7 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	}
 
 	@Override
-	public List< Value > getAll( Key key ) {
+	public List< Value > getAll( @NonNull Key key ) {
 		final List< Value > list = this.get( key );
 		if ( list == null ) {
 			return Collections.emptyList();
@@ -67,7 +65,7 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	}
 
 	@Override
-	public Value getElse( Key key, int N, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, int N, Value otherwise ) throws IllegalArgumentException {
 		final List< Value > list = this.get( key );
 		try {
 			return list == null ? otherwise : list.get( N );
@@ -77,7 +75,7 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	}
 
 	@Override
-	public Value getElse( Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
+	public Value getElse( @NonNull Key key, boolean reverse, int N, Value otherwise ) throws IllegalArgumentException {
 		if ( reverse ) {
 			final List< Value > list = this.get( key );
 			if ( list == null ) {
@@ -101,7 +99,7 @@ public abstract class AbsFlexiMutablePMMap< Key, Value > extends TreeMapPhoenixM
 	}
 
 	@Override
-	public int sizeEntriesWithKey( Key _key ) {
+	public int sizeEntriesWithKey( @NonNull Key _key ) {
 		List< Value > list = this.get( _key );
 		return list == null ? 0 : list.size();
 	}

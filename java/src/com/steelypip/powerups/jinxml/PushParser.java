@@ -2,8 +2,6 @@ package com.steelypip.powerups.jinxml;
 
 import java.util.stream.Stream;
 
-import com.steelypip.powerups.jinxml.implementation.ConstructingEventHandler;
-
 public interface PushParser {
 	
 	default Event readEvent() {

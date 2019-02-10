@@ -2,15 +2,27 @@ package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
 import java.util.Map.Entry;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.util.phoenixmultimap.MutableMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.SharedKeyFrozenPMMap;
 
 public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMap< Key, Value > implements MutableMarkerInterface {
+
+	private @NonNull Key sharedKey;	//	Will be initialised in the concrete constructors.
 	
-	public SharedKeyMutablePMMap( Key key ) {
+	public @NonNull Key getSharedKey() {
+		return sharedKey;
+	}
+ 
+	public void setSharedKey( @NonNull Key sharedKey ) {
+		this.sharedKey = sharedKey;
+	}
+	
+	public SharedKeyMutablePMMap( @NonNull Key key ) {
 		super();
-		this.shared_key = key;
+		this.sharedKey = key;
 	}
 	
 	@Override
@@ -19,12 +31,12 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > add( Key _key, Value _value ) {
+	public PhoenixMultiMap< Key, Value > add( @NonNull Key _key, Value _value ) {
 		if ( this.hasKey( _key ) ) {
 			this.values_list.add( _value );
 			return this;
 		} else {
-			return new FlexiMutablePMMap< Key, Value >().addAll( this.shared_key, this.values_list ).add( _key, _value );
+			return new FlexiMutablePMMap< Key, Value >().addAll( this.getSharedKey(), this.values_list ).add( _key, _value );
 		}
 	}
 	
@@ -35,8 +47,8 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	
 
 	@Override
-	public PhoenixMultiMap< Key, Value > addAll( Key _key, Iterable< ? extends Value > _values ) {
-		return new FlexiMutablePMMap< Key, Value >().addAll( this.shared_key, this.values_list ).addAll( _key, _values );
+	public PhoenixMultiMap< Key, Value > addAll( @NonNull Key _key, Iterable< ? extends Value > _values ) {
+		return new FlexiMutablePMMap< Key, Value >().addAll( this.getSharedKey(), this.values_list ).addAll( _key, _values );
 	}
 	
 	public SharedKeyMutablePMMap< Key, Value > addAll( Iterable< ? extends Value > values ) {
@@ -48,16 +60,16 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 
 	@Override
 	public PhoenixMultiMap< Key, Value > addAllEntries( Iterable< ? extends Entry< ? extends Key, ? extends Value > > values ) {
-		return new FlexiMutablePMMap< Key, Value >().addAll( this.shared_key, this.values_list ).addAllEntries( values );
+		return new FlexiMutablePMMap< Key, Value >().addAll( this.getSharedKey(), this.values_list ).addAllEntries( values );
 	}
 
 	@Override
 	public PhoenixMultiMap< Key, Value > addAll( PhoenixMultiMap< ? extends Key, ? extends Value > multimap ) {
-		return new FlexiMutablePMMap< Key, Value >().addAll( this.shared_key, this.values_list ).addAll( multimap );
+		return new FlexiMutablePMMap< Key, Value >().addAll( this.getSharedKey(), this.values_list ).addAll( multimap );
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntry( Key _key, Value _value ) {
+	public PhoenixMultiMap< Key, Value > removeEntry( @NonNull Key _key, Value _value ) {
 		if ( this.hasKey( _key ) ) {
 			this.values_list.remove( _value );
 		}
@@ -65,7 +77,7 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntryAt( Key _key, int N ) {
+	public PhoenixMultiMap< Key, Value > removeEntryAt( @NonNull Key _key, int N ) {
 		if ( this.hasKey( _key ) ) {
 			this.values_list.remove( N );
 		}
@@ -73,7 +85,7 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > removeEntries( Key _key ) {
+	public PhoenixMultiMap< Key, Value > removeEntries( @NonNull Key _key ) {
 		if ( this.hasKey( _key ) ) {
 			return this.clearAllEntries();
 		} else {
@@ -82,7 +94,7 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setValues( Key _key, Iterable< ? extends Value > _values ) {
+	public PhoenixMultiMap< Key, Value > setValues( @NonNull Key _key, Iterable< ? extends Value > _values ) {
 		if ( this.hasKey( _key ) ) {
 			this.values_list.clear();
 			for ( Value v : _values ) {
@@ -90,12 +102,12 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 			}
 			return this;
 		} else {
-			return new FlexiMutablePMMap< Key, Value >().addAll( this.shared_key, this.values_list ).setValues( _key, _values );
+			return new FlexiMutablePMMap< Key, Value >().addAll( this.getSharedKey(), this.values_list ).setValues( _key, _values );
 		}
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > setSingletonValue( Key _key, Value _value ) {
+	public PhoenixMultiMap< Key, Value > setSingletonValue( @NonNull Key _key, Value _value ) {
 		if ( this.hasKey( _key ) ) {
 			this.values_list.clear();
 			this.values_list.add( _value );
@@ -106,7 +118,7 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 	}
 
 	@Override
-	public PhoenixMultiMap< Key, Value > updateValue( Key _key, int n, Value _value ) throws IllegalArgumentException {
+	public PhoenixMultiMap< Key, Value > updateValue( @NonNull Key _key, int n, Value _value ) throws IllegalArgumentException {
 		if ( this.hasKey( _key ) ) {
 			try {
 				this.values_list.set( n, _value );
@@ -121,7 +133,7 @@ public class SharedKeyMutablePMMap< Key, Value > extends AbsSharedKeyMutablePMMa
 
 	@Override
 	public PhoenixMultiMap< Key, Value > freezeByPhoenixing() {
-		return new SharedKeyFrozenPMMap< Key, Value >( this.shared_key, this.valuesList() );
+		return new SharedKeyFrozenPMMap< Key, Value >( this.getSharedKey(), this.valuesList() );
 	}
 	
 	

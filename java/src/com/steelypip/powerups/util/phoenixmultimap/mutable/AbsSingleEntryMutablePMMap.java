@@ -22,12 +22,12 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public boolean hasEntry( K _key, V _value ) {
+	public boolean hasEntry( @NonNull K _key, V _value ) {
 		return this.hasKey( _key ) && this.hasValue( _value );
 	}
 
 	@Override
-	public boolean hasKey( K _key ) {
+	public boolean hasKey( @NonNull K _key ) {
 		return _key == null ? this.getKey() == null : _key.equals( this.getKey() );
 	}
 
@@ -42,7 +42,7 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public List< V > getAll( K _key ) {
+	public List< V > getAll( @NonNull K _key ) {
 		if ( _key == null ? this.getKey() == null : _key.equals( this.getKey() ) ) {
 			return Collections.singletonList( this.getValue() );
 		} else {
@@ -108,7 +108,7 @@ public abstract class AbsSingleEntryMutablePMMap< K, V > extends AbsPhoenixMulti
 	}
 
 	@Override
-	public int sizeEntriesWithKey( K _key ) {
+	public int sizeEntriesWithKey( @NonNull K _key ) {
 		return this.hasKey( _key ) ? 1 : 0;
 	}
 

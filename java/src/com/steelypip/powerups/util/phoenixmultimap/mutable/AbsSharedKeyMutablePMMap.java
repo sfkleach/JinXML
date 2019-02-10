@@ -15,16 +15,16 @@ import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 
 public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixMultiMap< Key, Value > implements PhoenixMultiMap< Key, Value > {
 	
-	protected Key shared_key;	//	Will be initialised in the concrete constructors.
+	@SuppressWarnings("null")
 	protected List< Value > values_list = new ArrayList<>();
 
-	@SuppressWarnings("null")
-	public AbsSharedKeyMutablePMMap() {
-		super();
-	}
 
+	abstract protected @NonNull Key getSharedKey() ;
+	abstract protected void setSharedKey( @NonNull Key shared_key );
+	
+	
 	@Override
-	public boolean hasEntry( Key key, Value value ) {
+	public boolean hasEntry( @NonNull Key key, Value value ) {
 		return (
 			this.hasKey( key ) && 
 			this.hasValue( value )
@@ -32,8 +32,8 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 	}
 
 	@Override
-	public boolean hasKey( Key key ) {
-		return key == null ? this.shared_key == null : key.equals(  this.shared_key  );
+	public boolean hasKey( @NonNull Key key ) {
+		return key == null ? this.getSharedKey() == null : key.equals( this.getSharedKey()  );
 	}
 
 	@Override
@@ -43,11 +43,11 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 
 	@Override
 	public List< Map.Entry< Key, Value > > entriesToList() {
-		return this.values_list.stream().map( ( Value v ) -> new StdPair< Key, Value >( this.shared_key, v ) ).collect( Collectors.toList() );
+		return this.values_list.stream().map( ( Value v ) -> new StdPair< Key, Value >( this.getSharedKey(), v ) ).collect( Collectors.toList() );
 	}
 
 	@Override
-	public List< Value > getAll( Key _key ) {
+	public List< Value > getAll( @NonNull Key _key ) {
 		if ( this.hasKey( _key ) ) {
 			return Collections.unmodifiableList( this.values_list );
 		} else {
@@ -84,7 +84,7 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 
 	@Override
 	public Set< Key > keySet() {
-		return Collections.singleton( this.shared_key );
+		return Collections.singleton( this.getSharedKey() );
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 	}
 
 	@Override
-	public int sizeEntriesWithKey( Key key ) {
+	public int sizeEntriesWithKey( @NonNull Key key ) {
 		if ( this.hasKey( key ) ) {
 			return this.values_list.size();
 		} else {
@@ -142,5 +142,6 @@ public abstract class AbsSharedKeyMutablePMMap< Key, Value > extends AbsPhoenixM
 			return this.getElse(  key, N, otherwise );
 		}
 	}
+
 
 }
