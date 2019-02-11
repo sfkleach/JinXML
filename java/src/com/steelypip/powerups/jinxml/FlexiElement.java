@@ -19,6 +19,8 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
 
 public class FlexiElement implements Element {
 	
+	private static final @NonNull String OBJECT_ELEMENT_NAME = "object";
+	private static final @NonNull String ARRAY_ELEMENT_NAME = "array";
 	private static final @NonNull String NULL_ELEMENT_NAME = "null";
 	private static final @NonNull String BOOLEAN_ELEMENT_NAME = "boolean";
 	private static final @NonNull String STRING_ELEMENT_NAME = "string";
@@ -890,14 +892,26 @@ public class FlexiElement implements Element {
 	
 	@SuppressWarnings("null")
 	@Override
-	public <T> T getNullValue() {
-		return (T)null;
+	public Void getNullValue() {
+		return null;
 	}
 	
 	@SuppressWarnings("null")
 	@Override
 	public <T> T getNullValue( T otherwise ) {
 		return this.hasName( NULL_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS ) ? (T)null : otherwise;
+	}
+	
+	@Override
+	public boolean isObject()
+	{
+		return this.hasName( OBJECT_ELEMENT_NAME );
+	}
+	
+	@Override
+	public boolean isArray()
+	{
+		return this.hasName( ARRAY_ELEMENT_NAME );
 	}
 	
 }

@@ -15,15 +15,15 @@ import com.steelypip.powerups.jinxml.PushParser;
 
 public class StdPushParser implements PushParser {
 	
-	final PrototypeParser pp;
+	final TagParser pp;
 	boolean expandLiteralConstants = false;
 	
 	public StdPushParser( Reader reader, boolean expandLiteralConstants ) {
-		this.pp = new PrototypeParser( reader, expandLiteralConstants );
+		this.pp = new TagParser( reader, expandLiteralConstants );
 	}
 	
 	public StdPushParser( CharRepeater rep, boolean expandLiteralConstants ) {
-		this.pp = new PrototypeParser( rep, expandLiteralConstants );
+		this.pp = new TagParser( rep, expandLiteralConstants );
 	}
 	
 	/*************************************************************************
@@ -41,6 +41,14 @@ public class StdPushParser implements PushParser {
 	
 	Event getEvent() {
 		return this._constructor == null ? null : this._constructor.getEvent();
+	}
+	
+	private void drainPendingAndSendTo( EventHandler handler ) {
+		for (;;) {
+			Event e = StdPushParser.this.getEvent();
+			if ( e == null ) break;
+			e.sendTo(  handler );
+		}		
 	}
 	
 	/*************************************************************************
@@ -130,6 +138,7 @@ public class StdPushParser implements PushParser {
 	public Element readElement( boolean solo ) {
 		final StdBuilder builder = new StdBuilder();
 		boolean oneAlready = false;
+		this.drainPendingAndSendTo( builder );
 		while ( this.pp.readNextTag( builder ) ) {
 			if ( builder.hasNext() ) {
 				if ( solo && oneAlready ) {
@@ -150,6 +159,7 @@ public class StdPushParser implements PushParser {
 				new Spliterators.AbstractSpliterator< Element >( Long.MAX_VALUE, Spliterator.ORDERED ) {					
 					@Override
 					public boolean tryAdvance( Consumer< ? super Element > action ) {
+						StdPushParser.this.drainPendingAndSendTo( builder );
 						while ( StdPushParser.this.pp.readNextTag( builder ) ) {
 							if ( builder.hasNext() ) break;
 						}
@@ -173,17 +183,9 @@ public class StdPushParser implements PushParser {
 		}
 	}
 
-	private void drain( EventHandler handler ) {
-		for (;;) {
-			Event e = StdPushParser.this.getEvent();
-			if ( e == null ) break;
-			e.sendTo(  handler );
-		}		
-	}
-	
 	@Override
 	public void sendExpression( EventHandler handler ) {
-		this.drain( handler );
+		this.drainPendingAndSendTo( handler );
 		while ( this.pp.readNextTag( handler ) ) {
 			if ( pp.isAtTopLevel() ) break;
 		}	
@@ -191,7 +193,7 @@ public class StdPushParser implements PushParser {
 
 	@Override
 	public void sendInput( EventHandler handler ) {
-		this.drain( handler );
+		this.drainPendingAndSendTo( handler );
 		while ( pp.readNextTag( handler ) ) {
 			//	Skip.
 		}

@@ -39,19 +39,21 @@ import com.steelypip.powerups.jinxml.EventHandler;
  * readElement. Alternatively you can simply iterate 
  * over the parser.
  */
-public class PrototypeParser extends InputStreamProcessor implements LevelTracker  {
+public class TagParser extends InputStreamProcessor implements LevelTracker  {
 	
+	private static final char SINGLE_QUOTE = '\'';
+	private static final char DOUBLE_QUOTE = '"';
 	private final CharRepeater cucharin;
 	private boolean expandLiteralConstants;
 	
 	private String tag_name = null;	
 	
-	public PrototypeParser( CharRepeater rep, boolean expandLiteralConstants ) {
+	public TagParser( CharRepeater rep, boolean expandLiteralConstants ) {
 		this.cucharin = rep;
 		this.expandLiteralConstants = expandLiteralConstants;
 	}
 
-	public PrototypeParser( Reader reader, boolean expandLiteralConstants ) {
+	public TagParser( Reader reader, boolean expandLiteralConstants ) {
 		this.cucharin = new ReaderCharRepeater( reader );
 		this.expandLiteralConstants = expandLiteralConstants;
 	}
@@ -263,7 +265,6 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 				//	This is a standalone tag.
 				this.mustReadChar( '>' );
 				handler.endTagEvent( this.tag_name );
-				this.popElement();
 				return true;
 			} else if ( ch == '>' ) {
 				this.pushElement();
@@ -320,6 +321,8 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 		}
 	}
 	
+	
+	
 	/**
 	 * This is the core routine of the algorithm, which consumes a single tag from the
 	 * input stream. Standalone tags are expanded internally into separate open and close
@@ -335,7 +338,7 @@ public class PrototypeParser extends InputStreamProcessor implements LevelTracke
 			final char pch = this.peekChar( '\0' );
 			if ( Character.isLetter( pch ) && selectorInfo == null ) {
 				return readLabelledTagOrSymbol( handler, true, this.gatherName() );
-			} else if ( ( pch == '"' || pch == '\'' ) && selectorInfo == null ) {
+			} else if ( ( pch == DOUBLE_QUOTE || pch == SINGLE_QUOTE ) && selectorInfo == null ) {
 				return readLabelledTagOrSymbol( handler, false, this.gatherString() );
 			} else {
 				return readUnlabelledTag( handler, SelectorInfo.DEFAULT );

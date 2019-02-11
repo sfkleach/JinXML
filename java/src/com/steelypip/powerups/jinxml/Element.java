@@ -375,21 +375,12 @@ public interface Element {
 	Boolean getBooleanValue( Boolean otherwise );
 	
 	boolean isNullValue();
-	<T> T getNullValue();	
+	Void getNullValue();	
 	<T> T getNullValue( T defaultValue );	
 	
-	/**
-	Method isIntValue() -> Boolean - returns true if the object represents an integer. This test is only required to check the name of the object.
-	Method getIntValue( Int? default = null ) -> Int? - if the object represents an integer then this returns its integral value. If it is not an integer, the default should be returned. N.B. There is no size limit on integers in JSON and conforming implementations are required to support arbitrary-width integers. The majority of programming languages give small width integers special significance and they should provide special variants of getIntValue (e.g. getInt32Value, getInt64Value) for that purpose. If the integer value is out of range, returning the default value is an acceptable action in these variants.
-	Method isFloatValue( Boolean strict = false ) -> Boolean - returns true if the object represents a floating-point number. This test is only required to check the name of the object. If strict is false then integral values will return true for this test.
-	Method getFloatValue( Boolean strict = false, Float? default = null ) -> Float? - if the object represents an float then this returns its value using the common representation for the host programming language. This will typically be double precision on today's machines. Libraries may provide variants (e.g. getFloat32Value, getFloatDoubleValue()) at their own discretion. Note that floating point numbers in the syntax have arbitrary precision but there is no requirement to retain this exact precision. If the value is not a Float then implementation should return the default value. If strict is false then integer values are allowed and automatically converted to a floating point value.
-	Method isStringValue() -> Boolean
-	Method getStringValue( String? default = null ) -> String?
-	Method isBooleanValue() -> Boolean
-	Method getBooleanValue( Boolean? default = null ) -> Boolean?
-	Method isNullValue() -> Boolean
-	Method getNullValue( Null? default = null ) -> Null?
-	 */
+	boolean isObject();
+	boolean isArray();
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Name - Imperative Methods

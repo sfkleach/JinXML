@@ -3,14 +3,14 @@ package com.steelypip.powerups.jinxml.implementation;
 import com.steelypip.powerups.alert.Alert;
 
 class NumParser {
-	PrototypeParser fparser;
+	TagParser fparser;
 	
 	StringBuilder b = new StringBuilder();
 	
 	int radix = 10;
 	boolean floating_point = false;
 	
-	public NumParser( PrototypeParser fparser ) {
+	public NumParser( TagParser fparser ) {
 		super();
 		this.fparser = fparser;
 	}

@@ -8,6 +8,16 @@ import com.steelypip.powerups.jinxml.Lookup;
 
 public abstract class InputStreamProcessor {
 	
+	private static final char LONG_COMMENT_2 = '*';
+	private static final char LONG_COMMENT_1 = '/';
+	private static final char FORWARD_SLASH = '/';
+	private static final char SHEBANG2 = '!';
+	private static final char SHEBANG1 = '#';
+	private static final char BACK_SLASH = '\\';
+	private static final char SINGLE_QUOTE = '\'';
+	private static final char DOUBLE_QUOTE = '"';
+	private static final char COMMA_AS_ITEM_SEPARATOR = ',';
+	private static final char SEMICOLON_AS_ITEM_SEPARATOR = ';';
 	final static int MAX_CHARACTER_ENTITY_LENGTH = 32;
 	
 	abstract CharRepeater cucharin();
@@ -124,19 +134,19 @@ public abstract class InputStreamProcessor {
 		int comma_count = 0;
 		while ( this.hasNextChar() ) {
 			final char ch = this.nextChar();
-			if ( ch == ',' && comma_count < allow_max_comma ) {
+			if ( ( ch == COMMA_AS_ITEM_SEPARATOR || ch == SEMICOLON_AS_ITEM_SEPARATOR ) && comma_count < allow_max_comma ) {
 				comma_count += 1;
-			} else if ( ch == '/' ) {
+			} else if ( ch == LONG_COMMENT_1 ) {
 				final char nch = this.peekChar( '\0' );
-				if ( nch == '/' ) {
+				if ( nch == LONG_COMMENT_1 ) {
 					this.eatUpTo( '\n' );
-				} else if ( nch == '*' ) {
+				} else if ( nch == LONG_COMMENT_2 ) {
 					for (;;) {
-						this.eatUpTo( '*' );
-						while ( this.tryReadChar( '*' ) ) {
+						this.eatUpTo( LONG_COMMENT_2 );
+						while ( this.tryReadChar( LONG_COMMENT_2 ) ) {
 							//	skip.
 						}
-						if ( this.nextChar() == '/' ) break;
+						if ( this.nextChar() == LONG_COMMENT_1 ) break;
 					}
 				} else {
 					this.pushChar( ch );
@@ -178,7 +188,7 @@ public abstract class InputStreamProcessor {
 	
 	@NonNull String gatherNameOrQuotedName() {
 		final char pch = this.peekChar( '\0' ); 
-		if ( pch == '"' || pch == '\'' ) {
+		if ( pch == DOUBLE_QUOTE || pch == SINGLE_QUOTE ) {
 			return this.gatherString();
 		} else {
 			return this.gatherName();
@@ -199,7 +209,7 @@ public abstract class InputStreamProcessor {
 	}
 	
 	char entityLookup( final String symbol ) {
-		Character c = Lookup.lookup( symbol );
+		final Character c = Lookup.lookup( symbol );
 		if ( c != null ) {
 			return c;
 		} else {
@@ -219,14 +229,13 @@ public abstract class InputStreamProcessor {
 		} else {
 			return this.entityLookup( esc );
 		}
-		
 	}
 	
 	@SuppressWarnings("null")
 	@NonNull String gatherXMLAttributeValue() {
 		final StringBuilder attr = new StringBuilder();
 		final char q = this.nextChar();
-		if ( q != '"' && q != '\'' ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", q );
+		if ( q != DOUBLE_QUOTE && q != SINGLE_QUOTE ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", q );
 		for (;;) {
 			char ch = this.nextChar();
 			if ( ch == q ) break;
@@ -251,15 +260,15 @@ public abstract class InputStreamProcessor {
 		while( ! done ) {
 			final char ch = this.nextChar();
 			switch ( ch ) {
-				case '"':
-				case '\'':
+				case DOUBLE_QUOTE:
+				case SINGLE_QUOTE:
 					if ( ch == quote_char ) {
 						done = true;
 					} else {
 						sofar.append( ch );
 					}
 					break;
-				case '\\':
+				case BACK_SLASH:
 					this.readEscapeChar( sofar );
 					break;
 				default:
@@ -273,10 +282,10 @@ public abstract class InputStreamProcessor {
 	void readEscapeChar( final StringBuilder sofar ) {
 		final char ch = this.nextChar();
 		switch ( ch ) {
-			case '\'':
-			case '"':
-			case '/':
-			case '\\':
+			case SINGLE_QUOTE:
+			case DOUBLE_QUOTE:
+			case FORWARD_SLASH:
+			case BACK_SLASH:
 				sofar.append(  ch  );
 				break;
 			case 'n':
@@ -304,7 +313,7 @@ public abstract class InputStreamProcessor {
 	}
 
 	void eatShebang() {
-		if ( this.peekChar( '\0' ) == '#' && this.peekChar2( '\0' ) == '!' ) {
+		if ( this.peekChar( '\0' ) == SHEBANG1 && this.peekChar2( '\0' ) == SHEBANG2 ) {
 			this.eatUpTo( '\n' );
 		}
 	}
