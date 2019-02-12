@@ -6,8 +6,9 @@ import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.charrepeater.CharRepeater;
 import com.steelypip.powerups.jinxml.Lookup;
 
-public abstract class InputStreamProcessor {
+public abstract class TokeniserBaseClass {
 	
+	private static final char AMPERSAND = '&';
 	private static final char LONG_COMMENT_2 = '*';
 	private static final char LONG_COMMENT_1 = '/';
 	private static final char FORWARD_SLASH = '/';
@@ -217,98 +218,66 @@ public abstract class InputStreamProcessor {
 		}
 	}
 	
-	char readEscape() {
-		final String esc = this.readEscapeContent();
-		if ( esc.length() >= 2 && esc.charAt( 0 ) == '#' ) {
-			try {
-				final int n = Integer.parseInt( esc.toString().substring( 1 ) );
-				return (char)n;
-			} catch ( NumberFormatException e ) {
-				throw new Alert( "Unexpected numeric sequence after &#", e ).culprit( "Sequence", esc );
-			}
+	char readXMLStyleEscapeChar() {
+		if ( this.tryReadChar( BACK_SLASH ) ) {
+			return this.readJSONStyleEscapeChar();
 		} else {
-			return this.entityLookup( esc );
+			final String esc = this.readEscapeContent();
+			if ( esc.length() >= 2 && esc.charAt( 0 ) == '#' ) {
+				try {
+					final int n = Integer.parseInt( esc.toString().substring( 1 ) );
+					return (char)n;
+				} catch ( NumberFormatException e ) {
+					throw new Alert( "Unexpected numeric sequence after &#", e ).culprit( "Sequence", esc );
+				}
+			} else {
+				return this.entityLookup( esc );
+			}
 		}
 	}
 	
 	@SuppressWarnings("null")
-	@NonNull String gatherXMLAttributeValue() {
+	@NonNull String gatherString() {
 		final StringBuilder attr = new StringBuilder();
-		final char q = this.nextChar();
-		if ( q != DOUBLE_QUOTE && q != SINGLE_QUOTE ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", q );
+		final char opening_quote_mark = this.nextChar();
+		if ( opening_quote_mark != DOUBLE_QUOTE && opening_quote_mark != SINGLE_QUOTE ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", opening_quote_mark );
+		final boolean is_xml = opening_quote_mark == SINGLE_QUOTE;
+		final char esc = is_xml ? AMPERSAND : BACK_SLASH;
 		for (;;) {
 			char ch = this.nextChar();
-			if ( ch == q ) break;
-			if ( ch == '&' ) {
-				attr.append( this.readEscape() );
+			if ( ch == opening_quote_mark ) break;
+			if ( ch == esc ) {
+				attr.append( is_xml ? this.readXMLStyleEscapeChar() : this.readJSONStyleEscapeChar() );
 			} else {
-				if ( ch == '<' ) {
-					throw new Alert( "Forbidden character in attribute value" ).hint( "Use an entity reference" ).culprit( "Character", ch );
-				}
 				attr.append( ch );
 			}
 		}
 		return attr.toString();
 	}
-	
 
-	@SuppressWarnings("null")
-	@NonNull String gatherString() {
-		final char quote_char = this.nextChar();
-		StringBuilder sofar = new StringBuilder();
-		boolean done = false;
-		while( ! done ) {
-			final char ch = this.nextChar();
-			switch ( ch ) {
-				case DOUBLE_QUOTE:
-				case SINGLE_QUOTE:
-					if ( ch == quote_char ) {
-						done = true;
-					} else {
-						sofar.append( ch );
-					}
-					break;
-				case BACK_SLASH:
-					this.readEscapeChar( sofar );
-					break;
-				default:
-					sofar.append( ch );
-					break;
-			}
-		}
-		return sofar.toString();
-	}
 
-	void readEscapeChar( final StringBuilder sofar ) {
+	char readJSONStyleEscapeChar() {
 		final char ch = this.nextChar();
 		switch ( ch ) {
 			case SINGLE_QUOTE:
 			case DOUBLE_QUOTE:
 			case FORWARD_SLASH:
 			case BACK_SLASH:
-				sofar.append(  ch  );
-				break;
+				return ch;
 			case 'n':
-				sofar.append( '\n' );
-				break;
+				return '\n';
 			case 'r':
-				sofar.append( '\r' );
-				break;
+				return '\r';
 			case 't':
-				sofar.append( '\t' );
-				break;
+				return '\t';
 			case 'f':
-				sofar.append( '\f' );
-				break;
+				return '\f';
 			case 'b':
-				sofar.append( '\b' );
-				break;
+				return '\b';
 			case '&':
-				sofar.append( this.readEscape() );
-				break;
+				return this.readXMLStyleEscapeChar();
 			default:
-				sofar.append( ch );
-				break;
+				return ch;
 		}
 	}
 

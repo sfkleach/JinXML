@@ -2,7 +2,7 @@ package com.steelypip.powerups.jinxml.implementation;
 
 import java.util.ArrayDeque;
 
-public interface LevelTracker {
+public interface LevelTrackerMixin {
 	
 	static enum Context {
 		ELEMENT( "element" ),

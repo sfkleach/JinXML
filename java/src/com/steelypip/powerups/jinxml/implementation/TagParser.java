@@ -39,7 +39,7 @@ import com.steelypip.powerups.jinxml.EventHandler;
  * readElement. Alternatively you can simply iterate 
  * over the parser.
  */
-public class TagParser extends InputStreamProcessor implements LevelTracker  {
+public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  {
 	
 	private static final char SINGLE_QUOTE = '\'';
 	private static final char DOUBLE_QUOTE = '"';
@@ -166,7 +166,7 @@ public class TagParser extends InputStreamProcessor implements LevelTracker  {
 			if ( nch != '=' && nch != ':' ) {
 				throw new Alert( "Expected = or :" ).culprit( "Received", nch );
 			}
-			final String value = nch == '=' ? this.gatherXMLAttributeValue() : this.gatherString();
+			final String value = this.gatherString();
 			handler.attributeEvent( key, value, repeat_ok );
 		}
 	}
