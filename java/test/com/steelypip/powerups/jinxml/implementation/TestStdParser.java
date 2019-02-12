@@ -163,6 +163,14 @@ public class TestStdParser {
 	}
 	
 	@Test
+	public void readElement_XMLStyle_EmptyString() {
+		String text = "''";
+		Element x = element( text );
+		assertTrue( x.isStringValue() );
+		assertEquals( "", x.getStringValue() );
+	}
+
+	@Test
 	public void readElement_XMLStyle_NonEmptyString() {
 		String text = "'Mary had a little lamb'";
 		Element x = element( text );
@@ -178,6 +186,46 @@ public class TestStdParser {
 		assertEquals( "Fish & Chips\n", x.getStringValue() );
 	}
 
+	@Test
+	public void readElement_XMLStyle_EscapeFlip() {
+		String text = "'&\\&apos;'";
+		Element x = element( text );
+		assertTrue( x.isStringValue() );
+		assertEquals( "'", x.getStringValue() );
+	}
+
 	
+	@Test
+	public void readElement_JSONStyle_EmptyString() {
+		String text = "\"\"";
+		Element x = element( text );
+		assertTrue( x.isStringValue() );
+		assertEquals( "", x.getStringValue() );
+	}
+
+	@Test
+	public void readElement_JSONStyle_NonEmptyString() {
+		String text = "\"Mary had a little lamb\"";
+		Element x = element( text );
+		assertTrue( x.isStringValue() );
+		assertEquals( text.substring( 1, text.length() - 1 ), x.getStringValue() );
+	}
+
+	@Test
+	public void readElement_JSONStyle_NonEmptyString_WithEscapes() {
+		String text = "\"Fish & Chips\\&#10;\"";
+		Element x = element( text );
+		assertTrue( x.isStringValue() );
+		assertEquals( "Fish & Chips\n", x.getStringValue() );
+	}
+
+	@Test
+	public void readElement_JSONStyle_EscapeFlip() {
+		String text = "\"\\&\\r\"";
+		Element x = element( text );
+		assertTrue( x.isStringValue() );
+		assertEquals( "\r", x.getStringValue() );
+	}
+
 	
 }
