@@ -236,25 +236,6 @@ public abstract class TokeniserBaseClass {
 		}
 	}
 	
-	@SuppressWarnings("null")
-	@NonNull String gatherString() {
-		final StringBuilder attr = new StringBuilder();
-		final char opening_quote_mark = this.nextChar();
-		if ( opening_quote_mark != DOUBLE_QUOTE && opening_quote_mark != SINGLE_QUOTE ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", opening_quote_mark );
-		final boolean is_xml = opening_quote_mark == SINGLE_QUOTE;
-		final char esc = is_xml ? AMPERSAND : BACK_SLASH;
-		for (;;) {
-			char ch = this.nextChar();
-			if ( ch == opening_quote_mark ) break;
-			if ( ch == esc ) {
-				attr.append( is_xml ? this.readXMLStyleEscapeChar() : this.readJSONStyleEscapeChar() );
-			} else {
-				attr.append( ch );
-			}
-		}
-		return attr.toString();
-	}
-
 
 	char readJSONStyleEscapeChar() {
 		final char ch = this.nextChar();
@@ -279,6 +260,25 @@ public abstract class TokeniserBaseClass {
 			default:
 				return ch;
 		}
+	}
+	
+	@SuppressWarnings("null")
+	@NonNull String gatherString() {
+		final StringBuilder attr = new StringBuilder();
+		final char opening_quote_mark = this.nextChar();
+		if ( opening_quote_mark != DOUBLE_QUOTE && opening_quote_mark != SINGLE_QUOTE ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", opening_quote_mark );
+		final boolean is_xml = opening_quote_mark == SINGLE_QUOTE;
+		final char esc = is_xml ? AMPERSAND : BACK_SLASH;
+		for (;;) {
+			char ch = this.nextChar();
+			if ( ch == opening_quote_mark ) break;
+			if ( ch == esc ) {
+				attr.append( is_xml ? this.readXMLStyleEscapeChar() : this.readJSONStyleEscapeChar() );
+			} else {
+				attr.append( ch );
+			}
+		}
+		return attr.toString();
 	}
 
 	void eatShebang() {
