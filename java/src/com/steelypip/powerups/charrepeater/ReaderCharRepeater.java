@@ -115,7 +115,7 @@ public class ReaderCharRepeater implements CharRepeater {
 	 */
 	@Override
 	public char nextChar() {
-		if ( ! buffer.isEmpty() || this.hasNextChar() ) {
+		if ( this.hasNextChar() ) {
 			return this.buffer.popChar();
 		} else {
 			throw new RuntimeException( new EOFException() );
@@ -131,7 +131,7 @@ public class ReaderCharRepeater implements CharRepeater {
 	 */
 	@Override
 	public char nextChar( char value_if_needed ) {
-		if ( ! this.buffer.isEmpty() || this.hasNextChar() ) {
+		if ( this.hasNextChar() ) {
 			return this.buffer.popChar();
 		} else {
 			return value_if_needed;

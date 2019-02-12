@@ -244,33 +244,30 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 				}
 				this.popElement();
 				return true;
-			} else if ( ch == '!' || ch == '?' ) {
-				this.eatComment( ch  );
-				return this.readNextTag( handler, selectorInfo );
 			} else {
 				this.cucharin.pushChar( ch );
-			}
 			
-			// This is not an end-tag but a start-tag.
-			this.eatWhiteSpace();
-			final @NonNull String tag = this.gatherNameOrQuotedName();
-			this.tag_name = tag;
-			
-			handler.startTagEvent( selectorInfo.name, tag );
-			this.processAttributes( handler );
-			
-			this.eatWhiteSpace();					
-			ch = nextChar();
-			if ( ch == '/' ) {
-				//	This is a standalone tag.
-				this.mustReadChar( '>' );
-				handler.endTagEvent( this.tag_name );
-				return true;
-			} else if ( ch == '>' ) {
-				this.pushElement();
-				return true;
-			} else {
-				throw new Alert( "Invalid continuation" );
+				// This is not an end-tag but a start-tag.
+				this.eatWhiteSpace();
+				final @NonNull String tag = this.gatherNameOrQuotedName();
+				this.tag_name = tag;
+				
+				handler.startTagEvent( selectorInfo.name, tag );
+				this.processAttributes( handler );
+				
+				this.eatWhiteSpace();					
+				ch = nextChar();
+				if ( ch == '/' ) {
+					//	This is a standalone tag.
+					this.mustReadChar( '>' );
+					handler.endTagEvent( this.tag_name );
+					return true;
+				} else if ( ch == '>' ) {
+					this.pushElement();
+					return true;
+				} else {
+					throw new Alert( "Invalid continuation" );
+				}
 			}
 		} else {
 			//	TODO, not correct error message at end of file.

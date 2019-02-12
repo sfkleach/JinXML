@@ -96,11 +96,13 @@ public abstract class TokeniserBaseClass {
 	
 	void eatUpTo( final char stop_char ) {
 		final char not_stop_char = ( stop_char != '\0' ? '\0' : '_' );
-		while ( this.nextChar( not_stop_char ) != stop_char ) {
+		for (;;) {
+			final char nch = this.nextChar( not_stop_char );
+			if ( nch == stop_char ) break;
 		}		
 	}
 	
-	void eatComment( final char ch ) {
+	private void eatComment( final char ch ) {
 		if ( ch == '!' ) {
 			if ( this.isNextChar( '-' ) ) {
 				this.skipChar();
@@ -149,6 +151,14 @@ public abstract class TokeniserBaseClass {
 						}
 						if ( this.nextChar() == LONG_COMMENT_1 ) break;
 					}
+				} else {
+					this.pushChar( ch );
+					return;
+				}
+			} else if ( ch == '<' ) {
+				final char nch = this.peekChar( '\0' );
+				if ( nch == '!' || nch == '?' ) {
+					this.eatComment( this.nextChar() );
 				} else {
 					this.pushChar( ch );
 					return;
