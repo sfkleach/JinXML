@@ -40,7 +40,41 @@ public class TestExamplesFromWiki {
 		assertEquals( (Double)25.2084, e.getChild( 1 ).getChild( "location" ).getChild().getFloatValue() );
 	}
 
+	final static String example2 =
+		"<person>\n" +
+		"  firstName = \"John\" \n" +
+		"  lastName = \"Smith\"\n" +
+		"  isAlive = true\n" +
+		"  age = 27        // Does the age of a person freeze at their time of death?\n" +
+		"  address =       // See how to fix this 'stutter' in the next section.\n" +
+		"  <address>\n" +
+		"    streetAddress = \"21 2nd Street\"\n" +
+		"    city = \"New York\"\n" +
+		"    state = \"NY\"\n" +
+		"    postalCode = \"10021-3100\"\n" +
+		"  </&>\n" +
+		"  children = []\n" +
+		"  spouse = null  // Can you have multiple spouses?\n" +
+		"</&>\n";
+	
+	@Test
+	public void testExample2() {
+		StdPushParser p = new StdPushParser( new StringReader( example2 ), false );
+		Element e = p.readElement();
+		assertEquals( 7, e.countMembers() );
+		assertEquals( "person", e.getName() );
+		assertEquals( "21 2nd Street", e.getChild( "address" ).getChild("streetAddress").getStringValue() );
+	}
+	
+	final static String example3 = "{ & = <address/> }";
 
-
+	@Test
+	public void testExample3() {
+		StdPushParser p = new StdPushParser( new StringReader( example3 ), false );
+		Element e = p.readElement();
+		assertEquals( 1, e.countMembers() );
+		assertEquals( "address", e.getChild( "address" ).getName() );
+	}
+	
 
 }

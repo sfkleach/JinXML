@@ -115,7 +115,7 @@ public abstract class TokeniserBaseClass {
 					} else if ( nch == '>' && count_minuses >= 2 ) {
 						break;
 					} else {
-						if ( count_minuses >= 2 ) {
+						if ( count_minuses >= 2 ) {	
 							throw new Alert( "Invalid XML comment" ).hint( "Detected -- within the body of comment" ).culprit( "Character following --", (int)nch );
 						}
 						count_minuses = 0;

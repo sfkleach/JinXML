@@ -70,23 +70,7 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 	}
 	
 	
-	/*************************************************************************
-	* Helper class for tracking field info
-	*************************************************************************/
 
-	static class SelectorInfo {
-		
-		public @NonNull String name;
-		public boolean solo;
-		
-		public SelectorInfo( @NonNull String name, boolean solo ) {
-			this.name = name;
-			this.solo = solo;
-		}
-		
-		static @NonNull SelectorInfo DEFAULT = new SelectorInfo( "", false );
-		
-	}
 	
 	/*************************************************************************
 	* Implementation for the character stream processing
@@ -172,7 +156,7 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 	}
 
 	private boolean readString( EventHandler handler, final @NonNull SelectorInfo selectorInfo ) {
-		handler.stringEvent( selectorInfo.name, this.gatherString() );
+		handler.stringEvent( selectorInfo.getSelector( "string" ), this.gatherString() );
 		return true;
 	}
 	
@@ -184,9 +168,9 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 		final String number = this.gatherNumber();
 		// TODO: this is clumsy in the extreme. Restructure.
 		if ( ! number.matches( "[-+]?[0-9]+" ) ) {
-			sendFloatEvent( handler, selectorInfo.name, number );
+			sendFloatEvent( handler, selectorInfo.getSelector(), number );
 		} else {
-			sendIntEvent( handler, selectorInfo.name, number );
+			sendIntEvent( handler, selectorInfo.getSelector(), number );
 		}
 		return true;
 	}
@@ -199,18 +183,18 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 
 	
 	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, @NonNull String s ) {
-		this.sendStringEvent( handler, selectorInfo.name, s );
+		this.sendStringEvent( handler, selectorInfo.getSelector( "string" ), s );
 		return true;
 	}
 
 	private boolean handleIdentifier( EventHandler handler, @NonNull SelectorInfo selectorInfo, String identifier ) {
 		switch ( identifier ) {
 		case "null":
-			this.sendNullEvent( handler, selectorInfo.name, identifier );
+			this.sendNullEvent( handler, selectorInfo.getSelector(), identifier );
 			return true;
 		case "true":
 		case "false":
-			this.sendBooleanEvent( handler, selectorInfo.name, identifier );
+			this.sendBooleanEvent( handler, selectorInfo.getSelector(), identifier );
 			return true;
 		default:
 			throw new Alert( "Unrecognised identifier" ).culprit( "Identifier", identifier );
@@ -221,11 +205,11 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 	private boolean readCoreTag( EventHandler handler, @NonNull SelectorInfo selectorInfo ) {
 		if ( this.tryReadChar( '[' ) ) {
 			this.pushArray();
-			handler.startArrayEvent( selectorInfo.name );
+			handler.startArrayEvent( selectorInfo.getSelector() );
 			return true;
 		} else if ( this.tryReadChar( '{' ) ) {
 			this.pushObject();
-			handler.startObjectEvent( selectorInfo.name );
+			handler.startObjectEvent( selectorInfo.getSelector() );
 			return true;
 		} else if ( this.tryReadChar( '<' ) ) {
 			
@@ -233,7 +217,9 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 			char ch = this.nextChar();
 			if ( ch == '/' ) {
 				this.eatWhiteSpace();
-				if ( this.tryReadChar( '>' ) ) {
+				if ( this.tryReadChar( '&' ) ) {
+					this.eatWhiteSpace();
+					this.mustReadChar( '>' );
 					handler.endTagEvent( null );
 				} else {
 					final String end_tag = this.gatherName();
@@ -252,7 +238,7 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 				final @NonNull String tag = this.gatherNameOrQuotedName();
 				this.tag_name = tag;
 				
-				handler.startTagEvent( selectorInfo.name, tag );
+				handler.startTagEvent( selectorInfo.getSelector( tag ), tag );
 				this.processAttributes( handler );
 				
 				this.eatWhiteSpace();					
@@ -276,10 +262,10 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 	}
 
 	
-	private boolean readLabelledTagOrSymbol( EventHandler handler, final boolean is_identifier, final @NonNull String name ) {
+	private boolean readLabelledTagOrSymbol( EventHandler handler, final boolean is_identifier, final String name ) {
 		this.eatWhiteSpace();
 		boolean plus = this.tryReadChar( '+' );
-		boolean colon = this.tryReadChar( ':' );
+		boolean colon = this.tryReadChar( ':' ) || this.tryReadChar( '=' );
 		if ( colon ) {
 			boolean solo = !plus;
 			this.eatWhiteSpace();
@@ -288,8 +274,10 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 			//	:+ is not allowed - we want to raise the alarm.
 			this.mustReadChar( ':' ); 	//	This will throw an exception (the one we want).
 			throw Alert.unreachable();	//	So compiler doesn't complain.
-		} else {
+		} else if ( name != null ) {
 			return handleStringOrIdentifier( handler, is_identifier, name );
+		} else {
+			throw new Alert( "'&' used on its own, like an identifier, but that is not allowed" );
 		}
 	}
 	
@@ -335,6 +323,9 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 			final char pch = this.peekChar( '\0' );
 			if ( Character.isLetter( pch ) && selectorInfo == null ) {
 				return readLabelledTagOrSymbol( handler, true, this.gatherName() );
+			} else if ( pch == '&' ) {
+				this.nextChar();
+				return readLabelledTagOrSymbol( handler, true, null );
 			} else if ( ( pch == DOUBLE_QUOTE || pch == SINGLE_QUOTE ) && selectorInfo == null ) {
 				return readLabelledTagOrSymbol( handler, false, this.gatherString() );
 			} else {
