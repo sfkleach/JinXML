@@ -1,4 +1,4 @@
-# Standard Push Parser
+# Class PushParser and Listener - the Standard Push Parser interface
 
 ## What is a Push Parser?
 A push-parser consumes an input stream and generates a series of events that can be used to recognise 
@@ -32,53 +32,49 @@ A standard push-parser:
 Below we elaborate a _typical_ set of classes, functions and methods for meeting the above standard. The
 standard does not require a library to follow these names or even the same classes and relationships.
 
-### Class PushParser
-* newPushParser( InputStream? input, bool singleReturn = true ) -> PushParser
-* Method readEvent() -> Event
-* Method readExpression() -> Iterator< Event >
-* Method readInput() -> Iterator< Event >
+## Class PushParser
 
-### Class Listener
-* newListener( PushParser pp ) -> Listener
-* Method consumeEvent()
-* Method consumeExpression()
-* Method consumeInput()
+The PushParser wraps an input-stream in order to produce a stream of events. The input-stream is consumed on demand by the read-methods.
 
-## What are the standard events and listener methods?
-Events and listeners follow an identical scheme. Note that events LiteralEvent and IdentifierEvent 
-can only be generated when a custom configuration for the push parser is provided.
+* Constructor `newPushParser( InputStream input, Bool singleReturn = true ) -> PushParser` - returns a PushParser based on the input stream. If `singleReturn` is true then the input stream *must* consist of a single JinXML element. As soon as the implementation detects that this is not true it must raise an exception and this must be no later than reading the end of input or encountering a non-whitespace character after the end of the first JinXML element.
+* Method `readEvent( Event? orElse = null ) -> Event?` - consumes just enough of the input to determine the next event. If the end of input has been reached then `orElse` is returned.
+* Method `readExpression() -> Iterator< Event >`  - creates an iterator that, when advanced, will incrementally consume just enough of the input stream to produce the events of a single JinXML value. If the input is exhausted during this process an exception is raised and if the input is not well-formed then an exception is raised.
+* Method `readInput() -> Iterator< Event >` - creates an iterator that, when advanced, will incrementally consume the entire input stream and generates the events associated with that. An exception is raised if the input is not well-formed, meaning that it must be the events associated with a series of JinXML elements.
 
-```sml
-datatype Event =
-  StartTagEvent( String key ) |
-  AttributeEvent( String key, String value, Boolean solo = true ) |
-  EndTagEvent( String? key = null ) |
-  StartArrayEvent() |
-  EndArrayEvent() |
-  StartObjectEvent() |
-  StartEntryEvent( String? key = null, Boolean solo = true ) |
-  EndEntryEvent() |
-  EndObjectEvent() |
-  IntEvent( String value ) |
-  FloatEvent( String value ) |
-  StringEvent( String value ) |
-  BooleanEvent( String value ) |
-  NullEvent( String value )
+## Abstract Class Listener
+
+Events and listener-methods follow an identical scheme with the listener methods follow the same pattern and naming convention as the events.
+
+### Main
+
+* Abstract constructor `newListener( PushParser pp ) -> Listener` - wraps a PushParser as part of constructing a Listener that will run the PushParser in response to the consume-methods. 
+* Method `consumeEvent() -> Bool` - reads the next event, if it exists, and runs the appropriate listener-methods on the result and return true. If there is no next event then it simply returns false.
+* Method `consumeExpression() -> Bool` - reads the events corresponding to the next JinXML expression, if one exists, and runs the appropriate listener-methods on the events on that expression. If there is no next expression then it simply returns false.
+* Method `consumeInput( Bool mustBeWellFormed = true )` - reads the input and run the appropriated listener-events corresponding to the sequence of JinXML expressions on the input. If the flag `mustBeWellFormed` is true then the series of events is validated on the fly and any incorrect sequence will raise an exception.
+
+### Listener Events
+
+* Method `startTagEvent( String key )`
+* Method `attributeEvent( String key, String value, Boolean solo = true )`
+* Method `endTagEvent( String? key = null )`
+* Method `startArrayEvent()`
+* Method `endArrayEvent()`
+* Method `startObjectEvent()`
+* Method `startEntryEvent( String key = null, Boolean solo = true )`
+* Method `endEntryEvent()`
+* Method `endObjectEvent()`
+* Method `intEvent( String value )`
+* Method `floatEvent( String value )`
+* Method `stringEvent( String value )`
+* Method `booleanEvent( String value )`
+* Method `nullEvent( String value )`
+
+### Example: How to read expression by expression
+
+```
+var listener = newListener( newPushParser( newInputStreamFromFile( 'test.jnx') ) );
+while ( listener.consumeExpression() ) {
+    // Process the last expression read.
+}
 ```
 
-The listener methods follow the same pattern and naming convention as the events.
-
-* Method ```startTagEvent( String key )```
-* Method ```attributeEvent( String key, String value, Boolean solo = true )```
-* Method ```endTagEvent( String? key = null )```
-* Method ```startArrayEvent()```
-* Method ```endArrayEvent()```
-* Method ```startObjectEvent()```
-* Method ```startEntryEvent( String key = null, Boolean solo = true )```
-* Method ```endEntryEvent()```
-* Method ```endObjectEvent()```
-* Method ```intEvent( String value )```
-* Method ```floatEvent( String value )```
-* Method ```stringEvent( String value )```
-* Method ```booleanEvent( String value )```
-* Method ```nullEvent( String value )```

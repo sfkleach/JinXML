@@ -20,5 +20,5 @@ The following classes and methods illustrate a _typical_ instantiation of the st
 * [MultiMap](MultiMap.md) - a crucial helper class for Elements.
 * [Builder](Builder.md) - used for incrementally constructing Elements from an event stream.
 * [PushParser](PushParser.md) - generates an event stream.
-* [PushParser.Event](PushParser.md) - a class representing all the different event types that can be generated.
+* [PushParserEvent](PushParserEvent.md) - a class representing all the different event types that can be generated.
 
