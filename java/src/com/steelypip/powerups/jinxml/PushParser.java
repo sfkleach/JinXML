@@ -1,6 +1,9 @@
 package com.steelypip.powerups.jinxml;
 
+import java.io.Reader;
 import java.util.stream.Stream;
+
+import com.steelypip.powerups.jinxml.implementation.StdPushParser;
 
 public interface PushParser {
 	
@@ -23,5 +26,13 @@ public interface PushParser {
 	Stream< Element > readElementStream();
 	Element readElement();
 	Element readElement( boolean solo );
+
+	static PushParser instance( Reader reader ) {
+		return new StdPushParser( reader, true );
+	}
+		
+	static PushParser instance( Reader reader, boolean expandLiterals ) {
+		return new StdPushParser( reader, expandLiterals );
+	}
 		
 }

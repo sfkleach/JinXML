@@ -1,5 +1,6 @@
 package com.steelypip.powerups.jinxml;
 
+import java.io.Reader;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,9 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.jinxml.implementation.FlexiElement;
 import com.steelypip.powerups.jinxml.implementation.InOrderTraversal;
+import com.steelypip.powerups.jinxml.implementation.StdPushParser;
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
@@ -522,4 +525,22 @@ public interface Element {
 	}
 
 
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Convenience methods.
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	static Element instance( final String name ) {
+		return new FlexiElement( name );
+	}
+	
+	static Element readElement( Reader reader ) {
+		PushParser pp = new StdPushParser( reader, false );
+		return pp.readElement();
+	}
+		
+	static Stream< Element > readElementStream( Reader reader ) {
+		PushParser pp = new StdPushParser( reader, false );
+		return pp.readElementStream();
+	}
+	
 }

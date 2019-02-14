@@ -4,7 +4,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.charrepeater.CharRepeater;
-import com.steelypip.powerups.jinxml.Lookup;
 
 public abstract class TokeniserBaseClass {
 	

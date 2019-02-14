@@ -304,7 +304,7 @@ public class TagParser extends TokeniserBaseClass {
 		}
 	}
 	
-	
+	private boolean atFileStart = true;
 	
 	/**
 	 * This is the core routine of the algorithm, which consumes a single tag from the
@@ -313,7 +313,11 @@ public class TagParser extends TokeniserBaseClass {
 	 * @param selectorInfo null if no selector has been read yet, otherwise the selector info.
 	 * @return true if it read a tag, false at end of stream.
 	 */
-	boolean readNextTag( EventHandler handler, @Nullable SelectorInfo selectorInfo ) {
+	public boolean readNextTag( EventHandler handler, @Nullable SelectorInfo selectorInfo ) {
+		if ( this.atFileStart ) {
+			this.eatShebang();
+			this.atFileStart = false;
+		}
 		this.eatWhiteSpaceIncludingOneComma();
 		if ( !this.cucharin.hasNextChar() ) {
 			return false;
@@ -332,7 +336,7 @@ public class TagParser extends TokeniserBaseClass {
 		}
 	}
 	
-	boolean readNextTag( EventHandler handler ) {
+	public boolean readNextTag( EventHandler handler ) {
 		return this.readNextTag( handler, null );
 	}
 

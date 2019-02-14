@@ -3,6 +3,8 @@ package com.steelypip.powerups.jinxml;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+import com.steelypip.powerups.jinxml.implementation.StdBuilder;
+
 public interface Builder extends Iterator< Element >, EventHandler {
 	
 	/**
@@ -82,5 +84,7 @@ public interface Builder extends Iterator< Element >, EventHandler {
 		events.forEach( e -> e.sendTo( this ) );
 	}
 
-	
+	static Builder instance() {
+		return new StdBuilder();
+	}
 }
