@@ -39,15 +39,14 @@ import com.steelypip.powerups.jinxml.EventHandler;
  * readElement. Alternatively you can simply iterate 
  * over the parser.
  */
-public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  {
+public class TagParser extends TokeniserBaseClass {
 	
 	private static final char SINGLE_QUOTE = '\'';
 	private static final char DOUBLE_QUOTE = '"';
 	private final CharRepeater cucharin;
 	private boolean expandLiteralConstants;
-	
-	private String tag_name = null;	
-	
+	final private LevelTracker level_tracker = new LevelTracker();  
+		
 	public TagParser( CharRepeater rep, boolean expandLiteralConstants ) {
 		this.cucharin = rep;
 		this.expandLiteralConstants = expandLiteralConstants;
@@ -58,19 +57,6 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 		this.expandLiteralConstants = expandLiteralConstants;
 	}
 	
-	/*************************************************************************
-	* Implementation for the mixin LevelTracker
-	*************************************************************************/
-	
-	final ArrayDeque< Context > contexts_implementation = new ArrayDeque<>();
-	@Override
-
-	public ArrayDeque< Context > contexts() {
-		return this.contexts_implementation;
-	}
-	
-	
-
 	
 	/*************************************************************************
 	* Implementation for the character stream processing
@@ -79,7 +65,14 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 	public CharRepeater cucharin() {
 		return this.cucharin;
 	}
+
+	/*************************************************************************
+	* Delgation to LevelTracker
+	*************************************************************************/
 	
+	public boolean isAtTopLevel() {
+		return level_tracker.isAtTopLevel();
+	}
 	
 	/*************************************************************************
 	* Handling literal constants
@@ -90,7 +83,8 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 		handler.attributeEvent( "value", value );
 		handler.endTagEvent();		
 	}
-	
+
+
 	private void sendIntEvent( EventHandler handler, @NonNull String selector, @NonNull String value ) {
 		if ( this.expandLiteralConstants ) {
 			this.sendLiteralConstant( handler, selector, "int", value );
@@ -204,11 +198,11 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 
 	private boolean readCoreTag( EventHandler handler, @NonNull SelectorInfo selectorInfo ) {
 		if ( this.tryReadChar( '[' ) ) {
-			this.pushArray();
+			this.level_tracker.pushArray();
 			handler.startArrayEvent( selectorInfo.getSelector() );
 			return true;
 		} else if ( this.tryReadChar( '{' ) ) {
-			this.pushObject();
+			this.level_tracker.pushObject();
 			handler.startObjectEvent( selectorInfo.getSelector() );
 			return true;
 		} else if ( this.tryReadChar( '<' ) ) {
@@ -221,22 +215,26 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 					this.eatWhiteSpace();
 					this.mustReadChar( '>' );
 					handler.endTagEvent( null );
+					this.level_tracker.popElement( null );
 				} else {
-					final String end_tag = this.gatherName();
+					final String end_tag = this.gatherNonEmptyName();
 					this.processAttributes( handler );
 					this.eatWhiteSpace();
 					this.mustReadChar( '>' );
 					handler.endTagEvent( end_tag );
+					this.level_tracker.popElement( end_tag );
 				}
-				this.popElement();
 				return true;
 			} else {
 				this.cucharin.pushChar( ch );
 			
 				// This is not an end-tag but a start-tag.
 				this.eatWhiteSpace();
-				final @NonNull String tag = this.gatherNameOrQuotedName();
-				this.tag_name = tag;
+				final @NonNull String tag = (
+					this.tryReadChar( '&' ) ?
+					selectorInfo.getSelector() :
+					this.gatherNameOrQuotedName()
+				);
 				
 				handler.startTagEvent( selectorInfo.getSelector( tag ), tag );
 				this.processAttributes( handler );
@@ -246,10 +244,10 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 				if ( ch == '/' ) {
 					//	This is a standalone tag.
 					this.mustReadChar( '>' );
-					handler.endTagEvent( this.tag_name );
+					handler.endTagEvent( tag );
 					return true;
 				} else if ( ch == '>' ) {
-					this.pushElement();
+					this.level_tracker.pushElement( tag );
 					return true;
 				} else {
 					throw new Alert( "Invalid continuation" );
@@ -291,16 +289,16 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 			return this.readString( handler, selectorInfo );
 		} else if ( pch == ']' ) {
 			this.mustReadChar( ']' );
-			this.popArray();
+			this.level_tracker.popArray();
 			handler.endArrayEvent();
 			return true;
 		} else if ( pch == '}' ) {
 			this.mustReadChar( '}' );
-			this.popObject();
+			this.level_tracker.popObject();
 			handler.endObjectEvent();
 			return true;
 		} else if ( Character.isLetter( pch ) ) {
-			return this.handleIdentifier( handler, selectorInfo, this.gatherName() );
+			return this.handleIdentifier( handler, selectorInfo, this.gatherNonEmptyName() );
 		} else {
 			throw new Alert( "Unexpected character while reading tag or constant" ).culprit( "Character", pch );
 		}
@@ -322,7 +320,7 @@ public class TagParser extends TokeniserBaseClass implements LevelTrackerMixin  
 		} else {	
 			final char pch = this.peekChar( '\0' );
 			if ( Character.isLetter( pch ) && selectorInfo == null ) {
-				return readLabelledTagOrSymbol( handler, true, this.gatherName() );
+				return readLabelledTagOrSymbol( handler, true, this.gatherNonEmptyName() );
 			} else if ( pch == '&' ) {
 				this.nextChar();
 				return readLabelledTagOrSymbol( handler, true, null );

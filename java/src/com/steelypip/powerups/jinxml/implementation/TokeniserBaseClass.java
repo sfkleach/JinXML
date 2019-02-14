@@ -183,7 +183,7 @@ public abstract class TokeniserBaseClass {
 	}
 	
 	@SuppressWarnings("null")
-	@NonNull String gatherName() {
+	@NonNull String gatherNonEmptyName() {
 		final StringBuilder name = new StringBuilder();
 		while ( this.hasNextChar() ) {
 			final char ch = this.nextChar();
@@ -194,6 +194,9 @@ public abstract class TokeniserBaseClass {
 				break;
 			}
 		}
+		if ( name.length() == 0 ) {
+			throw new Alert( "Name missing" );
+		}
 		return name.toString();
 	}
 	
@@ -202,7 +205,7 @@ public abstract class TokeniserBaseClass {
 		if ( pch == DOUBLE_QUOTE || pch == SINGLE_QUOTE ) {
 			return this.gatherString();
 		} else {
-			return this.gatherName();
+			return this.gatherNonEmptyName();
 		}
 	}
 	

@@ -11,7 +11,7 @@ import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.Event.AttributeEvent;
 import com.steelypip.powerups.jinxml.Event.StartTagEvent;
 
-public class TestStdParser {
+public class TestStdParser_ReadElement {
 	
 	StdPushParser parser( String s ) {
 		return new StdPushParser( new StringReader( s ), false );
@@ -22,44 +22,12 @@ public class TestStdParser {
 	}
 	
 	@Test
-	public void readEvent_Int() {
-		StdPushParser p = this.parser( "99" );
-		Event e = p.readEvent();
-		assertTrue( e instanceof Event.IntEvent );
-		assertNull( p.readEvent() );
-	}
-	
-	@Test
 	public void readElement_Int() {
 		StdPushParser p = this.parser( "99" );
 		Element e = p.readElement();
 		assertNotNull( e );
 		assertTrue( e.isIntValue() );
 		assertEquals( (Long)99L, (Long)e.getIntValue() );
-	}
-	
-	@Test
-	public void readEvent_IntExpanded() {
-		StdPushParser p = new StdPushParser( new StringReader( "88" ), true );
-		Event start = p.readEvent();
-		assertTrue( start instanceof Event.StartTagEvent );
-		Event addattr = p.readEvent();
-		assertTrue( addattr instanceof Event.AttributeEvent );
-		Event end = p.readEvent();
-		assertTrue( end instanceof Event.EndTagEvent );
-		assertNull( p.readEvent() );
-	}
-	
-	@Test
-	public void readEvent_XMLStyle_EmptyString() {
-		StdPushParser p = this.parser( "''" );
-		
-	}
-
-	@Test
-	public void readEvent_XMLStyle_NonEmptyString_WithEscapes() {
-		StdPushParser p = this.parser( "''" );
-		
 	}
 
 	@Test
@@ -227,5 +195,5 @@ public class TestStdParser {
 		assertEquals( "\r", x.getStringValue() );
 	}
 
-	
+
 }

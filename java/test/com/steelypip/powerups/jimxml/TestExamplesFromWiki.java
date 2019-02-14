@@ -76,5 +76,26 @@ public class TestExamplesFromWiki {
 		assertEquals( "address", e.getChild( "address" ).getName() );
 	}
 	
+	final static String example4 = 
+		"<person>\n" +
+		"  firstName = \"John\" \n" +
+		"  lastName = \"Smith\"\n" +
+		"  isAlive = true\n" +
+		"  age = 27        // Does the age of a person freeze at their time of death?\n" +
+		"  address = <&>\n" +
+		"    streetAddress = \"21 2nd Street\"\n" +
+		"    city = \"New York\"\n" +
+		"    state = \"NY\"\n" +
+		"    postalCode = \"10021-3100\"\n" +
+		"  </&>\n" +
+		"</&>\n";
 
+	@Test
+	public void testExample4() {
+		StdPushParser p = new StdPushParser( new StringReader( example4 ), false );
+		Element e = p.readElement();
+		assertEquals( 5, e.countMembers() );
+		assertEquals( "address", e.getChild( "address" ).getName() );
+	}	
+	
 }
