@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.FlexiElement;
+import com.steelypip.powerups.jinxml.implementation.FlexiElement;
 
 public class TestEquality {
 	

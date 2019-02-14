@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jimxml;
+package com.steelypip.powerups.jinxml.implementation;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.FlexiElement;
+import com.steelypip.powerups.jinxml.implementation.FlexiElement;
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public class TestFlexiElement {

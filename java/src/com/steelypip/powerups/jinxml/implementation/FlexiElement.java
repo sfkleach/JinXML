@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jinxml;
+package com.steelypip.powerups.jinxml.implementation;
 
 import java.math.BigInteger;
 import java.util.AbstractList;
@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.common.StdPair;
+import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.util.multimap.MultiMap;
 import com.steelypip.powerups.util.multimap.ViewPhoenixMultiMapAsMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;

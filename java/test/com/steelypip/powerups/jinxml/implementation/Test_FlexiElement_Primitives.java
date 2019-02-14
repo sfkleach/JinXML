@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jimxml;
+package com.steelypip.powerups.jinxml.implementation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.FlexiElement;
+import com.steelypip.powerups.jinxml.implementation.FlexiElement;
 
-public class TestPrimitives {
+public class Test_FlexiElement_Primitives {
 	
 	Element intElement;
 	Element floatElementNoDP;

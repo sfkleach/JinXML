@@ -8,7 +8,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.FlexiElement;
 
 public class StdBuilder implements Builder {
 	
