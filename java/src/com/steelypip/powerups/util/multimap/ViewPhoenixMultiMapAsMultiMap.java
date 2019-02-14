@@ -141,4 +141,31 @@ public abstract class ViewPhoenixMultiMapAsMultiMap< K, V > implements MultiMap<
 		return this;
 	}
 	
+
+	public boolean equals( final Object object ) {
+		if ( object == null ) return false;
+		if ( ! ( object instanceof MultiMap ) ) return false;
+		final MultiMap< Object, Object > that = (MultiMap)object;
+		if ( this.sizeEntries() != that.sizeEntries() ) return false;
+		for ( K k : this.keySet() ) {
+			Iterator< V > this_values = this.getAll( k ).iterator();
+			Iterator< Object > that_values = that.getAll( k ).iterator();
+			for (;;) {
+				if ( ! this_values.hasNext() ) return ! that_values.hasNext();
+				if ( ! that_values.hasNext() ) return false;
+				final V this_v = this_values.next();
+				final Object that_v = that_values.next();
+				if ( this_v == null ) {
+					if ( that_v != null ) return false;
+				} else if ( that_v == null ) {
+					return false;
+				} else {
+					if ( ! this_v.equals( that_v ) ) return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	
 }

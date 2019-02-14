@@ -2,11 +2,17 @@ package com.steelypip.powerups.jinxml;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.jinxml.implementation.InOrderTraversal;
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
@@ -66,7 +72,7 @@ public interface Element {
 	 * returns the name of the object, which is typically intended to be a type-name.
 	 * @return the name of the object
 	 */
-	String getName();
+	@NonNull String getName();
 	
 	default boolean hasName( String name ) {
 		return name != null && name.equals( this.getName() );
@@ -495,8 +501,25 @@ public interface Element {
 	 * @return the stream of events
 	 */
 	default Stream< Event > toEventStream() {
-		//	TODO:
-		throw new RuntimeException( "TO BE DONE" );
+		final InOrderTraversal t = new InOrderTraversal( this );
+		return(
+			StreamSupport.stream( 
+				new Spliterators.AbstractSpliterator< Event >( Long.MAX_VALUE, Spliterator.ORDERED ) {
+					@Override
+					public boolean tryAdvance( Consumer< ? super Event > action ) {
+						final Event e = t.getEvent();
+						if ( e == null ) {
+							return false;
+						} else {
+							action.accept( e );
+							return true;
+						}
+					}
+				},
+				false
+			)
+		);
 	}
+
 
 }

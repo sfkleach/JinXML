@@ -29,7 +29,7 @@ public class FlexiElement implements Element {
 	private static final @NonNull String FLOAT_ELEMENT_NAME = "float";
 	private static final @NonNull String DEFAULT_SELECTOR = "";
 	
-	protected String name;
+	protected @NonNull String name;
 	protected PhoenixMultiMap< String, String > attributes = EmptyMutablePMMap.getInstance();
 	protected PhoenixMultiMap< String, Element > members = EmptyMutablePMMap.getInstance();
 	
@@ -106,7 +106,7 @@ public class FlexiElement implements Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public String getName() {
+	public @NonNull String getName() {
 		return this.name;
 	}
 	
@@ -912,6 +912,20 @@ public class FlexiElement implements Element {
 	public boolean isArray()
 	{
 		return this.hasName( ARRAY_ELEMENT_NAME );
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Equality
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	public boolean equals( final Object object ) {
+		if ( object == null ) return false;
+		if ( ! ( object instanceof Element ) ) return false; 
+		final Element that = (Element)object;
+		if ( ! this.hasName( that.getName() ) ) return false;
+		if ( ! this.getAttributesAsMultiMap( true, false ).equals( that.getAttributesAsMultiMap( true, false ) ) ) return false;
+		if ( ! this.getMembersAsMultiMap( true, false ).equals( that.getMembersAsMultiMap( true, false ) ) ) return false;
+		return true;
 	}
 	
 }
