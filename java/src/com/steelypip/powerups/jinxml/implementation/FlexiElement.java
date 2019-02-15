@@ -635,7 +635,7 @@ public class FlexiElement implements Element {
 						@Override
 						public Member next() {
 							final Map.Entry< String, Element > e = it.next();
-							return new StdMember( e.getKey(), 0, e.getValue() );
+							return new StdMember( e.getKey(), e.getValue() );
 						}
 					};
 				}
@@ -645,7 +645,7 @@ public class FlexiElement implements Element {
 			final Iterator< Map.Entry< String, Element > > it = this.members.iterator();
 			while ( it.hasNext() ) {
 				final Map.Entry< String, Element > e = it.next();
-				list.add( new StdMember( e.getKey(), 0, e.getValue() ) );
+				list.add( new StdMember( e.getKey(), e.getValue() ) );
 			}
 			return list;
 		}

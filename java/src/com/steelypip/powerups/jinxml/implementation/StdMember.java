@@ -6,24 +6,17 @@ import com.steelypip.powerups.jinxml.Member;
 public class StdMember implements Member {
 	
 	String selector;
-	int position;
 	Element child;
 	
-	public StdMember( String selector, int position, Element child ) {
+	public StdMember( String selector, Element child ) {
 		super();
 		this.selector = selector;
-		this.position = position;
 		this.child = child;
 	}
 
 	@Override
 	public String getSelector() {
 		return selector;
-	}
-
-	@Override
-	public int getPosition() {
-		return position;
 	}
 
 	@Override

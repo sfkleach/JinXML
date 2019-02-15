@@ -4,8 +4,6 @@ public interface Attribute {
 	
 	String getKey();
 	
-	int getPosition();
-	
 	String getValue();
 
 }
