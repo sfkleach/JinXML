@@ -225,6 +225,13 @@ public interface Element {
 	 * @return the ordered list
 	 */
 	List< String > getValuesAsList( @NonNull String key );
+	
+	/**
+	 * Return a result that can be used to generate an iterator over the attributes of the
+	 * element. It is provided for the efficient iteration over the attributes of an element. 
+	 * @return iterable for the attributes.
+	 */
+	Iterable< Attribute > attributes();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members
@@ -348,14 +355,22 @@ public interface Element {
 	Element getLastChild( Element otherwise );
 	Element getLastChild();
 	
-	MultiMap< String, Element > getChildrenAsMultiMap();
-	MultiMap< String, Element > getChildrenAsMultiMap( boolean mutable );
-	MultiMap< String, Element > getChildrenAsMultiMap( boolean view, boolean mutable );
-
 	List< Element > getChildrenAsList();
 	List< Element > getChildrenAsList( @NonNull String selector );
 	List< Element > getChildrenAsList( boolean view, boolean mutable );
 	List< Element > getChildrenAsList( @NonNull String selector, boolean view, boolean mutable );
+	
+	/**
+	 * Return a result that can be used to generate an iterator over the members of the
+	 * element. It is provided for the efficient iteration over the members of an element.
+	 * Frozen elements are likely to be much more efficient than mutable elements because
+	 * of the guarantee that once created they are insensitive to mutation.
+	 * @return iterable for the members.
+	 */
+	Iterable< Member > members();
+
+
+	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Primitive Values

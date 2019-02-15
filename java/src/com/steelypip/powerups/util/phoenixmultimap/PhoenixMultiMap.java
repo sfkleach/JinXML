@@ -315,8 +315,6 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	 */
 	PhoenixMultiMap< K, V > updateValue( @NonNull K key, int n, V value );
 
-
-	
 	/**
 	 * Returns the number of key-value pairs in this multimap.
 	 */
