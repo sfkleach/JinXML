@@ -3,6 +3,7 @@ package com.steelypip.powerups.jinxml.implementation;
 import java.math.BigInteger;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +13,9 @@ import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.common.StdPair;
+import com.steelypip.powerups.jinxml.Attribute;
 import com.steelypip.powerups.jinxml.Element;
+import com.steelypip.powerups.jinxml.Member;
 import com.steelypip.powerups.util.multimap.MultiMap;
 import com.steelypip.powerups.util.multimap.ViewPhoenixMultiMapAsMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
@@ -210,22 +213,22 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public String getValue( String key ) {
+	public String getValue( @NonNull String key ) {
 		return this.attributes.getElse( Objects.requireNonNull( key ), null );
 	}
 	
 	@Override
-	public String getValue( String key, String otherwise ) {
+	public String getValue( @NonNull String key, String otherwise ) {
 		return this.attributes.getElse( Objects.requireNonNull( key ), otherwise );
 	}
 	
 	@Override
-	public String getValue( String key, int position ) {
+	public String getValue( @NonNull String key, int position ) {
 		return this.attributes.getElse( Objects.requireNonNull( key ), position, null );
 	}
 	
 	@Override
-	public String getValue( String key, int position, String otherwise ) {
+	public String getValue( @NonNull String key, int position, String otherwise ) {
 		return this.attributes.getElse( Objects.requireNonNull( key ), position, otherwise );
 	}
 	
@@ -235,12 +238,12 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public String getFirstValue( final String key, final String otherwise ) {
+	public String getFirstValue( final @NonNull String key, final String otherwise ) {
 		return this.attributes.getElse( Objects.requireNonNull( key ), otherwise );
 	}
 	
 	@Override
-	public String getFirstValue( final String key ) {
+	public String getFirstValue( final @NonNull String key ) {
 		return this.attributes.getElse( Objects.requireNonNull( key ), null );
 	}
 	
@@ -251,23 +254,23 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public String getLastValue( final String key ) {
+	public String getLastValue( final @NonNull String key ) {
 		int N = this.attributes.sizeEntriesWithKey( key );
 		return this.attributes.getElse( Objects.requireNonNull( key ), N - 1, null );
 	}
 	
 	@Override
-	public int countValues( final String key ) {
+	public int countValues( final @NonNull String key ) {
 		return this.attributes.sizeEntriesWithKey( Objects.requireNonNull( key ) );
 	}
 	
 	static class ValuesListView extends AbstractList< String > {
 		
 		@NonNull Element element;
-		String key;
+		@NonNull String key;
 		final boolean mutable;
 		
-		public ValuesListView( @NonNull Element element, String key, boolean mutable ) {
+		public ValuesListView( @NonNull Element element, @NonNull String key, boolean mutable ) {
 			this.element = element;
 			this.key = key;
 			this.mutable = mutable;
@@ -339,6 +342,39 @@ public class FlexiElement implements Element {
 	public List< String > getValuesAsList( String key ) {
 		return this.attributes.getAll( key );	
 	}
+	
+	@Override
+	public Iterable< Attribute > attributes() {
+		if ( this.isFrozen() ) {
+			return new Iterable< Attribute >() {
+				@Override
+				public Iterator< Attribute > iterator() {
+					final Iterator< Map.Entry< String, String > > it = FlexiElement.this.attributes.iterator();
+					return new Iterator< Attribute >() {
+						@Override
+						public boolean hasNext() {
+							return it.hasNext();
+						}
+						@Override
+						public Attribute next() {
+							final Map.Entry< String, String > e = it.next();
+							return new StdAttribute( e.getKey(), 0, e.getValue() );
+						}
+					};
+				}
+			};
+		} else {
+			final ArrayList< Attribute > list = new ArrayList<>();
+			final Iterator< Map.Entry< String, String > > it = this.attributes.iterator();
+			while ( it.hasNext() ) {
+				final Map.Entry< String, String > e = it.next();
+				list.add( new StdAttribute( e.getKey(), 0, e.getValue() ) );
+			}
+			return list;
+		}
+	}
+	
+
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members
@@ -492,38 +528,9 @@ public class FlexiElement implements Element {
 		return this.members.getElse( DEFAULT_SELECTOR, true, 0, null );
 	}
 
-	@Override
-	public MultiMap< String, Element > getChildrenAsMultiMap() {
-		//	Neither a view nor mutable - so this is a frozen copy.
-		return new PMMapMultiMap< String, Element >( this.members.frozenCopyUnlessFrozen() );	}
-
-	@Override
-	public MultiMap< String, Element > getChildrenAsMultiMap( boolean mutable ) {
-		if ( mutable ) {
-			//	Not a view but mutable - so this is a mutable copy.
-			return new PMMapMultiMap< String, Element >( this.members.mutableCopy() );
-		} else {
-			//	Not a view and not mutable - frozen copy.
-			return this.getMembersAsMultiMap();
-		}
-	}
-
-	@Override
-	public MultiMap< String, Element > getChildrenAsMultiMap( boolean view, boolean mutable ) {
-		//	TODO - add unit tests
-		if ( view ) {
-			if ( mutable ) {
-				return new MutableViewOntoMembers( this );
-			} else {
-				return new FrozenViewOntoMembers( this );
-			}
-		} else {
-			return this.getMembersAsMultiMap( mutable ); 	
-		}
-	}
 	
 	@Override
-	public List< Element > getChildrenAsList( String selector, boolean view, boolean mutable ) {
+	public List< Element > getChildrenAsList( @NonNull String selector, boolean view, boolean mutable ) {
 		if ( !view ) {
 			if ( !mutable ) {
 				return this.getChildrenAsList( Objects.requireNonNull( selector ) );
@@ -536,7 +543,7 @@ public class FlexiElement implements Element {
 	}
 
 	@Override 
-	public List< Element > getChildrenAsList( String selector ) {
+	public List< Element > getChildrenAsList( @NonNull String selector ) {
 		return this.members.getAll( Objects.requireNonNull( selector ) );	
 	}
 
@@ -611,6 +618,37 @@ public class FlexiElement implements Element {
 			}
 		}
 	
+	}
+	
+	@Override
+	public Iterable< Member > members() {
+		if ( this.isFrozen() ) {
+			return new Iterable< Member >() {
+				@Override
+				public Iterator< Member > iterator() {
+					final Iterator< Map.Entry< String, Element > > it = FlexiElement.this.members.iterator();
+					return new Iterator< Member >() {
+						@Override
+						public boolean hasNext() {
+							return it.hasNext();
+						}
+						@Override
+						public Member next() {
+							final Map.Entry< String, Element > e = it.next();
+							return new StdMember( e.getKey(), 0, e.getValue() );
+						}
+					};
+				}
+			};
+		} else {
+			final ArrayList< Member > list = new ArrayList<>();
+			final Iterator< Map.Entry< String, Element > > it = this.members.iterator();
+			while ( it.hasNext() ) {
+				final Map.Entry< String, Element > e = it.next();
+				list.add( new StdMember( e.getKey(), 0, e.getValue() ) );
+			}
+			return list;
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
