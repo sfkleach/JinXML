@@ -13,9 +13,9 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.steelypip.powerups.jinxml.implementation.FlexiElement;
-import com.steelypip.powerups.jinxml.implementation.InOrderTraversal;
-import com.steelypip.powerups.jinxml.implementation.StdPushParser;
+import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
+import com.steelypip.powerups.jinxml.stdmodel.InOrderTraversal;
+import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {

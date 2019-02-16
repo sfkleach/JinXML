@@ -3,7 +3,7 @@ package com.steelypip.powerups.jinxml;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-import com.steelypip.powerups.jinxml.implementation.StdBuilder;
+import com.steelypip.powerups.jinxml.stdmodel.StdBuilder;
 
 public interface Builder extends Iterator< Element >, EventHandler {
 	

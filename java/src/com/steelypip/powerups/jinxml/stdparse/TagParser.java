@@ -16,7 +16,7 @@
  * along with MinXML for Java.  If not, see <http://www.gnu.org/licenses/>.
  *  
  */
-package com.steelypip.powerups.jinxml.implementation;
+package com.steelypip.powerups.jinxml.stdparse;
 
 import java.io.Reader;
 import java.util.ArrayDeque;

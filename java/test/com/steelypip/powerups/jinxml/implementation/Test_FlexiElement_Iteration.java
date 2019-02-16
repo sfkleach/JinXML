@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.steelypip.powerups.jinxml.Attribute;
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Member;
+import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 
 public class Test_FlexiElement_Iteration {
 

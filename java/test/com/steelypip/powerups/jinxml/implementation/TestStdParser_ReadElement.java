@@ -10,6 +10,7 @@ import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.Event.AttributeEvent;
 import com.steelypip.powerups.jinxml.Event.StartTagEvent;
+import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 
 public class TestStdParser_ReadElement {
 	
