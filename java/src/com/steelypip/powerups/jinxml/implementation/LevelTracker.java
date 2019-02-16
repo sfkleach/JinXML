@@ -1,12 +1,10 @@
 package com.steelypip.powerups.jinxml.implementation;
 
 import java.util.ArrayDeque;
-
+import static com.steelypip.powerups.jinxml.Element.*;
 
 public class LevelTracker {
 	
-	private static final String OBJECT_ELEMENT_NAME = "object";
-	private static final String ARRAY_ELEMENT_NAME = "array";
 	final private ArrayDeque< String > contexts_implementation = new ArrayDeque<>();
 
 	public boolean isAtTopLevel() {

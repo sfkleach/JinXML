@@ -20,6 +20,20 @@ import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
 	
+	final static @NonNull String ROOT_ELEMENT_NAME = "";
+	final static @NonNull String ROOT_CHILD_SELECTOR = "";
+	final static @NonNull String DEFAULT_SELECTOR = "";
+
+	static final @NonNull String OBJECT_ELEMENT_NAME = "object";
+	static final @NonNull String ARRAY_ELEMENT_NAME = "array";
+	static final @NonNull String NULL_ELEMENT_NAME = "null";
+	static final @NonNull String BOOLEAN_ELEMENT_NAME = "boolean";
+	static final @NonNull String STRING_ELEMENT_NAME = "string";
+	static final @NonNull String VALUE_KEY_FOR_LITERAL_CONSTANTS = "value";
+	static final @NonNull String INT_ELEMENT_NAME = "int";
+	static final @NonNull String FLOAT_ELEMENT_NAME = "float";
+
+	
 	/**
 	 * Returns true if the element will refuse modifications.
 	 * @return

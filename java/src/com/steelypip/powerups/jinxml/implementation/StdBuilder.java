@@ -1,6 +1,7 @@
 package com.steelypip.powerups.jinxml.implementation;
 
 import java.util.ArrayDeque;
+
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -8,12 +9,9 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
+import static com.steelypip.powerups.jinxml.Element.*;
 
 public class StdBuilder implements Builder {
-	
-	final static @NonNull String ROOT_ELEMENT_NAME = "";
-	final static @NonNull String ROOT_CHILD_SELECTOR = "";
-	final static @NonNull String DEFAULT_SELECTOR = "";
 
 	/**
 	 * The root element holds onto the entire in-progress tree. It is never exposed.
@@ -87,60 +85,60 @@ public class StdBuilder implements Builder {
 	@Override
 	public void startArrayEvent( @NonNull String selector ) {
 		//	TODO: check state, set state.
-		this.startTagEvent( selector, "array" );
+		this.startTagEvent( selector, ARRAY_ELEMENT_NAME );
 	}
 
 	@Override
 	public void endArrayEvent() {
 		// 	TODO: check state, set state.
-		this.endTagEvent( "array" );
+		this.endTagEvent( ARRAY_ELEMENT_NAME );
 	}
 
 	@Override
 	public void startObjectEvent( @NonNull String selector ) {
 		//	TODO: check state, set state.
-		this.startTagEvent( selector, "object" );
+		this.startTagEvent( selector, OBJECT_ELEMENT_NAME );
 	}
 
 
 	@Override
 	public void endObjectEvent() {
-		this.endTagEvent( "object" );
+		this.endTagEvent( OBJECT_ELEMENT_NAME );
 	}
 
 	@Override
 	public void intEvent( @NonNull String selector, @NonNull String value ) {
-		this.startTagEvent( selector, "int" );
-		this.attributeEvent( "value", value );
-		this.endTagEvent( "int" );
+		this.startTagEvent( selector, INT_ELEMENT_NAME );
+		this.attributeEvent( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
+		this.endTagEvent( INT_ELEMENT_NAME );
 	}
 
 	@Override
 	public void floatEvent( @NonNull String selector, @NonNull String value ) {
-		this.startTagEvent( selector,"float" );
-		this.attributeEvent( "value", value );
-		this.endTagEvent( "float" );
+		this.startTagEvent( selector, FLOAT_ELEMENT_NAME );
+		this.attributeEvent( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
+		this.endTagEvent( FLOAT_ELEMENT_NAME );
 	}
 
 	@Override
 	public void stringEvent( @NonNull String selector, @NonNull String value ) {
-		this.startTagEvent( selector, "string" );
-		this.attributeEvent( "value", value );
-		this.endTagEvent( "string" );
+		this.startTagEvent( selector, STRING_ELEMENT_NAME );
+		this.attributeEvent( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
+		this.endTagEvent( STRING_ELEMENT_NAME );
 	}
 
 	@Override
 	public void booleanEvent( @NonNull String selector, @NonNull String value ) {
-		this.startTagEvent( selector,"boolean" );
-		this.attributeEvent( "value", value );
-		this.endTagEvent( "boolean" );
+		this.startTagEvent( selector, BOOLEAN_ELEMENT_NAME );
+		this.attributeEvent( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
+		this.endTagEvent( BOOLEAN_ELEMENT_NAME );
 	}
 
 	@Override
 	public void nullEvent( @NonNull String selector, @NonNull String value ) {
-		this.startTagEvent( selector, "null" );
-		this.attributeEvent( "value", value );
-		this.endTagEvent( "null" );
+		this.startTagEvent( selector, NULL_ELEMENT_NAME );
+		this.attributeEvent( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
+		this.endTagEvent( NULL_ELEMENT_NAME );
 	}
 
 	@Override
