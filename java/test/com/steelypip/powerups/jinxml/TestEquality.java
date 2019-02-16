@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jimxml;
+package com.steelypip.powerups.jinxml;
 
 import static org.junit.Assert.*;
 

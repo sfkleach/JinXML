@@ -23,16 +23,6 @@ import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
 
 public class FlexiElement implements Element {
 	
-	private static final @NonNull String OBJECT_ELEMENT_NAME = "object";
-	private static final @NonNull String ARRAY_ELEMENT_NAME = "array";
-	private static final @NonNull String NULL_ELEMENT_NAME = "null";
-	private static final @NonNull String BOOLEAN_ELEMENT_NAME = "boolean";
-	private static final @NonNull String STRING_ELEMENT_NAME = "string";
-	private static final @NonNull String VALUE_KEY_FOR_LITERAL_CONSTANTS = "value";
-	private static final @NonNull String INT_ELEMENT_NAME = "int";
-	private static final @NonNull String FLOAT_ELEMENT_NAME = "float";
-	private static final @NonNull String DEFAULT_SELECTOR = "";
-	
 	protected @NonNull String name;
 	protected PhoenixMultiMap< String, String > attributes = EmptyMutablePMMap.getInstance();
 	protected PhoenixMultiMap< String, Element > members = EmptyMutablePMMap.getInstance();
