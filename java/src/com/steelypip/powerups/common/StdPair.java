@@ -86,7 +86,9 @@ public class StdPair< T, U > implements Pair< T, U >, Map.Entry< T, U > {
 
 	@Override
 	public int hashCode() {
-		return this.getFirst().hashCode() ^ this.getSecond().hashCode();
+		final T t = this.getFirst();
+		final U u = this.getSecond();
+		return ( t == null ? 0 : t.hashCode() ) ^ ( u == null ? 0 : u.hashCode() );
 	}
 		
 	
