@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.common.NullIndenter;
 import com.steelypip.powerups.common.StdIndenter;
+import com.steelypip.powerups.io.StringPrintWriter;
 import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 import com.steelypip.powerups.jinxml.stdmodel.InOrderTraversal;
 import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
@@ -676,6 +677,12 @@ public interface Element {
 	 */
 	default void prettyPrint( Writer w ) {
 		new ElementWriter( new PrintWriter( w, true ), new StdIndenter.Factory(), new StartEndTagTheme() ).print( this );
+	}
+	
+	default String toString( String... options ) {
+		final StringPrintWriter pw = new StringPrintWriter();
+		this.print( pw, options );
+		return pw.toString();
 	}
 	
 }
