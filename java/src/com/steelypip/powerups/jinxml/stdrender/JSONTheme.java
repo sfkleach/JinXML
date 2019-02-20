@@ -1,7 +1,5 @@
 package com.steelypip.powerups.jinxml.stdrender;
 
-import java.util.function.Predicate;
-
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Member;
 
@@ -36,7 +34,6 @@ public class JSONTheme implements Theme< Element > {
 				fwriter.print( '{' );
 				for ( Member m : x.members().uniqueSelector() ) {
 					fwriter.renderSelector( m.getSelector() );
-					//	TODO: Do we need "+:"?
 					fwriter.print( ":" );
 					fwriter.print( m.getChild() );
 				}
