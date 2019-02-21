@@ -79,7 +79,7 @@ public abstract class AbsStartEndTagTheme< U > extends AbsElementTheme< U > {
 	@Override
 	public void doMember( ThemeableWriter< U > fwriter, String selector, U child, boolean first_in_group, boolean last_in_group ) {
 		if ( ! selector.isEmpty() ) {
-			fwriter.print( selector );
+			fwriter.renderSelector( selector );
 			fwriter.print( first_in_group ? ":" : "+:" );
 		}
 		fwriter.print( child );

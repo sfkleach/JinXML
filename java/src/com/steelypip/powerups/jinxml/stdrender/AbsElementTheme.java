@@ -48,13 +48,13 @@ public abstract class AbsElementTheme< U > implements Theme< U > {
 		
 		final String name = this.getName( x );
 		final boolean has_any_attributes = this.hasAnyAttributes( x );
-		final boolean has_any_links = this.hasAnyMembers( x );
+		final boolean has_any_members = this.hasAnyMembers( x );
 		
 		fwriter.getIndenter().indent();
-		this.doStartElement( fwriter, name, has_any_attributes, has_any_links );
+		this.doStartElement( fwriter, name, has_any_attributes, has_any_members );
 		this.doName( fwriter, name );
 		
-		this.doStartAttributes( fwriter, has_any_attributes, has_any_links );
+		this.doStartAttributes( fwriter, has_any_attributes, has_any_members );
 		for ( String key : this.keysToSet( x ) ) {
 			this.doStartAttributeGroup( fwriter, key );
 			final List< String > values = this.valuesToList( x, key );
@@ -65,22 +65,28 @@ public abstract class AbsElementTheme< U > implements Theme< U > {
 			}
 			this.doEndAttributeGroup( fwriter, key );
 		}
-		this.doEndAttributes( fwriter, has_any_attributes, has_any_links );
+		this.doEndAttributes( fwriter, has_any_attributes, has_any_members );
 		
-		this.doStartMembers( fwriter, has_any_attributes, has_any_links );
-		for ( String selector : this.selectorsToSet( x ) ) {
-			final List< U > children = this.childrenToList( x, selector );
-			this.doStartMemberGroup( fwriter, selector );
-			int n = 0;
-			for ( U child : children) {
-				n += 1;
-				this.doMember( fwriter, selector, child, n == 1, n == children.size() );
+		if ( has_any_members ) {
+			fwriter.getIndenter().newline();
+			fwriter.getIndenter().tab();
+			this.doStartMembers( fwriter, has_any_attributes, has_any_members );
+			for ( String selector : this.selectorsToSet( x ) ) {
+				final List< U > children = this.childrenToList( x, selector );
+				this.doStartMemberGroup( fwriter, selector );
+				int n = 0;
+				for ( U child : children) {
+					n += 1;
+					this.doMember( fwriter, selector, child, n == 1, n == children.size() );
+				}
+				this.doEndMemberGroup( fwriter, selector );
 			}
-			this.doEndMemberGroup( fwriter, selector );
+			this.doEndMembers( fwriter, has_any_attributes, has_any_members );
+			fwriter.getIndenter().untab();
 		}
-		this.doEndMembers( fwriter, has_any_attributes, has_any_links ); 
-		
-		this.doEndElement( fwriter, name, has_any_attributes, has_any_links );
+
+		this.doEndElement( fwriter, name, has_any_attributes, has_any_members );
+		fwriter.getIndenter().newline();
 		
 		return true;
 	}

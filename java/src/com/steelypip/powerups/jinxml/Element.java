@@ -532,8 +532,10 @@ public interface Element {
 	void setChildren( @NonNull String key, Iterable< Element > children );
 
 	void addLastChild( @NonNull String selector, Element child );
+	void addLastChild( Element child );
 	
 	void addFirstChild( @NonNull String selector, Element child );
+	void addFirstChild( Element child );
 	
 	default Element removeFirstChild() {
 		return this.removeFirstChild( "", null );

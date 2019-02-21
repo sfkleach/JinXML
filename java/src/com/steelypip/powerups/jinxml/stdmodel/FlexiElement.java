@@ -737,7 +737,7 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public void setChildren( String key, Iterable< Element > children ) {
+	public void setChildren( @NonNull String key, Iterable< Element > children ) {
 		this.members = this.members.clearAllEntries();
 		for ( Element v : children ) {
 			this.members = this.members.add( key, v );
@@ -745,26 +745,36 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public void addLastChild( String selector, Element e ) {
+	public void addLastChild( @NonNull String selector, Element e ) {
 		this.members = this.members.add( selector, e );
 	}
 
 	@Override
-	public void addFirstChild( String selector, Element e ) {
+	public void addLastChild( Element e ) {
+		this.members = this.members.add( DEFAULT_SELECTOR, e );
+	}
+
+	@Override
+	public void addFirstChild( @NonNull String selector, Element e ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( selector, true, true );
 		children.add( 0, e );		
 	}
 
 	@Override
-	public Element removeFirstChild( String selector, Element otherwise ) {
+	public void addFirstChild( Element e ) {
+		this.addFirstChild( DEFAULT_SELECTOR, e );
+	}
+
+	@Override
+	public Element removeFirstChild( @NonNull String selector, Element otherwise ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
 	@Override
-	public Element removeLastChild( String selector, Element otherwise ) {
+	public Element removeLastChild( @NonNull String selector, Element otherwise ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		if ( children.isEmpty() ) {
