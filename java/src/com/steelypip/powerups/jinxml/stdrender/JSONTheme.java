@@ -25,17 +25,29 @@ public class JSONTheme implements Theme< Element > {
 				return true;				
 			} else if ( x.isArray() ) {
 				fwriter.print( '[' );
+				boolean is_first = true;
 				for ( Member m : x.members().with( Member::hasDefaultSelector ) ) {
-					fwriter.print( m.getChild() );
+					if ( ! is_first ) {
+						fwriter.print( "," );
+					}
+					Element c = m.getChild();
+					fwriter.print( c );
+					is_first = false;
 				}
 				fwriter.print( ']' );
 				return true;				
 			} else if ( x.isObject() ) {
 				fwriter.print( '{' );
+				boolean is_first = true;
 				for ( Member m : x.members().uniqueSelector() ) {
+					if ( ! is_first ) {
+						fwriter.print( "," );
+					}
 					fwriter.renderSelector( m.getSelector() );
 					fwriter.print( ":" );
-					fwriter.print( m.getChild() );
+					Element c = m.getChild();
+					fwriter.print( c );
+					is_first = false;
 				}
 				fwriter.print( '}' );
 				return true;				

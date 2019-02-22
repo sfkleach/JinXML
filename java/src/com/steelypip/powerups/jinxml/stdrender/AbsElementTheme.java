@@ -3,6 +3,8 @@ package com.steelypip.powerups.jinxml.stdrender;
 import java.util.List;
 import java.util.Set;
 
+import com.steelypip.powerups.jinxml.Element;
+
 /**
  * Elements have three
  * parts: name, attributes and links. The general pattern they print 
@@ -33,18 +35,18 @@ import java.util.Set;
  *		</NAME>	doEndElement( String name, boolean hasAttributes, boolean hasMembers )
  */
 
-public abstract class AbsElementTheme< U > implements Theme< U > {
+public abstract class AbsElementTheme implements Theme< Element > {
 	
-	public abstract String getName( U x );
-	public abstract boolean hasAnyAttributes( U x );
-	public abstract boolean hasAnyMembers( U x );
-	public abstract Set< String > keysToSet( U x );
-	public abstract Set< String > selectorsToSet( U x );
-	public abstract List< String > valuesToList( U x, String key );
-	public abstract List< U > childrenToList( U x, String selector );
+	public abstract String getName( Element x );
+	public abstract boolean hasAnyAttributes( Element x );
+	public abstract boolean hasAnyMembers( Element x );
+	public abstract Set< String > keysToSet( Element x );
+	public abstract Set< String > selectorsToSet( Element x );
+	public abstract List< String > valuesToList( Element x, String key );
+	public abstract List< Element > childrenToList( Element x, String selector );
 	
 	@Override
-	public boolean tryRender( ThemeableWriter< U > fwriter, U x ) {
+	public boolean tryRender( ThemeableWriter< Element > fwriter, Element x ) {
 		
 		final String name = this.getName( x );
 		final boolean has_any_attributes = this.hasAnyAttributes( x );
@@ -72,10 +74,10 @@ public abstract class AbsElementTheme< U > implements Theme< U > {
 			fwriter.getIndenter().tab();
 			this.doStartMembers( fwriter, has_any_attributes, has_any_members );
 			for ( String selector : this.selectorsToSet( x ) ) {
-				final List< U > children = this.childrenToList( x, selector );
+				final List< Element > children = this.childrenToList( x, selector );
 				this.doStartMemberGroup( fwriter, selector );
 				int n = 0;
-				for ( U child : children) {
+				for ( Element child : children) {
 					n += 1;
 					this.doMember( fwriter, selector, child, n == 1, n == children.size() );
 				}
@@ -91,37 +93,37 @@ public abstract class AbsElementTheme< U > implements Theme< U > {
 		return true;
 	}
 		
-	public abstract void doStartElement( ThemeableWriter< U > starw, String name, boolean hasAttributes, boolean hasMembers );
-	public abstract void doName( ThemeableWriter< U > starw, String name );
-	public abstract void doStartAttributes( ThemeableWriter< U > starw, boolean hasAttributes, boolean hasMembers );
-	public abstract void doStartAttributeGroup( ThemeableWriter< U > starw, String key );
-	public abstract void doAttribute( ThemeableWriter< U > starw, String key, String value, boolean first_in_group, boolean last_in_group );
-	public abstract void doEndAttributeGroup( ThemeableWriter< U > starw, String key );
-	public abstract void doEndAttributes( ThemeableWriter< U > starw, boolean hasAttributes, boolean hasMembers );
-	public abstract void doStartMembers( ThemeableWriter< U > starw, boolean hasAttributes, boolean hasMembers );
-	public abstract void doStartMemberGroup( ThemeableWriter< U > starw, String selector );
-	public abstract void doMember( ThemeableWriter< U > starw, String selector, U child, boolean first_in_group, boolean last_in_group );
-	public abstract void doEndMemberGroup( ThemeableWriter< U > starw, String selector );
-	public abstract void doEndMembers( ThemeableWriter< U > starw, boolean hasAttributes, boolean hasMembers );
-	public abstract void doEndElement( ThemeableWriter< U > starw, String name, boolean hasAttributes, boolean hasMembers );
+	public abstract void doStartElement( ThemeableWriter< Element > starw, String name, boolean hasAttributes, boolean hasMembers );
+	public abstract void doName( ThemeableWriter< Element > starw, String name );
+	public abstract void doStartAttributes( ThemeableWriter< Element > starw, boolean hasAttributes, boolean hasMembers );
+	public abstract void doStartAttributeGroup( ThemeableWriter< Element > starw, String key );
+	public abstract void doAttribute( ThemeableWriter< Element > starw, String key, String value, boolean first_in_group, boolean last_in_group );
+	public abstract void doEndAttributeGroup( ThemeableWriter< Element > starw, String key );
+	public abstract void doEndAttributes( ThemeableWriter< Element > starw, boolean hasAttributes, boolean hasMembers );
+	public abstract void doStartMembers( ThemeableWriter< Element > starw, boolean hasAttributes, boolean hasMembers );
+	public abstract void doStartMemberGroup( ThemeableWriter< Element > starw, String selector );
+	public abstract void doMember( ThemeableWriter< Element > starw, String selector, Element child, boolean first_in_group, boolean last_in_group );
+	public abstract void doEndMemberGroup( ThemeableWriter< Element > starw, String selector );
+	public abstract void doEndMembers( ThemeableWriter< Element > starw, boolean hasAttributes, boolean hasMembers );
+	public abstract void doEndElement( ThemeableWriter< Element > starw, String name, boolean hasAttributes, boolean hasMembers );
 
-	public abstract static class Selector< U > {
+	public abstract static class Selector {
 		
 		public abstract static class Factory< U > {
-			public abstract Selector< U > newInstance( ThemeableWriter< U > w );
+			public abstract Selector newInstance( ThemeableWriter< Element > w );
 		}
 		
-		public abstract AbsElementTheme< U > select( U element );
+		public abstract AbsElementTheme select( Element element );
 		
-		public Selector< U > compose( final Selector< U > alternative ) {
+		public Selector compose( final Selector alternative ) {
 			return(
-				new Selector< U >() {
+				new Selector() {
 				
-					final Selector< U > first_choice = this;
+					final Selector first_choice = this;
 
 					@Override
-					public AbsElementTheme< U > select( U element ) {
-						AbsElementTheme< U > t = this.first_choice.select( element );
+					public AbsElementTheme select( Element element ) {
+						AbsElementTheme t = this.first_choice.select( element );
 						if ( t == null ) {
 							return t;
 						} else {

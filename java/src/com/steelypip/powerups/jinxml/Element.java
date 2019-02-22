@@ -2,6 +2,7 @@ package com.steelypip.powerups.jinxml;
 
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.List;
@@ -117,6 +118,10 @@ public interface Element {
 	
 	default boolean hasAnyAttributes() {
 		return this.countAttributes() > 0;
+	}
+
+	default boolean hasNoAttributes() {
+		return this.countAttributes() == 0;
 	}
 
 	/**
@@ -276,6 +281,10 @@ public interface Element {
 	
 	default boolean hasAnyMembers() {
 		return this.countMembers() > 0;
+	}
+	
+	default boolean hasNoMembers() {
+		return this.countMembers() == 0;
 	}
 	
 	/*
@@ -612,6 +621,10 @@ public interface Element {
 	static Stream< Element > readElementStream( Reader reader ) {
 		PushParser pp = new StdPushParser( reader, false );
 		return pp.readElementStream();
+	}
+	
+	static Element fromString( final String input ) {
+		return readElement( new StringReader( input ) );
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////

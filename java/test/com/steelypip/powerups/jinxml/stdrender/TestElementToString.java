@@ -146,4 +146,40 @@ public class TestElementToString {
 		assertEquals( expected, actual );
 	}
 
+	@Test
+	public void toString_EmptyArray() {
+		Element e = Element.fromString( "[]" );
+		assertTrue( e.hasName( Element.ARRAY_ELEMENT_NAME ) );
+		assertTrue( e.hasNoAttributes() );
+		assertTrue( e.hasNoMembers() );
+		assertEquals( "[]", e.toString() );
+	}
+	
+	@Test
+	public void toString_NonEmptyArray() {
+		Element e = Element.fromString( "[ 1, 2, 3 ]" );
+		assertTrue( e.hasName( Element.ARRAY_ELEMENT_NAME ) );
+		assertTrue( e.hasNoAttributes() );
+		assertEquals( 3, e.countMembers() );
+		assertEquals( "[1,2,3]", e.toString() );
+	}
+	
+	@Test
+	public void toString_EmptyObject() {
+		Element e = Element.fromString( "{}" );
+		assertTrue( e.hasName( Element.OBJECT_ELEMENT_NAME ) );
+		assertTrue( e.hasNoAttributes() );
+		assertTrue( e.hasNoMembers() );
+		assertEquals( "{}", e.toString() );
+	}
+	
+	@Test
+	public void toString_NonEmptyObject() {
+		Element e = Element.fromString( "{ foo: 1, bar: 2 }" );
+		assertTrue( e.hasName( Element.OBJECT_ELEMENT_NAME ) );
+		assertTrue( e.hasNoAttributes() );
+		assertEquals( 2, e.countMembers() );
+		assertEquals( "{bar:2,foo:1}", e.toString() );
+	}
+	
 }

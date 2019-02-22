@@ -29,7 +29,7 @@ public interface Member {
 	
 	static public interface Iterable extends java.lang.Iterable< Member > {
 		
-		default Member.Iterable with( Predicate< Member > pred ) {
+		default Member.Iterable with( final Predicate< Member > pred ) {
 			return new Member.Iterable() {
 
 				@Override
@@ -41,12 +41,14 @@ public interface Member {
 
 						@Override
 						public boolean hasNext() {
-							if ( peeked != null ) return true; 
-							if ( ! base.hasNext() ) return false;
-							final Member peek = base.next();
-							if ( pred.test( peek ) ) return this.hasNext();
-							this.peeked = peek;
-							return true;
+							for (;;) {
+								if ( peeked != null ) return true; 
+								if ( ! base.hasNext() ) return false;
+								final Member peek = base.next();
+								if ( ! pred.test( peek ) ) continue;
+								this.peeked = peek;
+								return true;
+							}
 						}
 
 						@Override
@@ -74,9 +76,11 @@ public interface Member {
 				@Override
 				public boolean test( Member t ) {
 					String s = t.getSelector();
-					boolean result = this.seen.contains( s );
-					this.seen.add( s );
-					return result;
+					boolean seen_before = this.seen.contains( s );
+					if ( ! seen_before ) {
+						this.seen.add( s );
+					}
+					return ! seen_before;
 				}
 				
 			} );

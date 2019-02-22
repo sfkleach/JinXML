@@ -1,5 +1,7 @@
 package com.steelypip.powerups.jinxml.stdrender;
 
+import com.steelypip.powerups.jinxml.Element;
+
 /**
  * 		<		doStartElement( String name, boolean hasAttributes, boolean hasMembers )
  *		NAME	doName( String name )
@@ -26,29 +28,29 @@ package com.steelypip.powerups.jinxml.stdrender;
  *		</NAME>	doEndElement( String name, boolean hasAttributes, boolean hasMembers )
  *
  */
-public abstract class AbsStartEndTagTheme< U > extends AbsElementTheme< U > {
+public abstract class AbsStartEndTagTheme extends AbsElementTheme {
 		
 			
 	@Override
-	public void doStartElement( ThemeableWriter< U > fwriter, String name, boolean hasAttributes, boolean hasMembers ) {
+	public void doStartElement( ThemeableWriter<Element > fwriter, String name, boolean hasAttributes, boolean hasMembers ) {
 		fwriter.print( '<' );
 	}
 
 	@Override
-	public void doName( ThemeableWriter< U > fwriter, String name ) {
+	public void doName( ThemeableWriter< Element > fwriter, String name ) {
 		fwriter.renderElementName( name );
 	}
 
 	@Override
-	public void doStartAttributes( ThemeableWriter< U > fwriter, boolean hasAttributes, boolean hasMembers ) {
+	public void doStartAttributes( ThemeableWriter< Element > fwriter, boolean hasAttributes, boolean hasMembers ) {
 	}
 
 	@Override
-	public void doStartAttributeGroup( ThemeableWriter< U > fwriter, String key ) {
+	public void doStartAttributeGroup( ThemeableWriter< Element > fwriter, String key ) {
 	}
 
 	@Override
-	public void doAttribute( ThemeableWriter< U > fwriter, String key, String value, boolean first_in_group, boolean last_in_group ) {
+	public void doAttribute( ThemeableWriter< Element > fwriter, String key, String value, boolean first_in_group, boolean last_in_group ) {
 		fwriter.print( ' ' );
 		fwriter.print( key );
 		fwriter.print( first_in_group ? "=" : "+=" );
@@ -56,11 +58,11 @@ public abstract class AbsStartEndTagTheme< U > extends AbsElementTheme< U > {
 	}
 
 	@Override
-	public void doEndAttributeGroup( ThemeableWriter< U > fwriter, String key ) {
+	public void doEndAttributeGroup( ThemeableWriter< Element > fwriter, String key ) {
 	}
 
 	@Override
-	public void doEndAttributes( ThemeableWriter< U > fwriter, boolean hasAttributes, boolean hasMembers ) {
+	public void doEndAttributes( ThemeableWriter< Element > fwriter, boolean hasAttributes, boolean hasMembers ) {
 		if ( hasMembers ) {
 			fwriter.print( '>' );
 		} else {
@@ -69,15 +71,15 @@ public abstract class AbsStartEndTagTheme< U > extends AbsElementTheme< U > {
 	}
 
 	@Override
-	public void doStartMembers( ThemeableWriter< U > fwriter, boolean hasAttributes, boolean hasMembers ) {
+	public void doStartMembers( ThemeableWriter< Element > fwriter, boolean hasAttributes, boolean hasMembers ) {
 	}
 
 	@Override
-	public void doStartMemberGroup( ThemeableWriter< U > starw, String selector ) {
+	public void doStartMemberGroup( ThemeableWriter< Element > starw, String selector ) {
 	}
 
 	@Override
-	public void doMember( ThemeableWriter< U > fwriter, String selector, U child, boolean first_in_group, boolean last_in_group ) {
+	public void doMember( ThemeableWriter< Element > fwriter, String selector, Element child, boolean first_in_group, boolean last_in_group ) {
 		if ( ! selector.isEmpty() ) {
 			fwriter.renderSelector( selector );
 			fwriter.print( first_in_group ? ":" : "+:" );
@@ -86,15 +88,15 @@ public abstract class AbsStartEndTagTheme< U > extends AbsElementTheme< U > {
 	}
 
 	@Override
-	public void doEndMemberGroup( ThemeableWriter< U > fwriter, String selector ) {
+	public void doEndMemberGroup( ThemeableWriter< Element > fwriter, String selector ) {
 	}
 
 	@Override
-	public void doEndMembers( ThemeableWriter< U > fwriter, boolean hasAttributes, boolean hasMembers ) {
+	public void doEndMembers( ThemeableWriter< Element > fwriter, boolean hasAttributes, boolean hasMembers ) {
 	}
 
 	@Override
-	public void doEndElement( ThemeableWriter< U > fwriter, String name, boolean hasAttributes, boolean hasMembers ) {
+	public void doEndElement( ThemeableWriter< Element > fwriter, String name, boolean hasAttributes, boolean hasMembers ) {
 		if ( hasMembers ) {
 			fwriter.print( "</" );
 			fwriter.renderElementName( name );

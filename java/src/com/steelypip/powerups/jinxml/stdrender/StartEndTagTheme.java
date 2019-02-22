@@ -31,7 +31,7 @@ import com.steelypip.powerups.jinxml.Element;
  *		</NAME>	doEndElement( String name, boolean hasAttributes, boolean hasLinks )
  *
  */
-public class StartEndTagTheme extends AbsStartEndTagTheme< Element > {
+public class StartEndTagTheme extends AbsStartEndTagTheme {
 	
 	final static StartEndTagTheme INSTANCE = new StartEndTagTheme();
 
