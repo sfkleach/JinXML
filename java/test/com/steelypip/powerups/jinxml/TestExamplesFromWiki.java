@@ -7,7 +7,7 @@ import java.io.StringReader;
 import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.implementation.StdPushParser;
+import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 
 public class TestExamplesFromWiki {
 		

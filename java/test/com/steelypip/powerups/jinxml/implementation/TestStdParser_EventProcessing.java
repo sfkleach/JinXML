@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Event;
+import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 
 public class TestStdParser_EventProcessing {
 

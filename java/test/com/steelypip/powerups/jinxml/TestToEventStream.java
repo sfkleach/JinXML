@@ -11,8 +11,8 @@ import org.junit.Test;
 import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Event;
-import com.steelypip.powerups.jinxml.implementation.StdBuilder;
-import com.steelypip.powerups.jinxml.implementation.StdPushParser;
+import com.steelypip.powerups.jinxml.stdmodel.StdBuilder;
+import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 
 public class TestToEventStream {
 	

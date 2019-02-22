@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jinxml.implementation;
+package com.steelypip.powerups.jinxml.stdparse;
 
 import org.eclipse.jdt.annotation.NonNull;
 

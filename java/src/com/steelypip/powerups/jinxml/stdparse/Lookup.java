@@ -17,7 +17,7 @@
  *  
  */
 
-package com.steelypip.powerups.jinxml.implementation;
+package com.steelypip.powerups.jinxml.stdparse;
 
 import java.util.TreeMap;
 

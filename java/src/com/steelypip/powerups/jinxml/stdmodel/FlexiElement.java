@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jinxml.implementation;
+package com.steelypip.powerups.jinxml.stdmodel;
 
 import java.math.BigInteger;
 import java.util.AbstractList;
@@ -7,12 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.common.StdPair;
+import com.steelypip.powerups.io.StringPrintWriter;
 import com.steelypip.powerups.jinxml.Attribute;
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Member;
@@ -334,9 +336,9 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Iterable< Attribute > attributes() {
+	public Attribute.Iterable attributes() {
 		if ( this.isFrozen() ) {
-			return new Iterable< Attribute >() {
+			return new Attribute.Iterable() {
 				@Override
 				public Iterator< Attribute > iterator() {
 					final Iterator< Map.Entry< String, String > > it = FlexiElement.this.attributes.iterator();
@@ -360,7 +362,7 @@ public class FlexiElement implements Element {
 				final Map.Entry< String, String > e = it.next();
 				list.add( new StdAttribute( e.getKey(), 0, e.getValue() ) );
 			}
-			return list;
+			return Attribute.fromIterable( list );
 		}
 	}
 	
@@ -611,9 +613,9 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Iterable< Member > members() {
+	public Member.Iterable members() {
 		if ( this.isFrozen() ) {
-			return new Iterable< Member >() {
+			return new Member.Iterable() {
 				@Override
 				public Iterator< Member > iterator() {
 					final Iterator< Map.Entry< String, Element > > it = FlexiElement.this.members.iterator();
@@ -637,7 +639,7 @@ public class FlexiElement implements Element {
 				final Map.Entry< String, Element > e = it.next();
 				list.add( new StdMember( e.getKey(), e.getValue() ) );
 			}
-			return list;
+			return Member.fromIterable( list );
 		}
 	}
 	
@@ -735,7 +737,7 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public void setChildren( String key, Iterable< Element > children ) {
+	public void setChildren( @NonNull String key, Iterable< Element > children ) {
 		this.members = this.members.clearAllEntries();
 		for ( Element v : children ) {
 			this.members = this.members.add( key, v );
@@ -743,26 +745,36 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public void addLastChild( String selector, Element e ) {
+	public void addLastChild( @NonNull String selector, Element e ) {
 		this.members = this.members.add( selector, e );
 	}
 
 	@Override
-	public void addFirstChild( String selector, Element e ) {
+	public void addLastChild( Element e ) {
+		this.members = this.members.add( DEFAULT_SELECTOR, e );
+	}
+
+	@Override
+	public void addFirstChild( @NonNull String selector, Element e ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( selector, true, true );
 		children.add( 0, e );		
 	}
 
 	@Override
-	public Element removeFirstChild( String selector, Element otherwise ) {
+	public void addFirstChild( Element e ) {
+		this.addFirstChild( DEFAULT_SELECTOR, e );
+	}
+
+	@Override
+	public Element removeFirstChild( @NonNull String selector, Element otherwise ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
 	@Override
-	public Element removeLastChild( String selector, Element otherwise ) {
+	public Element removeLastChild( @NonNull String selector, Element otherwise ) {
 		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		if ( children.isEmpty() ) {
@@ -955,6 +967,17 @@ public class FlexiElement implements Element {
 		if ( ! this.getAttributesAsMultiMap( true, false ).equals( that.getAttributesAsMultiMap( true, false ) ) ) return false;
 		if ( ! this.getMembersAsMultiMap( true, false ).equals( that.getMembersAsMultiMap( true, false ) ) ) return false;
 		return true;
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Printing
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public String toString() {
+		final StringPrintWriter pw = new StringPrintWriter();
+		this.print( pw );
+		return pw.toString();
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jinxml.implementation;
+package com.steelypip.powerups.jinxml.stdmodel;
 
 import com.steelypip.powerups.jinxml.EventHandler;
 

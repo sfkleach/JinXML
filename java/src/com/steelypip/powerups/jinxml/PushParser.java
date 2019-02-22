@@ -3,7 +3,7 @@ package com.steelypip.powerups.jinxml;
 import java.io.Reader;
 import java.util.stream.Stream;
 
-import com.steelypip.powerups.jinxml.implementation.StdPushParser;
+import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 
 public interface PushParser {
 	

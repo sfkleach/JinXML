@@ -1,4 +1,4 @@
-package com.steelypip.powerups.jinxml.implementation;
+package com.steelypip.powerups.jinxml.stdparse;
 
 import java.util.ArrayDeque;
 import static com.steelypip.powerups.jinxml.Element.*;

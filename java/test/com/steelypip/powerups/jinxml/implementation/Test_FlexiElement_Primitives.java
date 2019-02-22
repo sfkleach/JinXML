@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.steelypip.powerups.jinxml.Element;
-import com.steelypip.powerups.jinxml.implementation.FlexiElement;
+import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 
 public class Test_FlexiElement_Primitives {
 	
