@@ -606,40 +606,6 @@ public interface Element {
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	//	Convenience methods & convenience methods
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	static Element newElement( final String name ) {
-		return new FlexiElement( name );
-	}
-	
-	static Builder newBuilder() {
-		return new StdBuilder( false, true );
-	}
-	
-	static Builder newBuilder( final boolean mutable ) {
-		return new StdBuilder( mutable, true );
-	}
-	
-	static Builder newBuilder( final boolean mutable, final boolean allows_queuing ) {
-		return new StdBuilder( mutable, allows_queuing );
-	}
-	
-	static Element readElement( Reader reader ) {
-		PushParser pp = new StdPushParser( reader, false );
-		return pp.readElement();
-	}
-		
-	static Stream< Element > readElementStream( Reader reader ) {
-		PushParser pp = new StdPushParser( reader, false );
-		return pp.readElementStream();
-	}
-	
-	static Element fromString( final String input ) {
-		return readElement( new StringReader( input ) );
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Rendering
 	/////////////////////////////////////////////////////////////////////////////////////////////	
 	
@@ -708,12 +674,41 @@ public interface Element {
 		final StringPrintWriter pw = new StringPrintWriter();
 		this.print( pw, options );
 		return pw.toString();
+	}	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Convenience methods & convenience methods
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	static Element newElement( final String name ) {
+		return new FlexiElement( name );
+	}
+	
+	static Builder newBuilder() {
+		return new StdBuilder( false, false );
+	}
+	
+	static Builder newBuilder( final boolean mutable ) {
+		return new StdBuilder( mutable, false );
+	}
+	
+	static Builder newBuilder( final boolean mutable, final boolean allows_queuing ) {
+		return new StdBuilder( mutable, allows_queuing );
+	}
+	
+	static Element readElement( Reader reader ) {
+		PushParser pp = new StdPushParser( reader, false );
+		return pp.readElement();
+	}
+		
+	static Stream< Element > readElementStream( Reader reader ) {
+		PushParser pp = new StdPushParser( reader, false );
+		return pp.readElementStream();
+	}
+	
+	static Element fromString( final String input ) {
+		return readElement( new StringReader( input ) );
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	//	Constructors
-	/////////////////////////////////////////////////////////////////////////////////////////////	
-	
-	
 	
 }

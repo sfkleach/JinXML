@@ -133,7 +133,4 @@ public class TestExamplesFromWiki {
 		assertEquals( "text", e.getChild( 2 ).getName() );
 	}	
 	
-	
-	
-	
 }

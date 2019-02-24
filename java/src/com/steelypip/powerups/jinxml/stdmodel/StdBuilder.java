@@ -44,11 +44,11 @@ public class StdBuilder implements Builder {
 	 * Tihs flag dictates whether or not the builder can accept events after an instance is
 	 * ready.
 	 */
-	protected boolean forbids_queuing;
+	protected boolean allow_queuing;
 	
-	public StdBuilder( final boolean mutable_flag, final boolean disallows_queuing ) {
+	public StdBuilder( final boolean mutable_flag, final boolean allow_queuing ) {
 		this.mutable_flag = mutable_flag;
-		this.forbids_queuing = disallows_queuing;
+		this.allow_queuing = allow_queuing;
 	}
 
 	private void pushChild( Element x ) {
@@ -72,7 +72,7 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void startTagEvent( @NonNull String selector, @NonNull String key ) {
-		if ( this.dump.isEmpty() && this.forbids_queuing && this.focus.countChildren( ROOT_SELECTOR ) > 0  ) {
+		if ( this.dump.isEmpty() && ! this.allow_queuing && this.focus.countChildren( ROOT_SELECTOR ) > 0  ) {
 			throw new Alert( "Trying to add a second element to a builder that does not allow queuing" ).culprit( "First element", this.focus.getChild( ROOT_SELECTOR, 0 ) );
 		}
 		final Element new_child = new FlexiElement( key );

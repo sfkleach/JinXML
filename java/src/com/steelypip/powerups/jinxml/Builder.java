@@ -83,13 +83,17 @@ public interface Builder extends Iterator< Element >, EventHandler {
 	default void processEvents( Stream< Event > events ) {
 		events.forEach( e -> e.sendTo( this ) );
 	}
+	
+	default void processEvent( Event event ) {
+		event.sendTo( this );
+	}
 
 	static Builder newBuilder() {
-		return new StdBuilder( false, true );
+		return new StdBuilder( false, false );
 	}
 	
 	static Builder newBuilder( final boolean mutable ) {
-		return new StdBuilder( mutable, true );
+		return new StdBuilder( mutable, false );
 	}
 	
 	static Builder newBuilder( final boolean mutable, final boolean allows_queuing ) {

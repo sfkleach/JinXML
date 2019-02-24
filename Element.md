@@ -107,4 +107,4 @@ If ```strict``` is false then integral values will return true for this test.
 
 ## Builder Related Methods
 
-* Method ```toEventIterator() -> Iterator< PushParser.Event >``` - generates a stream of events that performs an immune 'walk' over the Element. The walk is insensitive in the sense that the stream it returns is immune to all updates to the Element that might occur while the walk is in-progress.
+* Method ```toEventIterator() -> Iterator< Event >``` - generates a stream of events that performs an immune 'walk' over the Element. The walk is insensitive in the sense that the stream it returns is immune to all updates to the Element that might occur while the walk is in-progress.

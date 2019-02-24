@@ -27,11 +27,11 @@ public interface PushParser {
 	Element readElement();
 	Element readElement( boolean solo );
 
-	static PushParser instance( Reader reader ) {
+	static PushParser newPushParser( Reader reader ) {
 		return new StdPushParser( reader, true );
 	}
 		
-	static PushParser instance( Reader reader, boolean expandLiterals ) {
+	static PushParser newPushParser( Reader reader, boolean expandLiterals ) {
 		return new StdPushParser( reader, expandLiterals );
 	}
 		

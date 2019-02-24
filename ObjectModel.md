@@ -5,9 +5,7 @@
 ## A Standard for Push Parsers
 
 This section describes a standard object model for JinXML that we encourage people writing libraries
-to fit into as best they can. This is so that developers, who are often working in multiple programming
-languages, can rely on a basic set of features. We don't want to stop library developers from 
-innovating (we couldn't anyway!) so this is deliberately phrased as an encouragement.
+to fit into as best they can. This is so that developers, who are often working in multiple programming languages, can rely on a basic set of features. We don't want to stop library developers from innovating (we couldn't anyway!) so this is deliberately phrased as an encouragement.
 
 Because of the variation between programming languages, such as the different base classes (streams/iterators, sequences, maps and exceptions) are modelled, each implementation should endeavour to provide a consistent mapping from the object model described here into the target language. The description provided is intended to be closely aligned with Java.
 

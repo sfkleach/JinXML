@@ -1,4 +1,4 @@
-# Class PushParserEvent
+# Class Event
 
 ```sml
 datatype Event =
