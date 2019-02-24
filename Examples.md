@@ -45,7 +45,7 @@ The same might be represented like this in JinXML:
     </image>
     <text>
         data: "Click Here",
-        size": 36,
+        size: 36,
         style: "bold",
         name: "text1",
         hOffset: 250,
