@@ -6,11 +6,10 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -22,6 +21,7 @@ import com.steelypip.powerups.common.StdIndenter;
 import com.steelypip.powerups.io.StringPrintWriter;
 import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 import com.steelypip.powerups.jinxml.stdmodel.InOrderTraversal;
+import com.steelypip.powerups.jinxml.stdmodel.StdBuilder;
 import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 import com.steelypip.powerups.jinxml.stdrender.ElementWriter;
 import com.steelypip.powerups.jinxml.stdrender.JSONTheme;
@@ -30,10 +30,10 @@ import com.steelypip.powerups.util.multimap.MultiMap;
 
 public interface Element {
 	
-	final static @NonNull String ROOT_ELEMENT_NAME = "";
-	final static @NonNull String ROOT_CHILD_SELECTOR = "";
 	final static @NonNull String DEFAULT_SELECTOR = "";
-
+	final static @NonNull String ROOT_SELECTOR = DEFAULT_SELECTOR;
+	final static @NonNull String ROOT_ELEMENT_NAME = "";
+	
 	static final @NonNull String OBJECT_ELEMENT_NAME = "object";
 	static final @NonNull String ARRAY_ELEMENT_NAME = "array";
 	static final @NonNull String NULL_ELEMENT_NAME = "null";
@@ -606,11 +606,23 @@ public interface Element {
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	//	Convenience methods.
+	//	Convenience methods & convenience methods
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	static Element instance( final String name ) {
+	static Element newElement( final String name ) {
 		return new FlexiElement( name );
+	}
+	
+	static Builder newBuilder() {
+		return new StdBuilder( false, true );
+	}
+	
+	static Builder newBuilder( final boolean mutable ) {
+		return new StdBuilder( mutable, true );
+	}
+	
+	static Builder newBuilder( final boolean mutable, final boolean allows_queuing ) {
+		return new StdBuilder( mutable, allows_queuing );
 	}
 	
 	static Element readElement( Reader reader ) {
@@ -629,9 +641,7 @@ public interface Element {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Rendering
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
+	/////////////////////////////////////////////////////////////////////////////////////////////	
 	
 	/**
 	 * Renders the element using the supplied {@link PrintWriter}. The rendering will
@@ -699,5 +709,11 @@ public interface Element {
 		this.print( pw, options );
 		return pw.toString();
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//	Constructors
+	/////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	
 	
 }

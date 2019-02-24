@@ -13,7 +13,7 @@ public interface EventHandler {
 		this.startTagEvent( "", key );
 	}
 	
-	default void attributeEvent( @NonNull String key, String value ) {
+	default void attributeEvent( @NonNull String key, @NonNull String value ) {
 		this.attributeEvent( key, value, true );
 	}
 	

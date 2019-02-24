@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
 import static com.steelypip.powerups.jinxml.Element.*;
@@ -31,8 +32,24 @@ public class StdBuilder implements Builder {
 	
 	// 	These two variables represent the current context. The selector is always defined
 	//	to be the default to be used for new members added to the 
-	protected @NonNull String selector = ROOT_CHILD_SELECTOR;	
+	protected @NonNull String selector = ROOT_SELECTOR;	
 	protected Element focus = this.root;
+	
+	/**
+	 * This flag dictates whether or not the items that are constructed will be mutable or not. 
+	 */
+	protected boolean mutable_flag;
+	
+	/**
+	 * Tihs flag dictates whether or not the builder can accept events after an instance is
+	 * ready.
+	 */
+	protected boolean forbids_queuing;
+	
+	public StdBuilder( final boolean mutable_flag, final boolean disallows_queuing ) {
+		this.mutable_flag = mutable_flag;
+		this.forbids_queuing = disallows_queuing;
+	}
 
 	private void pushChild( Element x ) {
 		this.dump.addLast( this.focus );
@@ -55,7 +72,9 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void startTagEvent( @NonNull String selector, @NonNull String key ) {
-		//	TODO: Check context
+		if ( this.dump.isEmpty() && this.forbids_queuing && this.focus.countChildren( ROOT_SELECTOR ) > 0  ) {
+			throw new Alert( "Trying to add a second element to a builder that does not allow queuing" ).culprit( "First element", this.focus.getChild( ROOT_SELECTOR, 0 ) );
+		}
 		final Element new_child = new FlexiElement( key );
 		this.focus.addLastChild( selector, new_child );
 		this.pushChild( new_child );
@@ -159,8 +178,8 @@ public class StdBuilder implements Builder {
 		if ( e == null ) {
 			throw new IllegalStateException( "No next element available" );
 		} else {
-			this.root.removeFirstChild( "", null ); 
-			return e;
+			this.root.removeFirstChild( ROOT_SELECTOR, null ); 
+			return this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze();
 		}
 	}
 
@@ -177,7 +196,7 @@ public class StdBuilder implements Builder {
 	public Element snapshot() {
 		final Element e = root.getFirstChild();
 		if ( e != null ) {
-			return e.deepMutableCopy();
+			return this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze();
 		} else {
 			throw new IllegalStateException( "No events processed, cannot take a snapshot" );
 		}
@@ -186,7 +205,7 @@ public class StdBuilder implements Builder {
 	@Override
 	public Element trySnapshot( Element otherwise ) {
 		final Element e = root.getFirstChild();
-		return e != null ? e.deepMutableCopy() : otherwise;
+		return e != null ? ( this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze() ) : otherwise;
 	}
 
 	@Override

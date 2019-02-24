@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import com.steelypip.powerups.charrepeater.CharRepeater;
+import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.EventHandler;
 import com.steelypip.powerups.jinxml.PushParser;
 import com.steelypip.powerups.jinxml.stdmodel.ConstructingEventHandler;
-import com.steelypip.powerups.jinxml.stdmodel.StdBuilder;
 
 public class StdPushParser implements PushParser {
 	
@@ -138,7 +138,7 @@ public class StdPushParser implements PushParser {
 
 	@Override
 	public Element readElement( boolean solo ) {
-		final StdBuilder builder = new StdBuilder();
+		final Builder builder = Builder.newBuilder();
 		boolean oneAlready = false;
 		this.drainPendingAndSendTo( builder );
 		while ( this.pp.readNextTag( builder ) ) {
@@ -155,7 +155,7 @@ public class StdPushParser implements PushParser {
 
 	@Override
 	public Stream< Element > readElementStream() {
-		final StdBuilder builder = new StdBuilder();
+		final Builder builder = Builder.newBuilder();
 		return ( 
 			StreamSupport.stream( 
 				new Spliterators.AbstractSpliterator< Element >( Long.MAX_VALUE, Spliterator.ORDERED ) {					
