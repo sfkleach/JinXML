@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -84,8 +83,8 @@ public class FlexiElement implements Element {
 	
 	public Element deepMutableCopy() {
 		final Element new_element = new FlexiElement( this.getName() );
-		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
-		this.getMembersStream().map( e -> new StdPair<>( e.getKey(), e.getValue().deepMutableCopy() ) ).forEachOrdered( e -> new_element.addLastChild( e.getKey(), e.getValue() ) );
+		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) ) );		
+		this.getMembersStream().map( e -> new StdPair<>( e.getKey(), e.getValue().deepMutableCopy() ) ).forEachOrdered( e -> new_element.addLastChild( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) ) );
 		return new_element;
 	}
 	
@@ -286,7 +285,7 @@ public class FlexiElement implements Element {
 		public String set( int index, String value ) {
 			this.checkPermissionToUpdate();
 			final String old_value = this.element.getValue( this.key, index );
-			this.element.setValue( this.key, index, value );
+			this.element.setValue( this.key, index, Objects.requireNonNull( value ) );
 			return old_value;
 		}
 
@@ -311,14 +310,14 @@ public class FlexiElement implements Element {
 			} else if ( index > N ) {
 				throw new IndexOutOfBoundsException();
 			} else {
-				this.element.addLastValue( this.key, value );
+				this.element.addLastValue( this.key, Objects.requireNonNull( value ) );
 			}
 		}
 	
 	}
 
 	@Override
-	public List< String > getValuesAsList( String key, boolean view, boolean mutable ) {
+	public List< String > getValuesAsList( @NonNull String key, boolean view, boolean mutable ) {
 		if ( !view ) {
 			if ( !mutable ) {
 				return this.getValuesAsList( key );
@@ -331,7 +330,7 @@ public class FlexiElement implements Element {
 	}
 
 	@Override 
-	public List< String > getValuesAsList( String key ) {
+	public List< String > getValuesAsList( @NonNull String key ) {
 		return this.attributes.getAll( key );	
 	}
 	
@@ -627,7 +626,7 @@ public class FlexiElement implements Element {
 						@Override
 						public Member next() {
 							final Map.Entry< String, Element > e = it.next();
-							return new StdMember( e.getKey(), e.getValue() );
+							return new StdMember( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) );
 						}
 					};
 				}
@@ -657,55 +656,55 @@ public class FlexiElement implements Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public void setValue( String key, String value  ) {
+	public void setValue( @NonNull String key, @NonNull String value  ) {
 		this.attributes = this.attributes.updateValue( key, 0, value );
 	}
 	
 	@Override
-	public void setValue( String key, int position, String value  ) {
+	public void setValue( @NonNull String key, int position, @NonNull String value  ) {
 		this.attributes = this.attributes.updateValue( key, position, value );
 	}
 	
 	@Override
-	public void setValues( String key, Iterable< String> values ) {
+	public void setValues( @NonNull String key, Iterable< String > values ) {
 		this.attributes = this.attributes.clearAllEntries();
 		for ( String v : values ) {
-			this.attributes = this.attributes.add( key, v );
+			this.attributes = this.attributes.add( key, Objects.requireNonNull( v ) );
 		}
 	}
 
 	@Override
-	public void addLastValue( String key, String value ) {
+	public void addLastValue( @NonNull String key, @NonNull String value ) {
 		this.attributes = this.attributes.add( key, value );
 	}
 	
 	@Override
-	public void addFirstValue( String key, String value ) {
+	public void addFirstValue( @NonNull String key, @NonNull String value ) {
 		//	TODO: unit test
 		final List< String > values = this.getValuesAsList( key, true, true );
 		values.add( 0, value );		
 	}	
 
 	@Override
-	public String removeFirstValue( String selector ) {
+	public String removeFirstValue( @NonNull String selector ) {
 		//	TODO: unit test
 		return this.removeFirstValue( selector, null );
 	}
 	
 	@Override
-	public String removeFirstValue( String selector, String otherwise ) {
+	public String removeFirstValue( @NonNull String selector, String otherwise ) {
 		//	TODO: unit test
 		final List< String > children = this.getValuesAsList( selector, true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
-	public String removeLastValue( String selector ) {
+	public String removeLastValue( @NonNull String selector ) {
 		//	TODO: unit test
 		return this.removeLastValue( selector, null );
 	}
 	
 	@Override
-	public String removeLastValue( String selector, String otherwise ) {
+	public String removeLastValue( @NonNull String selector, String otherwise ) {
 		//	TODO: unit test
 		final List< String > children = this.getValuesAsList( selector, true, true );
 		if ( children.isEmpty() ) {
@@ -717,7 +716,9 @@ public class FlexiElement implements Element {
 
 	@Override
 	public void setAttributes( final MultiMap< String, String > attributes ) {
-		this.attributes = this.attributes.clearAllEntries().addAllEntries( attributes.entriesToList() );
+		List< Map.Entry< String, String > > entries = attributes.entriesToList();
+		entries.forEach( e -> { if ( e.getKey() == null || e.getValue() == null ) throw new NullPointerException(); } );
+		this.attributes = this.attributes.clearAllEntries().addAllEntries( entries );
 	}
 	
 
@@ -727,12 +728,12 @@ public class FlexiElement implements Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
-	public void setChild( String key, Element child  ) {
+	public void setChild( @NonNull String key, Element child  ) {
 		this.members = this.members.updateValue( key, 0, child );
 	}
 	
 	@Override
-	public void setChild( String key, int position, Element child  ) {
+	public void setChild( @NonNull String key, int position, Element child  ) {
 		this.members = this.members.updateValue( key, position, child );
 	}
 	
@@ -740,7 +741,7 @@ public class FlexiElement implements Element {
 	public void setChildren( @NonNull String key, Iterable< Element > children ) {
 		this.members = this.members.clearAllEntries();
 		for ( Element v : children ) {
-			this.members = this.members.add( key, v );
+			this.members = this.members.add( key, Objects.requireNonNull( v ) );
 		}
 	}
 
@@ -786,7 +787,9 @@ public class FlexiElement implements Element {
 
 	@Override
 	public void setMembers( final MultiMap< String, Element > _members ) {
-		this.members = this.members.clearAllEntries().addAllEntries( _members.entriesToList() );
+		List< Map.Entry< String, Element > > members = _members.entriesToList();
+		members.forEach( e -> { if ( e.getKey() == null || e.getValue() == null ) throw new NullPointerException(); } ); 
+		this.members = this.members.clearAllEntries().addAllEntries( members );
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////

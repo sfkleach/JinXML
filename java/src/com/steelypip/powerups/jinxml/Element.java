@@ -497,17 +497,17 @@ public interface Element {
 	 * @param key the shared key
 	 * @param value the value to add
 	 */
-	void setValue( @NonNull String key, String value );
+	void setValue( @NonNull String key, @NonNull String value );
 	
 	//	TODO
-	void setValue( @NonNull String key, int position, String value );
+	void setValue( @NonNull String key, int position, @NonNull String value );
 	
 	/**
 	 * Adds an entry to the attributes of an element.
 	 * @param key key of the entry being added
 	 * @param value value of the entry being added
 	 */
-	void addLastValue( @NonNull String key, String value );
+	void addLastValue( @NonNull String key, @NonNull String value );
 	
 	/**
 	 * Adds an entry to the attributes of an element.
@@ -515,7 +515,7 @@ public interface Element {
 	 * @param key key of the entry being added
 	 * @param value value of the entry being added
 	 */
-	void addFirstValue( @NonNull String key, String value );
+	void addFirstValue( @NonNull String key, @NonNull String value );
 
 	String removeFirstValue( @NonNull String key );
 	String removeFirstValue( @NonNull String key, String otherwise );
