@@ -39,7 +39,7 @@ public class TestToEventStream {
 	public void testExample1() {
 		StdPushParser p = new StdPushParser( new StringReader( example1 ), false );
 		final Element element0 = p.readElement();
-		final Builder builder = new StdBuilder();
+		final Builder builder = Builder.newBuilder();
 		element0.toEventStream().forEach( e -> builder.handleEvent( e ) );
 		assertTrue( builder.hasNext() );
 		Element element1 = builder.next();
@@ -47,6 +47,11 @@ public class TestToEventStream {
 		assertEquals( element0, element1 );
 	}
 	
+	private void newBuilder() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Test
 	public void test_SimpleEventStream() {
 		StdPushParser p = new StdPushParser( new StringReader( "<foo/>" ), false );

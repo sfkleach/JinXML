@@ -19,7 +19,6 @@
 package com.steelypip.powerups.jinxml.stdparse;
 
 import java.io.Reader;
-import java.util.ArrayDeque;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -154,14 +153,10 @@ public class TagParser extends TokeniserBaseClass {
 		return true;
 	}
 	
-	private String gatherNumber() {
-		return new NumParser( this ).process();			
-	}
-
 	private boolean readNumber( EventHandler handler, final @NonNull SelectorInfo selectorInfo) {
-		final String number = this.gatherNumber();
-		// TODO: this is clumsy in the extreme. Restructure.
-		if ( ! number.matches( "[-+]?[0-9]+" ) ) {
+		NumParser np = new NumParser( this );
+		final @NonNull String number = np.gatherNumber();
+		if ( np.isFloatingPoint() ) {
 			sendFloatEvent( handler, selectorInfo.getSelector(), number );
 		} else {
 			sendIntEvent( handler, selectorInfo.getSelector(), number );

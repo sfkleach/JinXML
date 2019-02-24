@@ -1,5 +1,7 @@
 package com.steelypip.powerups.jinxml.stdparse;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.alert.Alert;
 
 class NumParser {
@@ -15,11 +17,16 @@ class NumParser {
 		this.fparser = fparser;
 	}
 	
-	String process() {
+	@SuppressWarnings("null")
+	@NonNull String gatherNumber() {
 		while ( this.processChar( fparser.peekChar( '\0' ) ) ) {
 		}
 		return b.toString();
 //		return FusionParser.convertStringToNumber( radix, floating_point, b.toString() );			
+	}
+	
+	boolean isFloatingPoint() {
+		return this.floating_point;
 	}
 	
 	boolean processChar( char pch ) {

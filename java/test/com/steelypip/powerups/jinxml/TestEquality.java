@@ -15,6 +15,7 @@ public class TestEquality {
 		Element e0 = new FlexiElement( "foo" );
 		Element e1 = new FlexiElement( "foo" );
 		assertTrue( e0.equals(  e1  ) );
+		assertEquals( e0.hashCode(), e1.hashCode() );
 	}
 	
 	@Test
@@ -28,6 +29,7 @@ public class TestEquality {
 		e1.addLastValue( "alpha", "3" );
 		e1.addLastValue( "beta", "2" );
 		assertTrue( e0.equals(  e1  ) );
+		assertEquals( e0.hashCode(), e1.hashCode() );
 		Element e2 = new FlexiElement( "foo" );
 		e2.addLastValue( "alpha", "3" );
 		e2.addLastValue( "alpha", "1" );
@@ -47,6 +49,7 @@ public class TestEquality {
 		e1.addLastChild( "alpha", new FlexiElement( "3" ) );
 		e1.addLastChild( "beta", new FlexiElement( "2" ) );
 		assertTrue( e0.equals(  e1  ) );
+		assertEquals( e0.hashCode(), e1.hashCode() );
 		Element e2 = new FlexiElement( "foo" );
 		e2.addLastChild( "alpha", new FlexiElement( "3" ) );
 		e2.addLastChild( "alpha", new FlexiElement( "1" ) );

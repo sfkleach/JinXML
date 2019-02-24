@@ -969,6 +969,17 @@ public class FlexiElement implements Element {
 		return true;
 	}
 	
+	public int hashCode() {
+		int hash = this.getName().hashCode();
+		for ( Attribute attr : this.attributes() ) {
+			hash = 89 * hash + attr.hashCode();
+		}
+		for ( Member member : this.members() ) {
+			hash = 89 * hash + member.hashCode();
+		}
+		return hash;
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Printing
 	/////////////////////////////////////////////////////////////////////////////////////////////
