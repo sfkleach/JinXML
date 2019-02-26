@@ -721,6 +721,15 @@ public class FlexiElement implements Element {
 		this.attributes = this.attributes.clearAllEntries().addAllEntries( entries );
 	}
 	
+	@Override
+	public void clearAttributes() {
+		this.attributes = this.attributes.clearAllEntries();
+	}
+	
+	@Override
+	public void clearValues( @NonNull String key ) {
+		this.attributes = this.attributes.removeEntries( key );
+	}
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -790,6 +799,16 @@ public class FlexiElement implements Element {
 		List< Map.Entry< String, Element > > members = _members.entriesToList();
 		members.forEach( e -> { if ( e.getKey() == null || e.getValue() == null ) throw new NullPointerException(); } ); 
 		this.members = this.members.clearAllEntries().addAllEntries( members );
+	}
+	
+	@Override
+	public void clearMembers() {
+		this.members = this.members.clearAllEntries();
+	}
+	
+	@Override
+	public void clearChildren( @NonNull String selector ) {
+		this.members = this.members.removeEntries( selector );
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////

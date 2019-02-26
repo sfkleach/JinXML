@@ -1,14 +1,14 @@
-# Class Builder extends PushParser.Listener, Iterator< Element >
+# Class Builder extends PushParser.Listener, Iterator<Element>
 
 ## General Methods
 
-* Factory Constructor ```newBuilder( Boolean mutable = false, Boolean allowQueuing = false ) -> Builder``` - returns a factory object that can be used to construct new Elements. If the flag ```mutable``` is true, then the new values are constructed to be (deeply) mutable, otherwise (deeply) immutable. If ```allowQueuing``` is false, then no events are accepted after an Element is ready until the element is constructed by ```newInstance```, otherwise events are allowed.
+* Factory Constructor ```newBuilder( Boolean mutable = false, Boolean allowQueuing = false ) -> Builder``` - returns a factory object that can be used to construct new Elements. If the flag `mutable` is true, then the new values are constructed to be (deeply) mutable, otherwise (deeply) immutable. If `allowQueuing` is false, then no events are accepted after an Element is ready until the element is constructed by `newInstance`, otherwise events are allowed.
 
 * Method ```hasNext() -> Boolean``` - returns true if enough events have been received to construct an element.
 
 * Method ```isInProgress() -> Boolean``` - return true if some events have been received but there are more open than close events. 
 
-* Method ```next() -> Element``` - constructs the next Element if one is ready for construction, otherwise will raise an exception. Use ```this.hasNext()``` to determine whether it is safe to call this method.
+* Method ```next() -> Element``` - constructs the next Element if one is ready for construction, otherwise will raise an exception. Use `this.hasNext()` to determine whether it is safe to call this method.
 
 * Method ```tryNext( Element? orElse = null ) -> Element?``` - if an Element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
 

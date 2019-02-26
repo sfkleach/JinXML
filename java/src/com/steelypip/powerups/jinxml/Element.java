@@ -528,7 +528,10 @@ public interface Element {
 	 * preserving the order.
 	 * @param attributes the multi-map containing the entries to add
 	 */
-	void setAttributes( MultiMap< String, String > attributes );	
+	void setAttributes( MultiMap< String, String > attributes );
+	
+	void clearAttributes();
+	void clearValues( @NonNull String key );
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members - Imperative Methods
@@ -574,6 +577,9 @@ public interface Element {
 	 * @param members the multi-map containing the entries to add
 	 */
 	void setMembers( MultiMap< String, Element > members );
+	
+	void clearMembers();
+	void clearChildren( @NonNull String selector );
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Builder-related Methods

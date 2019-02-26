@@ -15,7 +15,7 @@ public class TestStdBuilder {
 
 	@Before
 	public void setup() {
-		builder = new StdBuilder( false, false );		
+		builder = new StdBuilder( false, true );		
 	}
 
 	@Test

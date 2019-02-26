@@ -64,7 +64,7 @@ public interface Attribute {
 			};
 		}
 		
-		default Attribute.Iterable uniqueSelector() {
+		default Attribute.Iterable uniqueKey() {
 			return this.with( new Predicate< Attribute >() {
 				
 				final Set< String > seen = new TreeSet<>();
