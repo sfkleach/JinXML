@@ -43,18 +43,15 @@ public class FlexiElement implements Element {
 	/**
 	 * attributes and links are made mutable/immutable in lockstep, so we only need to test one.
 	 */
-	// TODO - write unit tests
 	public boolean isFrozen() {
 		return this.attributes.isFrozen();
 	}
 	
-	// TODO - write unit tests
 	public void freezeSelf() {
 		this.attributes = this.attributes.frozenCopyUnlessFrozen();
 		this.members = this.members.frozenCopyUnlessFrozen();
 	}
 	
-	// TODO - write unit tests
 	public Element freeze() {
 		if ( this.attributes.isFrozen() ) {
 			return this;
@@ -62,7 +59,7 @@ public class FlexiElement implements Element {
 			FlexiElement e = new FlexiElement( this.getName() );
 			e.attributes = this.attributes.frozenCopyUnlessFrozen();
 			e.members = this.members.frozenCopyUnlessFrozen();
-			return this;
+			return e;
 		}
 	}
 	

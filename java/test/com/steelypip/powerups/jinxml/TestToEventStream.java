@@ -46,11 +46,6 @@ public class TestToEventStream {
 		assertFalse( builder.hasNext() );
 		assertEquals( element0, element1 );
 	}
-	
-	private void newBuilder() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Test
 	public void test_SimpleEventStream() {

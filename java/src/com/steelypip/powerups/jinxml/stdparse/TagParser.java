@@ -248,8 +248,9 @@ public class TagParser extends TokeniserBaseClass {
 					throw new Alert( "Invalid continuation" );
 				}
 			}
+		} else if ( !this.cucharin.hasNextChar() ) {
+			throw new Alert( "Unexpected end of file" ).culprit( "Expecting", "< or [ or { " );
 		} else {
-			//	TODO, not correct error message at end of file.
 			throw new Alert( "Unexpected character" ).culprit( "Expecting", "< or [ or { " ).culprit( "Actually", this.peekChar( '\0' ) ); 
 		}  
 	}

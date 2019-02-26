@@ -1,6 +1,8 @@
 package com.steelypip.powerups.jinxml.implementation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 
@@ -38,14 +40,32 @@ public class TestStdParser_EventProcessing {
 	
 	@Test
 	public void readEvent_XMLStyle_EmptyString() {
-		StdPushParser p = this.parser( "''" );
-		//TODO
+		StdPushParser p = new StdPushParser( new StringReader( "''" ), true );
+		Event start = p.readEvent();
+		assertTrue( start instanceof Event.StartTagEvent );
+		assertEquals( Element.STRING_ELEMENT_NAME, ((Event.StartTagEvent)start).getName() );
+		Event addattr = p.readEvent();
+		assertTrue( addattr instanceof Event.AttributeEvent );
+		assertEquals( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, ((Event.AttributeEvent)addattr).getKey() );
+		assertEquals( "", ((Event.AttributeEvent)addattr).getValue() );
+		Event end = p.readEvent();
+		assertTrue( end instanceof Event.EndTagEvent );
+		assertNull( p.readEvent() );		
 	}
 
 	@Test
 	public void readEvent_XMLStyle_NonEmptyString_WithEscapes() {
-		StdPushParser p = this.parser( "''" );
-		//TODO
+		StdPushParser p = new StdPushParser( new StringReader( "'x&amp;y'" ), true );
+		Event start = p.readEvent();
+		assertTrue( start instanceof Event.StartTagEvent );
+		assertEquals( Element.STRING_ELEMENT_NAME, ((Event.StartTagEvent)start).getName() );
+		Event addattr = p.readEvent();
+		assertTrue( addattr instanceof Event.AttributeEvent );
+		assertEquals( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, ((Event.AttributeEvent)addattr).getKey() );
+		assertEquals( "x&y", ((Event.AttributeEvent)addattr).getValue() );
+		Event end = p.readEvent();
+		assertTrue( end instanceof Event.EndTagEvent );
+		assertNull( p.readEvent() );		
 	}
 
 	@Test( expected=RuntimeException.class )

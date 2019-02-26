@@ -60,8 +60,8 @@ public class StdBuilder implements Builder {
 
 	private void popChild() {
 		try {
-			Object popped = this.dump.removeLast();
-			this.selector = Objects.requireNonNull( (String)popped );
+			String popped = (String)this.dump.removeLast();
+			this.selector = Objects.requireNonNull( popped );
 			this.focus = (Element)this.dump.removeLast();
 		} catch ( NoSuchElementException e ) {
 			throw new IllegalStateException( e );
@@ -210,7 +210,16 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void include( Element child, boolean checkMutability ) {
-		// TODO: checkMutability
+		if ( checkMutability ) {
+			//	Counter-intuitive test: use == because the two sides have exactly opposite meanings.
+			if ( this.mutable_flag == child.isFrozen() ) {
+				throw (
+					new Alert( "Failed check for mutability consistency" ).
+					culprit( "ELement to be included", child ).
+					culprit( "Builder mutability", mutable_flag )
+				);
+			}
+		}
 		this.focus.addLastChild( this.selector, child );
 	}
 

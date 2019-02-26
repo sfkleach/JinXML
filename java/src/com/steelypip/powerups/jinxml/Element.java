@@ -499,7 +499,13 @@ public interface Element {
 	 */
 	void setValue( @NonNull String key, @NonNull String value );
 	
-	//	TODO
+	/**
+	 * Sets the n-th attribute of an element with the given key to the given value
+	 * the same key. 
+	 * @param key the shared key
+	 * @param position the index of the attribute to update
+	 * @param value the value to add
+	 */
 	void setValue( @NonNull String key, int position, @NonNull String value );
 	
 	/**

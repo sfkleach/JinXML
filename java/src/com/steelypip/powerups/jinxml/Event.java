@@ -15,7 +15,7 @@ public abstract class Event {
 
 	public static class StartTagEvent extends SelectorEvent {
 		
-		@NonNull String key;
+		@NonNull String name;
 
 		public StartTagEvent( @NonNull String key ) {
 			this( "", key );
@@ -23,16 +23,16 @@ public abstract class Event {
 		
 		public StartTagEvent( @NonNull String selector, @NonNull String key ) {
 			super( selector );
-			this.key = key;
+			this.name = key;
 		}
 
-		public String getKey() {
-			return key;
+		public String getName() {
+			return name;
 		}
 
 		@Override
 		public void sendTo( EventHandler handler ) {
-			handler.startTagEvent( this.selector, this.key );
+			handler.startTagEvent( this.selector, this.name );
 		}
 		
 	}
