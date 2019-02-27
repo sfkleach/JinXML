@@ -77,6 +77,20 @@ public class TestStdBuilder {
 		assertEquals( 0, e.countMembers() );
 	}
 
+	@Test( expected=Exception.class )
+	public void attributeEvent_InvalidSolo() {
+		builder.startTagEvent( "foo" );
+		builder.attributeEvent( "alpha", "A", true );
+		builder.attributeEvent( "alpha", "B", true );
+	}
+
+	@Test
+	public void attributeEvent_ValidSolo() {
+		builder.startTagEvent( "foo" );
+		builder.attributeEvent( "alpha0", "A", true );
+		builder.attributeEvent( "alpha1", "B", true );
+	}
+
 	@Test( expected=IllegalStateException.class )
 	public void attributeEvent_Invalid() {
 		builder.attributeEvent( "alpha", "A" );

@@ -239,11 +239,15 @@ public interface Element {
 	String getLastValue( @NonNull String key, String otherwise );
 	
 	/**
-	 * Retunrs the number of entries for a given key 
+	 * Returns the number of entries for a given key 
 	 * @param key may not be null
 	 * @return
 	 */
 	int countValues( @NonNull String key );
+	
+	default boolean hasKey( @NonNull String key ) {
+		return this.countValues( key ) > 0;
+	}
 	
 	/**
 	 * Given a key, return an ordered list of the values of entries with matching key. 
@@ -292,13 +296,17 @@ public interface Element {
 	 * @param selector a non-null selector
 	 * @return number of children
 	 */
-	int countChildren( @NonNull String selector  );
+	int countChildren( @NonNull String selector );
 	
 	/**
 	 * Returns the number of children with the default selector (empty string)
 	 * @return the number of children
 	 */
 	int countChildren(); 
+	
+	default boolean hasSelector( @NonNull String selector ) {
+		return this.countChildren( selector ) > 0;
+	}
 	
 	/**
 	 * Same as getMembersAsMultiMap( false, false )

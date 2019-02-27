@@ -82,10 +82,10 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void attributeEvent( @NonNull String key, @NonNull String value, boolean solo ) {
-		//	TODO: use solo
-		//	TODO: deal with non-nullity
 		if ( this.dump.isEmpty() ) {
 			throw new IllegalStateException( "Trying to add attributes outside of a tag" );
+		} else if ( solo && this.focus.hasKey( key ) ) {
+			throw new Alert( "Adding second attribute with same key but marked as solo" ).culprit( "Key", key );
 		} else {
 			this.focus.addLastValue( key, value );
 		}
@@ -93,11 +93,15 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void endTagEvent( String key ) {
-		//	TODO: check balance, check match
 		if ( key == null || this.focus.hasName( key ) ) {
 			this.popChild();
 		} else {
-			throw new IllegalArgumentException( "Mismatched tag names: " + this.focus.getName() + " and " + key );
+			throw(
+				new Alert( "Mismatched tag names: {Name} and {Key}" ).
+				culprit( "Name", this.focus.getName() ).
+				culprit( "Key", key ).
+				wrap( IllegalArgumentException.class )
+			);
 		}
 	}
 

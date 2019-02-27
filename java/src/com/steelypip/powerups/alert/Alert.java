@@ -19,8 +19,12 @@
 package com.steelypip.powerups.alert;
 
 import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -64,6 +68,40 @@ public class Alert extends RuntimeException implements Iterable< Culprit > {
 	
 	private void add( final Culprit culprit ) {
 		this.culprit_list.add( culprit );
+	}
+	
+	final static private Pattern varpattern = Pattern.compile( "(\\{[\\w]+\\})" );
+	
+	private String getValueFor( final String varname ) {
+		final String varname1 = varname.substring( 1, varname.length() - 1 ); // clip off braces.
+		for ( Culprit c : culprit_list ) {
+			if ( varname1.equals( c.getKey() ) ) {
+				return c.getValueString();
+			}
+		}
+		return "";
+	}
+	
+	private String substitute( String formatString ) {
+		for (;;) {
+			Matcher m = varpattern.matcher( formatString );
+			if ( ! m.find() ) break;
+			formatString = formatString.substring( 0, m.start(1) ) + getValueFor( m.group(1) ) + formatString.substring( m.end(1) ); 
+		}
+		return formatString;
+	}
+	
+	public <T extends Exception> T wrap( final String formatString, Class< T > exnClass ) {
+		try {
+			Constructor< T > con = exnClass.getConstructor( String.class );
+			return con.newInstance( this.substitute( formatString ) ); 
+		} catch ( NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e ) {
+			throw this.culprit( "Wrapping Alert failed", e );
+		}
+	}
+
+	public <T extends Exception> T wrap( Class< T > exnClass ) {
+		return this.wrap( this.getMessage(), exnClass );
 	}
 
 	/**
