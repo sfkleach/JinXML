@@ -73,7 +73,7 @@ public class FlexiElement implements Element {
 			Element new_element = new FlexiElement( this.getName() );
 			this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );
 			pairs.forEach( e -> new_element.addLastChild( e.getFirst().getKey(), e.getSecond() ) );
-			new_element.freeze();
+			new_element.freezeSelf();
 			return new_element;
 		}
 	}

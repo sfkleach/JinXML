@@ -34,9 +34,41 @@ public class Test_Element_Freeze {
 		Element e = Element.newElement( "" );
 		e.addLastValue( "name", "deepFreezeTest" );
 		e.addLastChild( Element.newElement( "child" ) );
+		e = e.deepFreeze();
+		assertTrue( e.isFrozen() );
+		assertTrue( e.getFirstChild().isFrozen() );
+		try {
+			e.getFirstChild().addFirstValue( "foo", "bar" );
+			fail();
+		} catch ( Exception _e ) {
+		}
+	}
+
+	@Test
+	public void deepFreezeSelf() {
+		Element e = Element.newElement( "" );
+		e.addLastValue( "name", "deepFreezeTest" );
+		e.addLastChild( Element.newElement( "child" ) );
 		e.deepFreezeSelf();
 		assertTrue( e.isFrozen() );
 		assertTrue( e.getFirstChild().isFrozen() );
+		try {
+			e.getFirstChild().addFirstValue( "foo", "bar" );
+			fail();
+		} catch ( Exception _e ) {
+		}
+	}
+
+	@Test
+	public void deepCopy() {
+		Element e = Element.newElement( "" );
+		e.addLastValue( "name", "deepFreezeTest" );
+		e.addLastChild( Element.newElement( "child" ) );
+		e.deepFreezeSelf();
+		e = e.deepMutableCopy();
+		assertFalse( e.isFrozen() );
+		assertFalse( e.getFirstChild().isFrozen() );
+		e.getFirstChild().addFirstValue( "foo", "bar" ); // Does not raise exception.
 	}
 
 }
