@@ -63,7 +63,6 @@ public class FlexiElement implements Element {
 		}
 	}
 	
-	// TODO - write unit tests
 	public Element deepFreeze() {
 		List< StdPair< Map.Entry< String, Element >, Element> > pairs = this.getMembersStream().map( e -> new StdPair<>( e, e.getValue().deepFreeze() ) ).collect( Collectors.toList() );
 		boolean no_need_to_copy = this.isFrozen() && pairs.stream().allMatch( p -> p.getFirst().getValue() == p.getSecond() );
