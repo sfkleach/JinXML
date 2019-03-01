@@ -10,7 +10,7 @@ The object-model represents a Element as having a single name, attributes and me
 
 * Function ```readElement( Input input, Boolean mutable = false ) -> Element``` - reads an element from character-based input. If `mutable` is true then the element returned is mutable, otherwise it is deeply immutable.
 
-* Function ```readElementStream( Input input, Boolean mutable = false ) -> Iterator< Element >``` - returns a stream of elements that dynamically draws content from the input as it is accessed. If `mutable` is true then the element returned is mutable, otherwise it is deeply immutable.
+* Function ```readElementStream( Input input, Boolean mutable = false ) -> Stream< Element >``` - returns a stream of elements that dynamically draws content from the input as it is accessed. If `mutable` is true then the element returned is mutable, otherwise it is deeply immutable.
 
 * Function ```fromString( String text, Boolean mutable = false ) -> Element``` - parses the string `text`. If `mutable` is true then the element returned is mutable, otherwise it is deeply immutable.
 
@@ -162,7 +162,7 @@ the selector `sel`.
 
 ## Builder Methods
 
-* Method ```toEventIterator() -> Iterator< Event >``` - generates a stream of events that performs a 'walk' over the Element. The walk is guaranteed to be isolated from updates in the sense that the stream it returns is unaffected by any updates to the Element that might occur while the walk is in-progress.
+* Method ```toEventStream() -> Stream< Event >``` - generates a stream of events that performs a 'walk' over the Element. The walk is guaranteed to be isolated from updates in the sense that the stream it returns is unaffected by any updates to the Element that might occur while the walk is in-progress.
 
 
 
