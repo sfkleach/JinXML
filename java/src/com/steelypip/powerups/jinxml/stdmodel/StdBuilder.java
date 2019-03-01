@@ -107,22 +107,18 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void startArrayEvent( @NonNull String selector ) {
-		//	TODO: check state, set state.
 		this.startTagEvent( selector, ARRAY_ELEMENT_NAME );
 	}
 
 	@Override
 	public void endArrayEvent() {
-		// 	TODO: check state, set state.
 		this.endTagEvent( ARRAY_ELEMENT_NAME );
 	}
 
 	@Override
 	public void startObjectEvent( @NonNull String selector ) {
-		//	TODO: check state, set state.
 		this.startTagEvent( selector, OBJECT_ELEMENT_NAME );
 	}
-
 
 	@Override
 	public void endObjectEvent() {

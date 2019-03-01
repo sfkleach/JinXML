@@ -540,6 +540,96 @@ public class TestFlexiElement {
 	}
 		
 	
+	@Test
+	public void addFirstValue_ToEmpty() {
+		Element d = new FlexiElement( "addFirstValue_ToEmpty" );		
+		d.addFirstValue( "key", "1" );
+		d.addFirstValue( "key", "2" );
+		assertEquals( "2", d.getFirstValue( "key" ) );
+		assertEquals( "1", d.getLastValue( "key" ) );
+
+	}
 	
+	@Test
+	public void addFirstChild_ToEmpty() {
+		Element d = new FlexiElement( "addFirstChild_ToEmpty" );		
+		d.addFirstChild( "key", Element.newElement( "1" ) );
+		d.addFirstChild( "key", Element.newElement( "2" ) );
+		assertEquals( "2", d.getFirstChild( "key" ).getName() );
+		assertEquals( "1", d.getLastChild( "key" ).getName() );
+
+	}
 	
+	@Test
+	public void removeFirstChild_ToNonEmpty() {
+		Element d = new FlexiElement( "removeFirstChild_ToNonEmpty" );		
+		d.addFirstChild( "key", Element.newElement( "1" ) );
+		d.addFirstChild( "key", Element.newElement( "2" ) );
+		Element v = d.removeFirstChild( "key" );
+		assertEquals( "2", v.getName() );
+		assertEquals( "1", d.getLastChild( "key" ).getName() );
+		assertEquals( 1, d.countMembers() );
+	}
+	
+	@Test
+	public void removeFirstValue_ToNonEmpty() {
+		Element d = new FlexiElement( "removeFirstValue_ToNonEmpty" );		
+		d.addFirstValue( "key", "1" );
+		d.addFirstValue( "key", "2" );
+		String v = d.removeFirstValue( "key" );
+		assertEquals( "2", v );
+		assertEquals( "1", d.getLastValue( "key" ) );
+		assertEquals( 1, d.countAttributes() );
+	}
+	
+	@Test
+	public void removeFirstValue_WithOtherwise_ToNonEmpty() {
+		Element d = new FlexiElement( "removeFirstValue_WithOtherwise_ToNonEmpty" );		
+		d.addFirstValue( "key", "1" );
+		d.addFirstValue( "key", "2" );
+		String v = d.removeFirstValue( "not_a_key", "quark" );
+		assertEquals( "quark", v );
+	}
+
+	@Test
+	public void removeFirstChild_WithOtherwise_ToNonEmpty() {
+		Element d = new FlexiElement( "removeFirstChild_WithOtherwise_ToNonEmpty" );		
+		d.addFirstChild( "key", Element.newElement( "1" ) );
+		d.addFirstChild( "key", Element.newElement( "2" ) );
+		Element v = d.removeFirstChild( "not_a_key", Element.newElement( "quark" ) );
+		assertEquals( "quark", v.getName() );
+	}
+
+	@Test
+	public void removeLastValue_ToNonEmpty() {
+		Element d = new FlexiElement( "addFirstValue_ToEmpty" );		
+		d.addFirstValue( "key", "1" );
+		d.addFirstValue( "key", "2" );
+		d.addFirstValue( "key", "3" );
+		String v3 = d.removeFirstValue( "key" );
+		String v1 = d.removeLastValue( "key" );
+		String quark = d.removeLastValue( "not_a_key", "quark" );
+		assertEquals( "1", v1 );
+		assertEquals( "3", v3 );
+		assertEquals( "2", d.getLastValue( "key" ) );
+		assertEquals( 1, d.countAttributes() );
+	}
+	
+	@Test
+	public void removeLastChild_ToNonEmpty() {
+		Element d = new FlexiElement( "removeLastChild_ToNonEmpty" );		
+		d.addFirstChild( "key", Element.newElement( "1" ) );
+		d.addFirstChild( "key", Element.newElement( "2" ) );
+		d.addFirstChild( "key", Element.newElement( "3" ) );
+		Element v3 = d.removeFirstChild( "key" );
+		Element v1 = d.removeLastChild( "key" );
+		Element quark = d.removeLastChild( "not_a_key", Element.newElement( "quark" ) );
+		assertEquals( "quark", quark.getName() );
+		assertEquals( "1", v1.getName() );
+		assertEquals( "3", v3.getName() );
+		assertEquals( "2", d.getLastChild( "key" ).getName() );
+		assertEquals( 1, d.countMembers() );
+	}
+	
+
 }

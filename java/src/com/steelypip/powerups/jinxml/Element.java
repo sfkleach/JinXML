@@ -404,10 +404,12 @@ public interface Element {
 	Element getChild();
 	
 	Element getFirstChild( @NonNull String selector, Element otherwise );
+	default Element getFirstChild( @NonNull String selector ) { return this.getFirstChild( selector, null ); }
 	Element getFirstChild( Element otherwise );
 	Element getFirstChild();
 	
 	Element getLastChild( @NonNull String selector, Element otherwise );
+	default Element getLastChild( @NonNull String selector ) { return this.getLastChild( selector, null ); }
 	Element getLastChild( Element otherwise );
 	Element getLastChild();
 	

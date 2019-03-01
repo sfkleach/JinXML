@@ -676,32 +676,27 @@ public class FlexiElement implements Element {
 	
 	@Override
 	public void addFirstValue( @NonNull String key, @NonNull String value ) {
-		//	TODO: unit test
 		final List< String > values = this.getValuesAsList( key, true, true );
 		values.add( 0, value );		
 	}	
 
 	@Override
 	public String removeFirstValue( @NonNull String selector ) {
-		//	TODO: unit test
 		return this.removeFirstValue( selector, null );
 	}
 	
 	@Override
 	public String removeFirstValue( @NonNull String selector, String otherwise ) {
-		//	TODO: unit test
 		final List< String > children = this.getValuesAsList( selector, true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
 	public String removeLastValue( @NonNull String selector ) {
-		//	TODO: unit test
 		return this.removeLastValue( selector, null );
 	}
 	
 	@Override
 	public String removeLastValue( @NonNull String selector, String otherwise ) {
-		//	TODO: unit test
 		final List< String > children = this.getValuesAsList( selector, true, true );
 		if ( children.isEmpty() ) {
 			return otherwise;
@@ -762,7 +757,6 @@ public class FlexiElement implements Element {
 
 	@Override
 	public void addFirstChild( @NonNull String selector, Element e ) {
-		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( selector, true, true );
 		children.add( 0, e );		
 	}
@@ -774,14 +768,12 @@ public class FlexiElement implements Element {
 
 	@Override
 	public Element removeFirstChild( @NonNull String selector, Element otherwise ) {
-		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		return children.isEmpty() ? otherwise : children.remove( 0 );		
 	}
 
 	@Override
 	public Element removeLastChild( @NonNull String selector, Element otherwise ) {
-		//	TODO: unit test
 		final List< Element > children = this.getChildrenAsList( Objects.requireNonNull( selector ), true, true );
 		if ( children.isEmpty() ) {
 			return otherwise;
