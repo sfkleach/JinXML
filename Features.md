@@ -25,9 +25,8 @@ However, a JinXML parser allows duplicates _when explicitly permitted_ using the
 ```
 { "size"+: 8, "size"+: 19 }
 ```
-By contrast, the ```:``` sign cannot be used for the same key more than once. But once is fine - so both of these are OK:
+By contrast, the ```:``` sign cannot be used for the same key more than once - and it cannot come after ```+:``` has been used for that key. So this is OK:
 ```
-{ "size"+: 8, "size": 19 }
 { "size": 8, "size"+: 19 }
 ```
 
