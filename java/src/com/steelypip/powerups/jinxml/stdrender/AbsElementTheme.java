@@ -1,7 +1,10 @@
 package com.steelypip.powerups.jinxml.stdrender;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+
+import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.jinxml.Element;
 
@@ -42,8 +45,8 @@ public abstract class AbsElementTheme implements Theme< Element > {
 	public abstract boolean hasAnyMembers( Element x );
 	public abstract Set< String > keysToSet( Element x );
 	public abstract Set< String > selectorsToSet( Element x );
-	public abstract List< String > valuesToList( Element x, String key );
-	public abstract List< Element > childrenToList( Element x, String selector );
+	public abstract List< String > valuesToList( Element x, @NonNull String key );
+	public abstract List< Element > childrenToList( Element x, @NonNull String selector );
 	
 	@Override
 	public boolean tryRender( ThemeableWriter< Element > fwriter, Element x ) {
@@ -58,7 +61,7 @@ public abstract class AbsElementTheme implements Theme< Element > {
 		
 		this.doStartAttributes( fwriter, has_any_attributes, has_any_members );
 		for ( String key : this.keysToSet( x ) ) {
-			this.doStartAttributeGroup( fwriter, key );
+			this.doStartAttributeGroup( fwriter, Objects.requireNonNull( key ) );
 			final List< String > values = this.valuesToList( x, key );
 			int n = 0;
 			for ( String value : values ) {
@@ -74,7 +77,7 @@ public abstract class AbsElementTheme implements Theme< Element > {
 			fwriter.getIndenter().tab();
 			this.doStartMembers( fwriter, has_any_attributes, has_any_members );
 			for ( String selector : this.selectorsToSet( x ) ) {
-				final List< Element > children = this.childrenToList( x, selector );
+				final List< Element > children = this.childrenToList( x, Objects.requireNonNull( selector ) );
 				this.doStartMemberGroup( fwriter, selector );
 				int n = 0;
 				for ( Element child : children) {

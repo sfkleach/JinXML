@@ -3,6 +3,8 @@ package com.steelypip.powerups.jinxml.stdrender;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.jinxml.Element;
 
 /**
@@ -61,12 +63,12 @@ public class StartEndTagTheme extends AbsStartEndTagTheme {
 	}
 
 	@Override
-	public List< String > valuesToList( Element x, String key ) {
+	public List< String > valuesToList( Element x, @NonNull String key ) {
 		return x.getValuesAsList( key );
 	}
 
 	@Override
-	public List< Element > childrenToList( Element x, String selector ) {
+	public List< Element > childrenToList( Element x, @NonNull String selector ) {
 		return x.getChildrenAsList( selector );
 	}
 

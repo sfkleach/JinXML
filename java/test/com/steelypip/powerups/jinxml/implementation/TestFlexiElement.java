@@ -1,18 +1,21 @@
 package com.steelypip.powerups.jinxml.implementation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.steelypip.powerups.jinxml.Attribute;
 import com.steelypip.powerups.jinxml.Element;
+import com.steelypip.powerups.jinxml.Member;
 import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 import com.steelypip.powerups.util.multimap.MultiMap;
 
@@ -121,7 +124,7 @@ public class TestFlexiElement {
 		e.addLastValue( "two", "2" );
 		e.addLastValue( "three", "3" );
 		e.addLastValue( "four", "4" );
-		Stream< Map.Entry< String, String > > it = e.getAttributesStream();
+		Stream< Attribute > it = e.getAttributesStream();
 		long count = ( 
 			it.map( 
 				n -> {
@@ -434,25 +437,25 @@ public class TestFlexiElement {
 
 	@Test
 	public void getMembersIterator_OnThree() {
-		List< Map.Entry< String, Element > > list = new ArrayList<>();
+		List< Member > list = new ArrayList<>();
 		members_three.getMembersStream().forEach( list::add );
 		assertEquals( 6, list.size() ); 
 		
 		{
-			List< Element > a = list.stream().filter( e -> "one".equals( e.getKey() ) ).map( e -> e.getValue() ).collect( Collectors.toList() );
+			List< Element > a = list.stream().filter( e -> "one".equals( e.getSelector() ) ).map( e -> e.getChild() ).collect( Collectors.toList() );
 			assertEquals( 1, a.size() );
 			assertEquals( "THREE 1.1", a.get( 0 ).getName() );
 		}
 		
 		{
-			List< Element > a = list.stream().filter( e -> "two".equals( e.getKey() ) ).map( e -> e.getValue() ).collect( Collectors.toList() );
+			List< Element > a = list.stream().filter( e -> "two".equals( e.getSelector() ) ).map( e -> e.getChild() ).collect( Collectors.toList() );
 			assertEquals( 2, a.size() );
 			assertEquals( "THREE 2.1", a.get( 0 ).getName() );
 			assertEquals( "THREE 2.2", a.get( 1 ).getName() );
 		}
 		
 		{
-			List< Element > a = list.stream().filter( e -> "three".equals( e.getKey() ) ).map( e -> e.getValue() ).collect( Collectors.toList() );
+			List< Element > a = list.stream().filter( e -> "three".equals( e.getSelector() ) ).map( e -> e.getChild() ).collect( Collectors.toList() );
 			assertEquals( 3, a.size() );
 			assertEquals( "THREE 3.1", a.get( 0 ).getName() );
 			assertEquals( "THREE 3.2", a.get( 1 ).getName() );

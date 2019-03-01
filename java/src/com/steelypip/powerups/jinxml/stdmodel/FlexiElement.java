@@ -64,14 +64,14 @@ public class FlexiElement implements Element {
 	}
 	
 	public Element deepFreeze() {
-		List< StdPair< Map.Entry< String, Element >, Element> > pairs = this.getMembersStream().map( e -> new StdPair<>( e, e.getValue().deepFreeze() ) ).collect( Collectors.toList() );
-		boolean no_need_to_copy = this.isFrozen() && pairs.stream().allMatch( p -> p.getFirst().getValue() == p.getSecond() );
+		List< StdPair< Member, Element> > pairs = this.getMembersStream().map( e -> new StdPair<>( e, e.getChild().deepFreeze() ) ).collect( Collectors.toList() );
+		boolean no_need_to_copy = this.isFrozen() && pairs.stream().allMatch( p -> p.getFirst().getChild() == p.getSecond() );
 		if ( no_need_to_copy ) {
 			return this;
 		} else {
 			Element new_element = new FlexiElement( this.getName() );
 			this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );
-			pairs.forEach( e -> new_element.addLastChild( e.getFirst().getKey(), e.getSecond() ) );
+			pairs.forEach( e -> new_element.addLastChild( e.getFirst().getSelector(), e.getSecond() ) );
 			new_element.freezeSelf();
 			return new_element;
 		}
@@ -79,15 +79,15 @@ public class FlexiElement implements Element {
 	
 	public Element deepMutableCopy() {
 		final Element new_element = new FlexiElement( this.getName() );
-		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) ) );		
-		this.getMembersStream().map( e -> new StdPair<>( e.getKey(), e.getValue().deepMutableCopy() ) ).forEachOrdered( e -> new_element.addLastChild( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) ) );
+		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
+		this.getMembersStream().map( e -> new StdPair<>( e.getSelector(), e.getChild().deepMutableCopy() ) ).forEachOrdered( e -> new_element.addLastChild( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) ) );
 		return new_element;
 	}
 	
 	public Element mutableCopy() {
 		final Element new_element = new FlexiElement( this.getName() );
 		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
-		this.getMembersStream().forEachOrdered( e -> new_element.addLastChild( e.getKey(), e.getValue() ) );
+		this.getMembersStream().forEachOrdered( e -> new_element.addLastChild( e.getSelector(), e.getChild() ) );
 		return new_element;
 	}
 	
@@ -111,8 +111,8 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Stream< Map.Entry< String, String > > getAttributesStream() {
-		return this.attributes.frozenCopyUnlessFrozen().stream();
+	public Stream< Attribute > getAttributesStream() {
+		return this.attributes.frozenCopyUnlessFrozen().stream().map( e -> new StdAttribute( e ) );
 	}
 	
 	static class PMMapMultiMap< K, V > extends ViewPhoenixMultiMapAsMultiMap< K, V > {
@@ -345,7 +345,7 @@ public class FlexiElement implements Element {
 						@Override
 						public Attribute next() {
 							final Map.Entry< String, String > e = it.next();
-							return new StdAttribute( e.getKey(), 0, e.getValue() );
+							return new StdAttribute( e );
 						}
 					};
 				}
@@ -355,7 +355,7 @@ public class FlexiElement implements Element {
 			final Iterator< Map.Entry< String, String > > it = this.attributes.iterator();
 			while ( it.hasNext() ) {
 				final Map.Entry< String, String > e = it.next();
-				list.add( new StdAttribute( e.getKey(), 0, e.getValue() ) );
+				list.add( new StdAttribute( e ) );
 			}
 			return Attribute.fromIterable( list );
 		}
@@ -439,7 +439,7 @@ public class FlexiElement implements Element {
 	}	
 	
 	@Override
-	public int countChildren( String selector  ) {
+	public int countChildren( @NonNull String selector  ) {
 		return this.members.sizeEntriesWithKey( selector );
 		
 	}
@@ -451,22 +451,22 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Stream< Map.Entry< String, Element > > getMembersStream() {
-		return this.members.frozenCopyUnlessFrozen().stream();
+	public Stream< Member > getMembersStream() {
+		return this.members.frozenCopyUnlessFrozen().stream().map( e -> new StdMember( e ) );
 	}
 
 	@Override
-	public Element getChild( String selector, boolean reverse, int position, Element otherwise ) {
+	public Element getChild( @NonNull String selector, boolean reverse, int position, Element otherwise ) {
 		return this.members.getElse( Objects.requireNonNull( selector ), reverse, position, otherwise );
 	}
 
 	@Override
-	public Element getChild( String selector, Element otherwise ) {
+	public Element getChild( @NonNull String selector, Element otherwise ) {
 		return this.members.getElse( Objects.requireNonNull( selector ), 0, otherwise );
 	}
 
 	@Override
-	public Element getChild( String selector, int position ) {
+	public Element getChild( @NonNull String selector, int position ) {
 		return this.members.getElse( Objects.requireNonNull( selector ), position, null );
 	}
 
@@ -486,7 +486,7 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public Element getFirstChild( String selector, Element otherwise ) {
+	public Element getFirstChild( @NonNull String selector, Element otherwise ) {
 		return this.members.getElse( Objects.requireNonNull( selector ), otherwise );
 	}
 
@@ -501,7 +501,7 @@ public class FlexiElement implements Element {
 	}
 
 	@Override
-	public Element getLastChild( String selector, Element otherwise ) {
+	public Element getLastChild( @NonNull String selector, Element otherwise ) {
 		return this.members.getElse( Objects.requireNonNull( selector ), true, 0, otherwise );
 	}
 
@@ -622,7 +622,9 @@ public class FlexiElement implements Element {
 						@Override
 						public Member next() {
 							final Map.Entry< String, Element > e = it.next();
-							return new StdMember( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) );
+							final String k = e.getKey();
+							final Element v =  e.getValue();
+							return new StdMember( Objects.requireNonNull( k ), Objects.requireNonNull( v ) );
 						}
 					};
 				}
@@ -632,7 +634,7 @@ public class FlexiElement implements Element {
 			final Iterator< Map.Entry< String, Element > > it = this.members.iterator();
 			while ( it.hasNext() ) {
 				final Map.Entry< String, Element > e = it.next();
-				list.add( new StdMember( e.getKey(), e.getValue() ) );
+				list.add( new StdMember( e ) );
 			}
 			return Member.fromIterable( list );
 		}
@@ -643,7 +645,7 @@ public class FlexiElement implements Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
-	public void setName( String _name ) {
+	public void setName( @NonNull String _name ) {
 		this.name = Objects.requireNonNull( _name );
 	}
 	

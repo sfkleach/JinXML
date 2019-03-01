@@ -6,7 +6,6 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -60,7 +59,7 @@ public interface Element {
 	 */
 	default void deepFreezeSelf() {
 		this.freezeSelf();
-		this.getMembersStream().forEach( e -> e.getValue().deepFreezeSelf() );
+		this.getMembersStream().forEach( a -> a.getChild().deepFreezeSelf() );
 	}
 	
 	/**
@@ -128,7 +127,7 @@ public interface Element {
 	 * returns an iterator over the attribute entries of an element
 	 * @return the iterator
 	 */
-	Stream< Entry< String, String > > getAttributesStream();
+	Stream< Attribute > getAttributesStream();
 	
 	/**
 	 * Same as getAttributesAsMultiMap( false, false )
@@ -339,7 +338,7 @@ public interface Element {
 	 * returns an iterator over the member entries of an element
 	 * @return the iterator
 	 */
-	Stream< Entry< String, Element > > getMembersStream();
+	Stream< Member > getMembersStream();
 
 	/**
 	 * Gets the child from member with given selector at a given position, if such an member

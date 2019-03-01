@@ -1,5 +1,6 @@
 package com.steelypip.powerups.util.multimap;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -7,9 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
-
-import java.util.List;
-import java.util.Iterator;
 
 public interface MultiMap< K, V > {
 	

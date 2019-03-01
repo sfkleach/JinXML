@@ -49,6 +49,10 @@ public abstract class Event {
 			this.value = value;
 		}
 		
+		public AttributeEvent( @NonNull Attribute attribute ) {
+			this( attribute.getKey(), attribute.getValue() );
+		}
+		
 		public AttributeEvent( @NonNull String key, @NonNull String value, boolean solo ) {
 			this( key, value );
 			this.solo = solo;

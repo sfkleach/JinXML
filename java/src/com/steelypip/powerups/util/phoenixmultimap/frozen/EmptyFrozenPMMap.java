@@ -21,12 +21,12 @@ public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > imple
 	}
 
 	@Override
-	public SingleEntryMutablePMMap< K, V > add( K key, V value ) {
+	public SingleEntryMutablePMMap< K, V > add( @NonNull K key, V value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public PhoenixMultiMap< K, V > addAll( K key, Iterable< ? extends V > values ) {
+	public PhoenixMultiMap< K, V > addAll( @NonNull K key, Iterable< ? extends V > values ) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -36,12 +36,12 @@ public class EmptyFrozenPMMap< K, V > extends AbsEmptyMutablePMMap< K, V > imple
 	}
 	
 	@Override
-	public EmptyFrozenPMMap< K, V > removeEntry( Object key, Object value ) {
+	public EmptyFrozenPMMap< K, V > removeEntry( @NonNull Object key, Object value ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public EmptyFrozenPMMap< K, V > removeEntryAt( Object key, int N ) {
+	public EmptyFrozenPMMap< K, V > removeEntryAt( @NonNull Object key, int N ) {
 		throw new UnsupportedOperationException();
 	}
 

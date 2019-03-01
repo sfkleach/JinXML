@@ -5,12 +5,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.alert.Alert;
 
 public interface Member {
 	
-	String getSelector();
-	Element getChild();
+	@NonNull String getSelector();
+	@NonNull Element getChild();
 	
 	default boolean hasDefaultSelector() {
 		return this.getSelector() == Element.DEFAULT_SELECTOR;

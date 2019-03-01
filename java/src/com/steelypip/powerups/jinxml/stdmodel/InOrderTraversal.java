@@ -11,6 +11,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import com.steelypip.powerups.common.StdPair;
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Event;
+import com.steelypip.powerups.jinxml.Member;
 
 public class InOrderTraversal {
 	
@@ -20,9 +21,13 @@ public class InOrderTraversal {
 	
 	static class VisitAction extends Action {
 		
-		final Map.Entry<String, Element> entry;
+		final Member entry;
 
 		public VisitAction( Map.Entry<String, Element> entry ) {
+			this.entry = new StdMember( entry );
+		}
+		
+		public VisitAction( Member entry ) {
 			this.entry = entry;
 		}
 		
@@ -67,18 +72,18 @@ public class InOrderTraversal {
 		action.doAction( this );
 	}
 	
-	void visitAction( Map.Entry< String, Element > entry ) {
-		String selector = entry.getKey();
-		Element element = entry.getValue();
+	void visitAction( Member entry ) {
+		String selector = entry.getSelector();
+		Element element = entry.getChild();
 		this.buffer.addLast( new Event.StartTagEvent( selector, element.getName() ) );
 		for ( Map.Entry<String,String> attr : element.getAttributesAsMultiMap().entriesToList() ) {
-			this.buffer.addLast( new Event.AttributeEvent( attr.getKey(), attr.getValue() ) );
+			this.buffer.addLast( new Event.AttributeEvent( new StdAttribute( attr ) ) );
 		}
 		this.actions.addLast( new EndAction( element ) );
 		List< Map.Entry<String, Element> > members = new ArrayList<>( element.getMembersAsMultiMap().entriesToList() );
 		Collections.reverse( members );
 		for ( Map.Entry<String, Element> member : members ) {
-			this.actions.addLast( new VisitAction( member ) );
+			this.actions.addLast( new VisitAction( new StdMember( member ) ) );
 		}
 	}
 	

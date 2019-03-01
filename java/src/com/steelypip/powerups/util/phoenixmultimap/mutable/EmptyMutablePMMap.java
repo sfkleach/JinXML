@@ -1,7 +1,6 @@
 package com.steelypip.powerups.util.phoenixmultimap.mutable;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -44,17 +43,17 @@ public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > impl
 	}
 
 	@Override
-	public EmptyMutablePMMap< K, V > removeEntry( Object key, Object value ) {
+	public EmptyMutablePMMap< K, V > removeEntry( @NonNull Object key, Object value ) {
 		return this;
 	}
 
 	@Override
-	public EmptyMutablePMMap< K, V > removeEntryAt( Object key, int N ) {
+	public EmptyMutablePMMap< K, V > removeEntryAt( @NonNull Object key, int N ) {
 		return this;
 	}
 
 	@Override
-	public EmptyMutablePMMap< K, V > removeEntries( Object key ) {
+	public EmptyMutablePMMap< K, V > removeEntries( @NonNull Object key ) {
 		return this;
 	}
 

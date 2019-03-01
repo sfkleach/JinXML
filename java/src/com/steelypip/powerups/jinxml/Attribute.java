@@ -5,13 +5,15 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import com.steelypip.powerups.alert.Alert;
 
 public interface Attribute {
 	
-	String getKey();
+	@NonNull String getKey();
 	
-	String getValue();
+	@NonNull String getValue();
 
 	
 	static Attribute.Iterable fromIterable( final java.lang.Iterable< Attribute > it ) {
