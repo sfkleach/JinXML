@@ -59,12 +59,6 @@ public class TestFlexiElement {
 		
 	}
 
-	@Test( expected=NullPointerException.class )
-	public void getName_invalid() {
-		//	Act
-		new FlexiElement( null );
-	}
-
 	@Test
 	public void getName_Valid() {
 		String name = "foo";
@@ -612,6 +606,7 @@ public class TestFlexiElement {
 		String v3 = d.removeFirstValue( "key" );
 		String v1 = d.removeLastValue( "key" );
 		String quark = d.removeLastValue( "not_a_key", "quark" );
+		assertEquals( "quark", quark );
 		assertEquals( "1", v1 );
 		assertEquals( "3", v3 );
 		assertEquals( "2", d.getLastValue( "key" ) );
