@@ -532,10 +532,38 @@ public interface Element {
 	 */
 	void addFirstValue( @NonNull String key, @NonNull String value );
 
+	/**
+	 * Removes the first attribute with the given key. If no attributes with the
+	 * given key exist then no change is made.
+	 * @param key the given key
+	 * @return the value of the attribute that was removed or null if there was no attribute.
+	 */
 	String removeFirstValue( @NonNull String key );
+
+	/**
+	 * Removes the first attribute with the given key. If no attributes with the
+	 * given key exist then no change is made.
+	 * @param key the given key
+	 * @param otherwise the value to return if no attributes with the given key exist
+	 * @return the value of the attribute that was removed (or otherwise)
+	 */
 	String removeFirstValue( @NonNull String key, String otherwise );
 	
+	/**
+	 * Removes the lastattribute with the given key. If no attributes with the
+	 * given key exist then no change is made.
+	 * @param key the given key
+	 * @return the value of the attribute that was removed or null if there was no attribute.
+	 */
 	String removeLastValue( @NonNull String key );
+
+	/**
+	 * Removes the last attribute with the given key. If no attributes with the
+	 * given key exist then no change is made.
+	 * @param key the given key
+	 * @param otherwise the value to return if no attributes with the given key exist
+	 * @return the value of the attribute that was removed (or otherwise)
+	 */
 	String removeLastValue( @NonNull String key, String otherwise );
 	
 	/**
@@ -545,45 +573,160 @@ public interface Element {
 	 */
 	void setAttributes( MultiMap< String, String > attributes );
 	
+	/**
+	 * Removes all the attributes of an element.
+	 */
 	void clearAttributes();
+	
+	/**
+	 * Removes all the attributes of an element with keys that are equal to
+	 * the given key
+	 * @param key the given key
+	 */
 	void clearValues( @NonNull String key );
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members - Imperative Methods
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
+	/**
+	 * Sets the child of the first member with the given key to be the given child. If
+	 * no such member exists an exception is raised. 
+	 * @param key the given key
+	 * @param child the given child
+	 */
 	void setChild( @NonNull String key, Element child  );
 	
+	/**
+	 * Sets the n-th child of the first member with the given key to be the given child. If
+	 * no such member exists an exception is raised. 
+	 * @param key the given key
+	 * @param position specifies the n-th position
+	 * @param child the given child
+	 */
 	void setChild( @NonNull String key, int position, Element child  );
-	
+
+	/**
+	 * Effectively removes all the members with the given key and replaces them
+	 * with a new list of members with the given key and children draw from 
+	 * children. Order is preserved.
+	 * @param key the given key
+	 * @param children the sequence of elements that will form the children of the new elements in order
+	 */
 	void setChildren( @NonNull String key, Iterable< Element > children );
 
+	/**
+	 * Adds a new member with the given selector and child, which will be the
+	 * last of the members with that selector.
+	 * @param selector the given selector
+	 * @param child the given child
+	 */
 	void addLastChild( @NonNull String selector, Element child );
+
+	/**
+	 * Adds a new member with the default selector ("") and child, which will be the
+	 * last of the members with that selector.
+	 * @param child the given child
+	 */
 	void addLastChild( Element child );
 	
+	/**
+	 * Adds a new member with the given selector and child, which will be the
+	 * first of the members with that selector.
+	 * @param selector the given selector
+	 * @param child the given child
+	 */
 	void addFirstChild( @NonNull String selector, Element child );
+	
+	/**
+	 * Adds a new member with the default selector ("") and child, which will be the
+	 * first of the members with that selector.
+	 * @param child the given child
+	 */
 	void addFirstChild( Element child );
 	
+	/**
+	 * Removes the first member with the default selector ("") and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, no change is made and null is returned.
+	 * @return the child of the removed member or null
+	 */
 	default Element removeFirstChild() {
 		return this.removeFirstChild( "", null );
 	}
+	
+	/**
+	 * Removes the first member with the default selector ("") and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, return otherwise.
+	 * @param otherwise the element to return if no member was removed
+	 * @return the child of the removed member or otherwise
+	 */
 	default Element removeFirstChild( Element otherwise ) {
 		return this.removeFirstChild( "", otherwise );
 	}
+
+	/**
+	 * Removes the first member with the given selector and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, no change is made and null is returned.
+	 * @param the given selector
+	 * @return the child of the removed member or null
+	 */
 	default Element removeFirstChild( @NonNull String selector ) {
 		return this.removeFirstChild( selector, null );
 	}
+
+	/**
+	 * Removes the first member with the given selector and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, return otherwise.
+	 * @param the given selector
+	 * @param otherwise the element to return if no member was removed
+	 * @return the child of the removed member or otherwise
+	 */
 	Element removeFirstChild( @NonNull String selector, Element otherwise );
 	
+	/**
+	 * Removes the last member with the default selector ("") and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, no change is made and null is returned.
+	 * @return the child of the removed member or null
+	 */
 	default Element removeLastChild() {
 		return this.removeLastChild( "", null );
 	}
+	
+	/**
+	 * Removes the last member with the default selector ("") and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, return otherwise.
+	 * @param otherwise the element to return if no member was removed
+	 * @return the child of the removed member or otherwise
+	 */
 	default Element removeLastChild( Element otherwise ) {
 		return this.removeLastChild( "", otherwise );
 	}
+	
+	/**
+	 * Removes the last member with the given selector and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, no change is made and null is returned.
+	 * @param the given selector
+	 * @return the child of the removed member or null
+	 */
 	default Element removeLastChild( @NonNull String selector ) {
 		return this.removeLastChild( selector, null );		
 	}
+	
+	/**
+	 * Removes the last member with the given selector and returns the child
+	 * of the member that was removed. If no such members 
+	 * are present in the element, return otherwise.
+	 * @param the given selector
+	 * @param otherwise the element to return if no member was removed
+	 * @return the child of the removed member or otherwise
+	 */
 	Element removeLastChild( @NonNull String selector, Element otherwise );
 	
 	/**
@@ -593,7 +736,15 @@ public interface Element {
 	 */
 	void setMembers( MultiMap< String, Element > members );
 	
+	/**
+	 * Removes all the members from an element.
+	 */
 	void clearMembers();
+	
+	/**
+	 * Removes all the members that have the given selector.
+	 * @param selector the given selector
+	 */
 	void clearChildren( @NonNull String selector );
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -691,6 +842,11 @@ public interface Element {
 		new ElementWriter( new PrintWriter( w, true ), new StdIndenter.Factory(), new StartEndTagTheme() ).print( this );
 	}
 	
+	/**
+	 * A version of toString that supports the optional printing flags.  
+	 * @param options --pretty or --plain 
+	 * @return a string version of the element
+	 */
 	default String toString( String... options ) {
 		final StringPrintWriter pw = new StringPrintWriter();
 		this.print( pw, options );
@@ -701,35 +857,76 @@ public interface Element {
 	//	Convenience methods & convenience methods
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	static Element newElement( final String name ) {
+	/**
+	 * Creates a new mutable element with a given element-name. A default
+	 * implementation is chosen.
+	 * @param name the element name
+	 * @return a new mutable element
+	 */
+	static Element newElement( final @NonNull String name ) {
 		return new FlexiElement( name );
 	}
 	
+	/** 
+	 * Creates a new Builder object using a default implementation. The elements
+	 * returned by this builder are immutable.
+	 * @return the builder object
+	 */
 	static Builder newBuilder() {
-		return new StdBuilder( false, false );
+		return new StdBuilder( false, true );
 	}
 	
+	/**
+	 * Creates a new Builder object using a default implementation. The elements
+	 * returned by this builder are mutable depending on the parameter mutable.
+	 * @param mutable if true then constructed elements are mutable, else immutable.
+	 * @return the builder object.
+	 */
 	static Builder newBuilder( final boolean mutable ) {
-		return new StdBuilder( mutable, false );
+		return new StdBuilder( mutable, true );
 	}
 	
+	/**
+	 * Creates a new Builder object using a default implementation. The elements
+	 * returned by this builder are mutable depending on the parameter mutable.
+	 * If allows_queuing is false then newly constructed elements must be retrieved 
+	 * before the next element can be constructed.
+	 * @param mutable mutable if true then constructed elements are mutable, else immutable.
+	 * @param allows_queuing allows arbitary building and dequeing to happen.
+	 * @return
+	 */
 	static Builder newBuilder( final boolean mutable, final boolean allows_queuing ) {
 		return new StdBuilder( mutable, allows_queuing );
 	}
 	
+	/**
+	 * Consumes characters from a reader and parses them to create a new immutable element.
+	 * @param reader the input stream to parse
+	 * @return the immutable element constructed
+	 */
 	static Element readElement( Reader reader ) {
 		PushParser pp = new StdPushParser( reader, false );
 		return pp.readElement();
 	}
-		
+	
+	/**
+	 * Returns a stream-of-elements that, when consumed, reads immutable elements from a 
+	 * reader.
+	 * @param reader the input to be parsed
+	 * @return a stream of elements that drives the reader on-demand
+	 */
 	static Stream< Element > readElementStream( Reader reader ) {
 		PushParser pp = new StdPushParser( reader, false );
 		return pp.readElementStream();
 	}
 	
+	/**
+	 * 
+	 * @param input
+	 * @return
+	 */
 	static Element fromString( final String input ) {
 		return readElement( new StringReader( input ) );
 	}
-
 	
 }

@@ -32,7 +32,7 @@ public class FlexiElement implements Element {
 	//	Constructors
 	/////////////////////////////////////////////////////////////////////////////////////////////
 		
-	public FlexiElement( final String _name ) {
+	public FlexiElement( final @NonNull String _name ) {
 		this.name = Objects.requireNonNull( _name );
 	}
 
