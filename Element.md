@@ -63,16 +63,16 @@ The object-model represents a Element as having a single name, attributes and me
 
 * Method ```getAttributesAsMultiMap( Boolean view = false, Boolean mutable = false ) -> MultiMap< String, String >``` - returns a multi-map representing the attributes of the object. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
-* Method ```getValue( String key, Boolean reverse = false, Int position = 0, String? default = null ) -> String?``` - returns the value associated with the maplet with key ```key``` and position ```position```. If there is no such maplet then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```getAttributeCount( key ) - 1 - position```.
+* Method ```getValue( String key, Boolean reverse = false, Int position = 0, String? default = null ) -> String?``` - returns the value associated with the attribute with key ```key``` and position ```position```. If there is no such attribute then ```default``` is returned instead. If ```reverse``` is true then the position is taken to be ```getAttributeCount( key ) - 1 - position```.
 
-* Method ```getFirstValue( String key, String? default = null ) -> String?``` - returns the first value associated with the maplet with key ```key```. If there is no such maplet then ```default``` is returned instead. 
+* Method ```getFirstValue( String key, String? default = null ) -> String?``` - returns the first value associated with the attribute with key ```key```. If there is no such attribute then ```default``` is returned instead. 
 
-* Method ```getLastValue( String key, String? default = null ) -> String?``` - returns the last value associated with the maplet with key ```key```. If there is no such maplet then ```default``` is returned instead. 
+* Method ```getLastValue( String key, String? default = null ) -> String?``` - returns the last value associated with the attribute with key ```key```. If there is no such attribute then ```default``` is returned instead. 
 
 * Method ```countValues( String key ) -> Int``` - returns the number of attributes that share
 the key.
 
-* Method ```getValuesAsList( String key, Boolean view = false, Boolean mutable = false ) -> List< String >``` - returns all the values that are in maplets with key ```key```. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
+* Method ```getValuesAsList( String key, Boolean view = false, Boolean mutable = false ) -> List< String >``` - returns all the values that are in attributes with key ```key```. If ```view``` is ```true``` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is ```false``` then the list is a copy. The result is mutable or immutable depending on the value of ```mutable```.
 
 ### Methods Relating to an Element's Members
 
@@ -82,16 +82,16 @@ the key.
 
 * Method ```getMembersAsMultiMap() -> MultiMap< String, Element >``` - returns a multi-map representing the members of the object. If `view` is `true` then the multi-map is a mutable view onto the members and changes to the multi-map immediately affect the members. If view is `false` then the list is a copy. The result is mutable or immutable depending on the value of `mutable`.
 
-* Method ```getChild( String sel = "", Boolen reverse = false, Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the maplet with selector `sel and position `position`. If there is no such maplet then `default is returned instead. If `reverse` is true then the position is taken to be `countChildren( sel ) - 1 - position`.
+* Method ```getChild( String sel = "", Boolen reverse = false, Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the member with selector `sel and position `position`. If there is no such member then `default is returned instead. If `reverse` is true then the position is taken to be `countChildren( sel ) - 1 - position`.
 
-* Method ```getFirstChild( String sel, String? default = null ) -> Element?``` - returns the first child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
+* Method ```getFirstChild( String sel, String? default = null ) -> Element?``` - returns the first child associated with the member with selector ```sel```. If there is no such member then ```default``` is returned instead. 
 
-* Method ```getLastChild String sel, String? default = null ) -> Element?``` - returns the last child associated with the maplet with selector ```sel```. If there is no such maplet then ```default``` is returned instead. 
+* Method ```getLastChild String sel, String? default = null ) -> Element?``` - returns the last child associated with the member with selector ```sel```. If there is no such member then ```default``` is returned instead. 
 
 * Method ```countChildren( String sel = "" ) -> Int``` - returns the number of children that share
 the selector `sel`.
 
-* Method ```getChildrenAsList( String? key = "", Boolean view = false, Boolean mutable = false ) -> List< Element >``` - returns all the children that are in maplets with key ```key```. If `view` is `true` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is `false` then the list is a copy. The result is mutable or immutable depending on the value of `mutable`.
+* Method ```getChildrenAsList( String? key = "", Boolean view = false, Boolean mutable = false ) -> List< Element >``` - returns all the children that are in members with key ```key```. If `view` is `true` then the multi-map is a mutable view onto the attributes and changes to the multi-map immediately affect the attributes. If view is `false` then the list is a copy. The result is mutable or immutable depending on the value of `mutable`.
 
 ### Methods Relating to JSON-types (numbers, booleans, arrays etc)
 
