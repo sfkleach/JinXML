@@ -84,18 +84,42 @@ public interface Builder extends Iterator< Element >, EventHandler {
 		events.forEach( e -> e.sendTo( this ) );
 	}
 	
+	/** 
+	 * Handle a single event - uses visitor pattern to translate Event to call. 
+	 * @param event
+	 */
 	default void processEvent( Event event ) {
 		event.sendTo( this );
 	}
 
+	/**
+	 * A convenience method that creates a new default builder, which constructs immutable elements.
+	 * @return a builder for Elements
+	 */
 	static Builder newBuilder() {
-		return new StdBuilder( false, false );
+		return new StdBuilder( false, true );
 	}
 	
+	/**
+	 * A convenience method that creates a new default builder, which constructs elements. The
+	 * elements are mutable/immutable depending on the flag mutable.
+	 * @param mutable if true the constructed Events are mutable, other immutable
+	 * @return a builder for Elements
+	 */
 	static Builder newBuilder( final boolean mutable ) {
-		return new StdBuilder( mutable, false );
+		return new StdBuilder( mutable, true );
 	}
 	
+	/**
+	 * A convenience method that creates a new default builder, which constructs elements. The
+	 * elements are mutable/immutable depending on the flag mutable. The builder allows the
+	 * constructed elements to queue up internally if allow_queuing is true, otherwise the caller
+	 * must be sure to retrieve the newly constructed element before others can be started.
+	 * @param mutable if true the constructed Events are mutable, other immutable
+	 * @param allows_queuing if true then the builder can construct many elements before the
+	 * caller tries to retrieve them.
+	 * @return a builder for Elements
+	 */
 	static Builder newBuilder( final boolean mutable, final boolean allows_queuing ) {
 		return new StdBuilder( mutable, allows_queuing );
 	}

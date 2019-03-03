@@ -136,7 +136,6 @@ public class StdPushParser implements PushParser {
 		return this.readElement( false );
 	}
 
-	@Override
 	public Element readElement( boolean solo ) {
 		final Builder builder = Builder.newBuilder();
 		boolean oneAlready = false;

@@ -133,7 +133,7 @@ public interface EventHandler {
 	 * nullEvent is a handler method that corresponds to the recognition of a
 	 * literal null (JSON syntax).
 	 * @param selector the relationship with the parent
-	 * @param value should be "null"
+	 * @param value should be "null", only needed for symmetry.
 	 */
 	void nullEvent( @NonNull String selector, @NonNull String value );	
 	default void nullEvent( @NonNull String value ) {
