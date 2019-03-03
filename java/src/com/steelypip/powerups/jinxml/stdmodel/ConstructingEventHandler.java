@@ -2,6 +2,7 @@ package com.steelypip.powerups.jinxml.stdmodel;
 
 import java.util.ArrayDeque;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -22,6 +23,10 @@ public class ConstructingEventHandler implements EventHandler {
 		} else {
 			return this.consumer.removeFirst();
 		}
+	}
+	
+	public Stream< Event > stream() {
+		return this.consumer.stream();
 	}
 	
 	@Override
