@@ -35,9 +35,9 @@ public abstract class Event {
 	 *  methods.
 	 *  
 	 *  For example you can obviously construct a StartTagEvent like this:
-	 *  	new StartTagEvent( "selector", "elementName" )
+	 *  	{@code new StartTagEvent( "selector", "elementName" ) }
 	 *  Or like this:
-	 *  	Event.fromHandle( h -> h.startTagEvent( "selector", "elementName" ) ).findFirst().get()
+	 *  	{@code Event.fromHandle( h -> h.startTagEvent( "selector", "elementName" ) ).findFirst().get() }
 	 *  
 	 * @param f function to invoke the handler
 	 * @return the constructed event

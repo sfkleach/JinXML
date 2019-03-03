@@ -39,14 +39,14 @@ public interface PushParser {
 	/**
 	 * Returns a stream that will draw-on-demand from the input to return
 	 * the events corresponding to a single JinXML expression.
-	 * @return
+	 * @return the stream
 	 */
 	Stream< Event > readExpression();
 	
 	/**
 	 * Returns a stream that will draw-on-demand from the input to return
 	 * events until the input is exhausted.
-	 * @return
+	 * @return the stream
 	 */
 	Stream< Event > readInput();
 		
@@ -91,7 +91,7 @@ public interface PushParser {
 	/**
 	 * A convenience method that constructs a default push parser from a reader.
 	 * JSON Literals are automatically expanded into start/end-tag events. 
-	 * @param reader
+	 * @param reader the input
 	 * @return a push parser
 	 */
 	static PushParser newPushParser( Reader reader ) {
@@ -102,7 +102,7 @@ public interface PushParser {
 	 * A convenience method that constructs a default push parser from a reader.
 	 * JSON Literals are automatically expanded into start/end-tag events depending 
 	 * on expandLiterals 
-	 * @param reader
+	 * @param reader the input
 	 * @param expandLiterals if true then JSON literals are automatically treated as start/end tags.
 	 * @return a push parser
 	 */

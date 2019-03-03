@@ -51,8 +51,8 @@ public interface Member {
 	/**
 	 * The Member.Iterable class implements the main way to iterate over the 
 	 * members of an element and is returned from Element.members(). In addition 
-	 * to being an Iterable<Member>, it also implements two filtering methods:
-	 * with(Predicate<Member>) and uniqueSelector(). 
+	 * to being an Iterable&lt;Member&gt, it also implements two filtering methods:
+	 * with(Predicate&lt;Member&gt;) and uniqueSelector(). 
 	 *
 	 */
 	static public interface Iterable extends java.lang.Iterable< Member > {

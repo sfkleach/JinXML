@@ -30,7 +30,7 @@ public interface Builder extends Iterator< Element >, EventHandler {
 	/**
 	 *  If an Element is ready for construction it builds and returns it, otherwise it returns the value otherwise instead.
 	 * @param otherwise the value to be returned if the Builder is in progress.
-	 * @return
+	 * @return the element
 	 */
 	Element tryNext( Element otherwise );
 	
@@ -43,14 +43,14 @@ public interface Builder extends Iterator< Element >, EventHandler {
 	 * auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the 
 	 * temporarily closed states are restored to their previous state. Use this.isInProgress() to check whether it 
 	 * is safe to call this method.
-	 * @return
+	 * @return the element
 	 */
 	Element snapshot(); 
 	
 	/**
 	 * As for snapshot but never raises an exception but returns the value otherwise instead.
 	 * @param otherwise the value to return if there are 
-	 * @return
+	 * @return the newly constructed element
 	 */
 	Element trySnapshot( Element otherwise );
 
@@ -77,8 +77,8 @@ public interface Builder extends Iterator< Element >, EventHandler {
 	}
 
 	/**
-	 *  Processes a series of events, which is effectively the same as events.forEach( e =>> this.processEvent( e ) ).
-	 * @param events
+	 *  Processes a series of events, which is effectively the same as events.forEach( e -&lt; this.processEvent( e ) ).
+	 * @param events the stream of events to process
 	 */
 	default void processEvents( Stream< Event > events ) {
 		events.forEach( e -> e.sendTo( this ) );
@@ -86,7 +86,7 @@ public interface Builder extends Iterator< Element >, EventHandler {
 	
 	/** 
 	 * Handle a single event - uses visitor pattern to translate Event to call. 
-	 * @param event
+	 * @param event the event to handle
 	 */
 	default void processEvent( Event event ) {
 		event.sendTo( this );

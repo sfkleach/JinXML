@@ -43,8 +43,8 @@ public interface Attribute {
 	/**
 	 * The Attribute.Iterable class implements the main way to iterate over the 
 	 * attributes of an element and is returned from Element.attributes(). In addition 
-	 * to being an Iterable<Attribute>, it also implements two filtering methods:
-	 * with(Predicate<Attribute>) and uniqueSelector(). 
+	 * to being an Iterable&lt;Attribute&gt;, it also implements two filtering methods:
+	 * with(Predicate&lt;Attribute&gt;) and uniqueSelector(). 
 	 *
 	 */	
 	static public interface Iterable extends java.lang.Iterable< Attribute > {
