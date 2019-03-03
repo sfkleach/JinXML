@@ -70,7 +70,7 @@ public interface Attribute {
 							if ( peeked != null ) return true; 
 							if ( ! base.hasNext() ) return false;
 							final Attribute peek = base.next();
-							if ( pred.test( peek ) ) return this.hasNext();
+							if ( ! pred.test( peek ) ) return this.hasNext();
 							this.peeked = peek;
 							return true;
 						}

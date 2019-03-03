@@ -270,7 +270,7 @@ public interface Element {
 	 * element. It is provided for the efficient iteration over the attributes of an element. 
 	 * @return iterable for the attributes.
 	 */
-	Iterable< Attribute > attributes();
+	Attribute.Iterable attributes();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members
@@ -652,7 +652,7 @@ public interface Element {
 	 * @return the child of the removed member or null
 	 */
 	default Element removeFirstChild() {
-		return this.removeFirstChild( "", null );
+		return this.removeFirstChild( DEFAULT_SELECTOR, null );
 	}
 	
 	/**
@@ -663,7 +663,7 @@ public interface Element {
 	 * @return the child of the removed member or otherwise
 	 */
 	default Element removeFirstChild( Element otherwise ) {
-		return this.removeFirstChild( "", otherwise );
+		return this.removeFirstChild( DEFAULT_SELECTOR, otherwise );
 	}
 
 	/**
@@ -694,7 +694,7 @@ public interface Element {
 	 * @return the child of the removed member or null
 	 */
 	default Element removeLastChild() {
-		return this.removeLastChild( "", null );
+		return this.removeLastChild( DEFAULT_SELECTOR, null );
 	}
 	
 	/**
@@ -705,7 +705,7 @@ public interface Element {
 	 * @return the child of the removed member or otherwise
 	 */
 	default Element removeLastChild( Element otherwise ) {
-		return this.removeLastChild( "", otherwise );
+		return this.removeLastChild( DEFAULT_SELECTOR, otherwise );
 	}
 	
 	/**
@@ -908,7 +908,7 @@ public interface Element {
 	 * @return the immutable element constructed
 	 */
 	static Element readElement( Reader reader ) {
-		PushParser pp = new StdPushParser( reader, false );
+		final PushParser pp = new StdPushParser( reader, false );
 		return pp.readElement();
 	}
 	
@@ -919,7 +919,7 @@ public interface Element {
 	 * @return a stream of elements that drives the reader on-demand
 	 */
 	static Stream< Element > readElementStream( Reader reader ) {
-		PushParser pp = new StdPushParser( reader, false );
+		final PushParser pp = new StdPushParser( reader, false );
 		return pp.readElementStream();
 	}
 	

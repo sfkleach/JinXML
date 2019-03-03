@@ -103,27 +103,28 @@ public class ThemeableWriter< T > {
 		}
 		this.print( '\'' );
 	}
-	
+
 	void renderAsJSONString( final String v ) {
 		this.print( '"' );
 		for ( int n = 0; n < v.length(); n++ ) {
 			final char ch = v.charAt( n );
 			if ( ch == '"' ) {
-				pw.print( "&quot;" );
-			} else if ( ch == '\'' ) {
-				pw.print(  "&apos;" );
-			} else if ( ch == '<' ) {
-				pw.print( "&lt;" );
-			} else if ( ch == '>' ) {
-				pw.print( "&gt;" );
-			} else if ( ch == '&' ) {
-				pw.print( "&amp;" );
+				pw.print( "\\\"" );
+			} else if ( ch == '\n' ) {
+				pw.print(  "\\n" );
+			} else if ( ch == '\r' ) {
+				pw.print(  "\\r" );
+			} else if ( ch == '\b' ) {
+				pw.print(  "\\b" );
+			} else if ( ch == '\f' ) {
+				pw.print(  "\\f" );
+			} else if ( ch == '\t' ) {
+				pw.print(  "\\t" );
 			} else if ( ' ' <= ch && ch <= '~' ) {
 				pw.print( ch );
 			} else {
-				pw.print( "&#" );
-				pw.print( (int)ch );
-				pw.print( ';' );
+				pw.print( "\\u" );
+				pw.print( String.format( "%04x", (int)ch ).toUpperCase() );
 			}
 		}
 		this.print( '"' );

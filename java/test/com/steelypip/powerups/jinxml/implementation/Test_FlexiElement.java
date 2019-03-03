@@ -19,7 +19,7 @@ import com.steelypip.powerups.jinxml.Member;
 import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 import com.steelypip.powerups.util.multimap.MultiMap;
 
-public class TestFlexiElement {
+public class Test_FlexiElement {
 	
 	Element attrs_empty;
 	Element attrs_one;
@@ -67,9 +67,18 @@ public class TestFlexiElement {
 	}
 	
 	@Test
+	public void hasName_Valid() {
+		String name = "foo";
+		Element e = new FlexiElement( name );
+		assertTrue( e.hasName( name ) );
+	}
+	
+	@Test
 	public void countAttributes_None() {
 		Element e = new FlexiElement( "" );
 		assertEquals( 0, e.countAttributes() );
+		assertTrue( e.hasNoAttributes() );
+		assertTrue( ! e.hasAnyAttributes() );
 	}
 
 	@Test
@@ -415,7 +424,17 @@ public class TestFlexiElement {
 	@Test
 	public void countMembers_None() {
 		assertEquals( 0, this.members_empty.countMembers() );
+		assertTrue( this.members_empty.hasNoAttributes() );
+		assertTrue( ! this.members_empty.hasAnyAttributes() );
 	}
+	
+	@Test
+	public void hasSelector_None() {
+		assertTrue( ! this.members_empty.hasSelector( "foo" ) );
+		assertTrue( this.members_one.hasSelector( "one" ) );
+	}
+	
+	
 
 	@Test
 	public void countMembers_OneItemUsingMultiMap() {

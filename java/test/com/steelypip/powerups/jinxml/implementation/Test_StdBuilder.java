@@ -9,7 +9,7 @@ import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.stdmodel.StdBuilder;
 
-public class TestStdBuilder {
+public class Test_StdBuilder {
 	
 	StdBuilder builder;
 
@@ -96,6 +96,7 @@ public class TestStdBuilder {
 		builder.attributeEvent( "alpha", "A" );
 	}
 	
+	@Test
 	public void nestingElements() {
 		builder.startTagEvent( "foo" );
 		builder.startTagEvent( "bar" );
@@ -161,5 +162,39 @@ public class TestStdBuilder {
 		assertTrue( builder.hasNext() );
 	}
 
+	@Test( expected=Exception.class )
+	public void next_Fail() {
+		builder.next();
+	}
+	
+	@Test
+	public void snapshot_OK() {
+		builder.startArrayEvent();
+		assertEquals( Element.ARRAY_ELEMENT_NAME, builder.snapshot().getName() );
+	}
+	
+	@Test( expected=Exception.class )
+	public void snapshot_Fail() {
+		builder.snapshot();
+	}
+	
+	@Test
+	public void trySnapshot_Otherwise() {
+		assertEquals( "me", builder.trySnapshot( Element.newElement( "me" ) ).getName() );
+	}
+	
+	@Test
+	public void tryNext_Otherwise() {
+		assertEquals( "me", builder.tryNext( Element.newElement( "me" ) ).getName() );
+	}
+	
+	@Test
+	public void tryNext_Mainstream() {
+		builder.startArrayEvent();
+		builder.endArrayEvent();
+		assertEquals( Element.ARRAY_ELEMENT_NAME, builder.tryNext( Element.newElement( "me" ) ).getName() );
+	}
+	
+	
 	
 }

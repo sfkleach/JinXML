@@ -12,7 +12,7 @@ import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.Event;
 import com.steelypip.powerups.jinxml.stdparse.StdPushParser;
 
-public class TestStdParser_EventProcessing {
+public class Test_StdParser_EventProcessing {
 
 	StdPushParser parser( String s ) {
 		return new StdPushParser( new StringReader( s ), false );
