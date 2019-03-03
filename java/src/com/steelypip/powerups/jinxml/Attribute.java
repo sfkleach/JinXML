@@ -9,10 +9,23 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
 
+/**
+ * Attributes represent a (key, value) pair. All attributes of an 
+ * Element are considered to have a key.
+ *
+ */
 public interface Attribute {
 	
+	/**
+	 * The getter for the key of an attribute.
+	 * @return the key
+	 */
 	@NonNull String getKey();
-	
+
+	/**
+	 * The getter for the value of an attribute.
+	 * @return the child
+	 */
 	@NonNull String getValue();
 
 	
@@ -27,8 +40,21 @@ public interface Attribute {
 		};
 	}
 	
+	/**
+	 * The Attribute.Iterable class implements the main way to iterate over the 
+	 * attributes of an element and is returned from Element.attributes(). In addition 
+	 * to being an Iterable<Attribute>, it also implements two filtering methods:
+	 * with(Predicate<Attribute>) and uniqueSelector(). 
+	 *
+	 */	
 	static public interface Iterable extends java.lang.Iterable< Attribute > {
-		
+
+		/**
+		 * Filters an Attribute.Iterable using a predicate to test each attribute
+		 * in turn. Only the ones that pass the test are included.
+		 * @param pred the test predicate
+		 * @return a Attribute.Iterable that performs the filtering dynamically
+		 */
 		default Attribute.Iterable with( Predicate< Attribute > pred ) {
 			return new Attribute.Iterable() {
 
@@ -65,7 +91,12 @@ public interface Attribute {
 				
 			};
 		}
-		
+
+		/**
+		 * Filters a Attribute.Iterable, removing the attributes whose key has already
+		 * been seen. The effect is that the members each include a different key.
+		 * @return a Attribute.Iterable that dynamically thins out duplicates.
+		 */
 		default Attribute.Iterable uniqueKey() {
 			return this.with( new Predicate< Attribute >() {
 				

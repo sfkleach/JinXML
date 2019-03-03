@@ -9,11 +9,30 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
 
+/**
+ * Members represent a (selector, element) pair. All children of an 
+ * Element are considered to have a selector, the default selector
+ * being the empty string, Element.DEFAULT_SELECTOR.
+ *
+ */
 public interface Member {
 	
+	/**
+	 * The getter for the selector of a member
+	 * @return the selector.
+	 */
 	@NonNull String getSelector();
+	
+	/**
+	 * The getter for the child of a member.
+	 * @return the child
+	 */
 	@NonNull Element getChild();
 	
+	/**
+	 * A method for checking if a member has an empty selector.
+	 * @return true if the selector equals Element.DEFAULT_SELECTOR.
+	 */
 	default boolean hasDefaultSelector() {
 		return this.getSelector() == Element.DEFAULT_SELECTOR;
 	}
@@ -29,8 +48,21 @@ public interface Member {
 		};
 	}
 	
+	/**
+	 * The Member.Iterable class implements the main way to iterate over the 
+	 * members of an element and is returned from Element.members(). In addition 
+	 * to being an Iterable<Member>, it also implements two filtering methods:
+	 * with(Predicate<Member>) and uniqueSelector(). 
+	 *
+	 */
 	static public interface Iterable extends java.lang.Iterable< Member > {
 		
+		/**
+		 * Filters a Member.Iterable using a predicate to test each member
+		 * in turn. Only the ones that pass the test are included.
+		 * @param pred the test predicate
+		 * @return a Member.Iterable that performs the filtering dynamically
+		 */
 		default Member.Iterable with( final Predicate< Member > pred ) {
 			return new Member.Iterable() {
 
@@ -70,6 +102,11 @@ public interface Member {
 			};
 		}
 		
+		/**
+		 * Filters a Member.Iterable, removing the members whose selector has already
+		 * been seen. The effect is that the members each include a different selector.
+		 * @return a Member.Iterable that dynamically thins out duplicates.
+		 */
 		default Member.Iterable uniqueSelector() {
 			return this.with( new Predicate< Member >() {
 				
