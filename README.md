@@ -4,7 +4,7 @@ JSON in XML - a clean and practical fusion of JSON and minimal XML syntax.
 
 ## What Is It?
 
-JinXML is an extension of JSON syntax that adds XML-like start, end and standalone tags that adds a convenience and expressive power to JSON suitable for representing hierarchical or 'tree-like' data. 
+JinXML is an extension of JSON syntax that adds XML-like start, end and standalone tags that adds convenience and expressive power to JSON suitable for representing hierarchical or 'tree-like' data. 
 
 _Read more_:
 * [List of features](Features.md)
