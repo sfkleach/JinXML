@@ -19,12 +19,21 @@ public class Test_FlexiElement_toString {
 	}
 
 	@Test
-	public void toString_string() {
+	public void toString_JSONstring() {
 		assertEquals( "\"foo\"", Element.fromString( "\"foo\"" ).toString() );
 		assertEquals( "\"\\\"\"", Element.fromString( "\"\\\"\"" ).toString() );
-		assertEquals( "\"\\n\\r\"", Element.fromString( "\"\\n\\r\"" ).toString() );
+		assertEquals( "\"\\n\\r\\b\\t\\f\"", Element.fromString( "\"\\n\\r\\b\\t\\f\"" ).toString() );
 		assertEquals( "\"fish & chips\"", Element.fromString( "\"fish & chips\"" ).toString() );
 		assertEquals( "\"Copyright \\u00A9\"", Element.fromString( "\"Copyright \u00A9\"" ).toString() );
+	}
+
+	@Test
+	public void toString_XMLstring() {
+		assertEquals( "<a b='foo'/>", Element.fromString( "<a b='foo'/>" ).toString() );
+		assertEquals( "<a b='&quot;'/>", Element.fromString( "<a b='\"'/>" ).toString() );
+		assertEquals( "\"\\n\\r\\b\\t\\f\"", Element.fromString( "'\\n\\r\\b\\t\\f'" ).toString() );
+		assertEquals( "\"fish & chips\"", Element.fromString( "'fish &amp; chips'" ).toString() );
+		assertEquals( "\"Copyright \\u00A9\"", Element.fromString( "'Copyright \u00A9'" ).toString() );
 	}
 
 	@Test
