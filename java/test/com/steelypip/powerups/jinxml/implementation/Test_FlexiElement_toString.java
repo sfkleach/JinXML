@@ -25,6 +25,8 @@ public class Test_FlexiElement_toString {
 		assertEquals( "\"\\n\\r\\b\\t\\f\"", Element.fromString( "\"\\n\\r\\b\\t\\f\"" ).toString() );
 		assertEquals( "\"fish & chips\"", Element.fromString( "\"fish & chips\"" ).toString() );
 		assertEquals( "\"Copyright \\u00A9\"", Element.fromString( "\"Copyright \u00A9\"" ).toString() );
+		assertEquals( "[1,2,3]", Element.fromString( "[1,2,3]" ).toString() );
+		assertEquals( "{left:\"right\"}", Element.fromString( "{left:\"right\"}" ).toString() );
 	}
 
 	@Test
