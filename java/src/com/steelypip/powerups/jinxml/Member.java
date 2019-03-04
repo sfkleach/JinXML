@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
+import com.steelypip.powerups.jinxml.stdmodel.StdMember;
 
 /**
  * Members represent a (selector, element) pair. All children of an 
@@ -16,6 +17,10 @@ import com.steelypip.powerups.alert.Alert;
  *
  */
 public interface Member {
+	
+	static Member newMember( @NonNull String selector, @NonNull Element child ) {
+		return new StdMember( selector, child );
+	}
 	
 	/**
 	 * The getter for the selector of a member

@@ -31,7 +31,11 @@ public interface EventHandler {
 	}
 	
 	default void attributeEvent( @NonNull String key, @NonNull String value ) {
-		this.attributeEvent( key, value, true );
+		this.attributeEvent( key, value, false );
+	}
+	
+	default void attributeEvent( Attribute attribute ) {
+		this.attributeEvent( attribute.getKey(), attribute.getValue(), false );
 	}
 	
 	/**

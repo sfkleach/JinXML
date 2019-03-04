@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -271,6 +272,72 @@ public interface Element {
 	 * @return iterable for the attributes.
 	 */
 	Attribute.Iterable attributes();
+	
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * attributes but with a transformed set of children. The children are
+	 * transformed using a Java Function. If the function returns null then
+	 * the member is removed, so that this can also be used as a filter!
+	 * @param transform the element-to-element function.
+	 * @param mutable a flag indicating if the new element should be deeply mutable or deeply immutable
+	 * @return the newly created element.
+	 */
+	default Element mapValues( Function< String, String > transform, boolean mutable ) {
+		final Builder builder = newBuilder( this.getName(), null, this.members() );
+		for ( Attribute a : this.attributes() ) {
+			final String value1 = transform.apply( a.getValue() );
+			if ( value1 != null ) {
+				builder.attributeEvent( a.getKey(), value1 );
+			}
+		}
+		return builder.newElement( mutable );
+	}
+
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * members but with a transformed set of attribute values. The values are
+	 * transformed using a Java Function. If the function returns null then
+	 * the attribute is removed, so that this can also be used as a filter! The
+	 * result is deeply immutable.
+	 * @param transform the strint-to-string function.
+	 * @return the newly created, deeply immutable, element.	 
+	 */
+	default Element mapValues( Function< String, String > transform ) {
+		return this.mapValues( transform, false );
+	}
+	
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * members but with a transformed set of attributes. The attributes are
+	 * transformed using a Java Function. If the function returns null then
+	 * the attribute is removed, so that this can also be used as a filter!
+	 * @param transform the string-to-string function.
+	 * @param mutable a flag indicating if the new element should be deeply mutable or deeply immutable
+	 * @return the newly created element.
+	 */
+	default Element mapAttributes( Function< Attribute, Attribute > transform, boolean mutable ) {
+		final Builder builder = newBuilder( this.getName(), null, this.members() );
+		for ( Attribute a0 : this.attributes() ) {
+			final Attribute a1 = transform.apply( a0 );
+			if ( a1 != null ) {
+				builder.attributeEvent( a1 );
+			}
+		}
+		return builder.newElement( mutable );
+	}
+
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * members but with a transformed set of attributes. The attributes are
+	 * transformed using a Java Function. If the function returns null then
+	 * the attribute is removed, so that this can also be used as a filter! The
+	 * result is deeply immutable.
+	 * @param transform the string-to-string function.
+	 * @return the newly created, deeply immutable, element.	 
+	 */
+	default Element mapAttributes( Function< Attribute, Attribute > transform ) {
+		return this.mapAttributes( transform, false );
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Members
@@ -402,19 +469,106 @@ public interface Element {
 	 */	
 	Element getChild();
 	
+	/**
+	 * Returns the child of the first member with the given selector.
+	 * If no member has that selector then return otherwise.
+	 * @param selector the selector
+	 * @param otherwise the fallback value
+	 * @return the first child
+	 */
 	Element getFirstChild( @NonNull String selector, Element otherwise );
-	default Element getFirstChild( @NonNull String selector ) { return this.getFirstChild( selector, null ); }
+	
+	/**
+	 * Returns the child of the first member with the given selector.
+	 * If no member has that selector then return null.
+	 * @param selector the selector
+	 * @return the first child or null
+	 */
+	default Element getFirstChild( @NonNull String selector ) { 
+		return this.getFirstChild( selector, null ); 
+	}
+
+	/**
+	 * Returns the child of the first member with the default selector ("").
+	 * If no member has that selector then return otherwise.
+	 * @param otherwise the fallback value
+	 * @return the first child
+	 */
 	Element getFirstChild( Element otherwise );
+
+	/**
+	 * Returns the child of the first member with the default selector ("").
+	 * If no member has that selector then return null.
+	 * @return the first child or null
+	 */
 	Element getFirstChild();
 	
+	/**
+	 * Returns the child of the last member with the given selector.
+	 * If no member has that selector then return otherwise.
+	 * @param selector the selector
+	 * @param otherwise the fallback value
+	 * @return the last child
+	 */
 	Element getLastChild( @NonNull String selector, Element otherwise );
-	default Element getLastChild( @NonNull String selector ) { return this.getLastChild( selector, null ); }
+
+	/**
+	 * Returns the child of the last member with the given selector.
+	 * If no member has that selector then return null.
+	 * @param selector the selector
+	 * @return the last child
+	 */	
+	default Element getLastChild( @NonNull String selector ) { 
+		return this.getLastChild( selector, null ); 
+	}
+
+	/**
+	 * Returns the child of the last member with the default selector ("").
+	 * If no member has that selector then return otherwise.
+	 * @param otherwise the fallback value
+	 * @return the last child
+	 */	
 	Element getLastChild( Element otherwise );
+
+	/**
+	 * Returns the child of the last member with the default selector ("").
+	 * If no member has that selector then return null.
+	 * @return the last child
+	 */
 	Element getLastChild();
 	
 	List< Element > getChildrenAsList();
+
+	// TODO - is the list mutable or immutable?
+	/**
+	 * Returns a list of the children whose members have the given selector.
+	 *  
+	 * @param selector the given selector
+	 * @return a list of the children whose members have the given selector
+	 */	
 	List< Element > getChildrenAsList( @NonNull String selector );
+
+	/**
+	 * Returns a list of the children whose members have the default selector ("").
+	 * The list can be an independent copy of the children or a dynamic view 
+	 * on the children of the subject.
+	 *  
+	 * @param view if true then the returned value is a view, otherwise a copy
+	 * @param mutable if true the returned value is mutable, other immutable
+	 * @return a list of the children whose members have the given selector
+	 */
 	List< Element > getChildrenAsList( boolean view, boolean mutable );
+
+	/**
+	 * Returns a list of the children whose members have the given selector.
+	 * The list can be an independent copy of the children or a dynamic view 
+	 * on the children of the subject.
+	 *  
+	 * @param selector the given selector
+	 * @param view if true then the returned value is a view, otherwise a copy
+	 * @param mutable if true the returned value is mutable, other immutable
+	 * @return a list of the children whose members have the given selector
+	 */
 	List< Element > getChildrenAsList( @NonNull String selector, boolean view, boolean mutable );
 	
 	/**
@@ -426,42 +580,258 @@ public interface Element {
 	 */
 	Member.Iterable members();
 
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * attributes but with a transformed set of children. The children are
+	 * transformed using a Java Function. If the function returns null then
+	 * the member is removed, so that this can also be used as a filter!
+	 * @param transform the element-to-element function.
+	 * @param mutable a flag indicating if the new element should be deeply mutable or deeply immutable
+	 * @return the newly created element.
+	 */
+	default Element mapChildren( Function< Element, Element > transform, boolean mutable ) {
+		final Builder builder = newBuilder( this.getName(), this.attributes() );
+		for ( Member m : this.members() ) {
+			final Element child = transform.apply( m.getChild() );
+			if ( child != null ) {
+				builder.include( m.getSelector(), child );
+			}
+		}
+		return builder.newElement( mutable );
+	}
+
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * attributes but with a transformed set of children. The children are
+	 * transformed using a Java Function. If the function returns null then
+	 * the member is removed, so that this can also be used as a filter! The
+	 * result is deeply immutable.
+	 * @param transform the element-to-element function.
+	 * @return the newly created, deeply immutable, element.	 
+	 */
+	default Element mapChildren( Function< Element, Element > transform ) {
+		return this.mapChildren( transform, false );
+	}
+	
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * attributes but with a transformed set of members. The members are
+	 * transformed using a Java Function. If the function returns null then
+	 * the member is removed, so that this can also be used as a filter!
+	 * @param transform the element-to-element function.
+	 * @param mutable a flag indicating if the new element should be deeply mutable or deeply immutable
+	 * @return the newly created element.
+	 */
+	default Element mapMembers( Function< Member, Member > transform, boolean mutable ) {
+		final Builder builder = newBuilder( this.getName(), this.attributes() );
+		for ( Member m : this.members() ) {
+			final Member m1 = transform.apply( m );
+			if ( m1 != null ) {
+				builder.include( m );
+			}
+		}
+		return builder.newElement( mutable );
+	}
+
+	/**
+	 * Creates a new element based on the subject that has the same head and
+	 * attributes but with a transformed set of members. The members are
+	 * transformed using a Java Function. If the function returns null then
+	 * the member is removed, so that this can also be used as a filter! The
+	 * result is deeply immutable.
+	 * @param transform the element-to-element function.
+	 * @return the newly created, deeply immutable, element.	 
+	 */
+	default Element mapMembers( Function< Member, Member > transform ) {
+		return this.mapMembers( transform, false );
+	}
 
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Primitive Values
 	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Returns a new element that represents an integer.
+	 * @param value a integer as a string
+	 * @return
+	 */
+	static Element newIntValue( String value ) {
+		final Element e = Element.newElement( INT_ELEMENT_NAME );
+		e.setIntValue( value );
+		return e;
+	}
 	
+	// TODO javadocs
+	static Element newIntValue( Long value ) {
+		final Element e = Element.newElement( INT_ELEMENT_NAME );
+		e.setIntValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	@SuppressWarnings("null")
+	static Element newIntValue( BigInteger value ) {
+		final Element e = Element.newElement( INT_ELEMENT_NAME );
+		e.setBigIntValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newFloatValue( double value ) {
+		final Element e = Element.newElement( FLOAT_ELEMENT_NAME );
+		e.setFloatValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newFloatValue( String value ) {
+		final Element e = Element.newElement( FLOAT_ELEMENT_NAME );
+		e.setFloatValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newStringValue( String value ) {
+		final Element e = Element.newElement( STRING_ELEMENT_NAME );
+		e.setFloatValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newBooleanValue( String value ) {
+		final Element e = Element.newElement( BOOLEAN_ELEMENT_NAME );
+		e.setBooleanValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newBooleanValue( boolean value ) {
+		final Element e = Element.newElement( BOOLEAN_ELEMENT_NAME );
+		e.setBooleanValue( value );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newNullValue() {
+		final Element e = new FlexiElement( NULL_ELEMENT_NAME );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, "null" );
+		return e;
+	}
+	
+	// TODO javadocs
+	static Element newArrayValue() {
+		return new FlexiElement( ARRAY_ELEMENT_NAME );
+	}
+	
+	// TODO javadocs
+	static Element newObjectValue() {
+		return new FlexiElement( OBJECT_ELEMENT_NAME );
+	}
+	
+	/**
+	 * Determines if the current element represents an int, regardless
+	 * of whether or not it is in the range of a Java int.
+	 * @return true if it does, else false.
+	 */
 	boolean isIntValue();
+	
+	
+	// TODO javadocs
 	Long getIntValue();
+	// TODO javadocs
 	Long getIntValue( boolean allowOutOfRange );
+	// TODO javadocs
 	Long getIntValue( Long otherwise );
+	// TODO javadocs
 	Long getIntValue( boolean allowOutOfRange, Long otherwise );
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setIntValue( long newValue ) {
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, Long.toString( newValue ) );
+	}
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setIntValue( String newValue ) {
+		new BigInteger( newValue ); // has the effect of sanity checking the input.
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+	}
+	// TODO javadocs
 	BigInteger getBigIntValue();
+	// TODO javadocs
 	BigInteger getBigIntValue( boolean allowOutOfRange );
+	// TODO javadocs
 	BigInteger getBigIntValue( BigInteger otherwise );
+	// TODO javadocs
 	BigInteger getBigIntValue( boolean allowOutOfRange, BigInteger otherwise );
-	
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setBigIntValue( @NonNull BigInteger newValue ) {
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue.toString() );
+	}
+
+	// TODO javadocs
 	boolean isFloatValue();
+	// TODO javadocs
 	Double getFloatValue();
+	// TODO javadocs
 	Double getFloatValue( Double otherwise );
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setFloatValue( double newValue ) {
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, Double.toString( newValue ) );
+	}	
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setFloatValue( String newValue ) {
+		Double.parseDouble( newValue ); // sanity check the input. 
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+	}
 	
+	// TODO javadocs
 	boolean isStringValue();
+	// TODO javadocs
 	String getStringValue();
+	// TODO javadocs
 	String getStringValue( String otherwise );
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setStringValue( String newValue ) {
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+	}
 	
+	// TODO javadocs
 	boolean isBooleanValue();
+	// TODO javadocs
 	Boolean getBooleanValue();
+	// TODO javadocs
 	Boolean getBooleanValue( Boolean otherwise );
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setBooleanValue( boolean newValue ) {
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, Boolean.toString( newValue ) );
+	}
+	// TODO javadocs
+	@SuppressWarnings("null")
+	default void setBooleanValue( String newValue ) {
+		Boolean.parseBoolean( newValue );
+		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+	}
 	
+	// TODO javadocs
 	boolean isNullValue();
+	// TODO javadocs
 	Void getNullValue();	
-	<T> T getNullValue( T defaultValue );	
+	// TODO javadocs
+	<T> T getNullValue( T defaultValue );
 	
+	// TODO javadocs
 	boolean isObject();
+	// TODO javadocs
 	boolean isArray();
 	
+	// TODO javadocs
 	default boolean isJSONItem() {
 		switch ( this.getName() ) {
 		case ARRAY_ELEMENT_NAME:
@@ -877,6 +1247,26 @@ public interface Element {
 	 */
 	static Builder newBuilder() {
 		return new StdBuilder( false, true );
+	}
+	
+	static Builder newBuilder( @NonNull String name ) {
+		return newBuilder( name, null, null );
+	}
+	
+	static Builder newBuilder( @NonNull String name, Attribute.Iterable attributes ) {
+		return newBuilder( name, attributes, null );
+	}
+	
+	static Builder newBuilder( @NonNull String name, Attribute.Iterable attributes, Member.Iterable members ) {
+		StdBuilder builder = new StdBuilder( false, true );
+		builder.startTagEvent( name );
+		if ( attributes != null ) {
+			attributes.forEach( builder::attributeEvent );
+		}
+		if ( members != null ) {
+			members.forEach( builder::include );
+		}
+		return builder;
 	}
 	
 	/**

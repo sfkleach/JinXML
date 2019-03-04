@@ -8,6 +8,8 @@ import java.util.function.Predicate;
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
+import com.steelypip.powerups.jinxml.stdmodel.StdAttribute;
+import com.steelypip.powerups.jinxml.stdmodel.StdMember;
 
 /**
  * Attributes represent a (key, value) pair. All attributes of an 
@@ -15,6 +17,12 @@ import com.steelypip.powerups.alert.Alert;
  *
  */
 public interface Attribute {
+	
+	static Attribute newAttribute( @NonNull String key, @NonNull String value ) {
+		return new StdAttribute( key, value );
+	}
+	
+
 	
 	/**
 	 * The getter for the key of an attribute.

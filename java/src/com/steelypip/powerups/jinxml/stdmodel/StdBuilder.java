@@ -30,9 +30,7 @@ public class StdBuilder implements Builder {
 	 */
 	protected ArrayDeque< Object > dump = new ArrayDeque<>();
 	
-	// 	These two variables represent the current context. The selector is always defined
-	//	to be the default to be used for new members added to the 
-	protected @NonNull String selector = ROOT_SELECTOR;	
+	// 	This variables represent the current context.  
 	protected Element focus = this.root;
 	
 	/**
@@ -53,15 +51,11 @@ public class StdBuilder implements Builder {
 
 	private void pushChild( Element x ) {
 		this.dump.addLast( this.focus );
-		this.dump.addLast( this.selector );
-		this.selector = DEFAULT_SELECTOR;
 		this.focus = x;
 	}
 
 	private void popChild() {
 		try {
-			String popped = (String)this.dump.removeLast();
-			this.selector = Objects.requireNonNull( popped );
 			this.focus = (Element)this.dump.removeLast();
 		} catch ( NoSuchElementException e ) {
 			throw new IllegalStateException( e );
@@ -173,7 +167,7 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Element next() {
+	public Element next( boolean mutable ) {
 		Element e = this.root.getFirstChild();
 		if ( e == null ) {
 			throw new IllegalStateException( "No next element available" );
@@ -184,12 +178,22 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Element tryNext( Element otherwise ) {
+	public Element next() {
+		return this.next( this.mutable_flag );
+	}
+
+	@Override
+	public Element tryNext( Element otherwise, boolean mutable ) {
 		if ( this.hasNext() ) {
-			return this.next();
+			return this.next( mutable );
 		} else {
 			return otherwise;
 		}
+	}
+
+	@Override
+	public Element tryNext( Element otherwise ) {
+		return this.tryNext( otherwise, this.mutable_flag );
 	}
 
 	@Override
@@ -209,7 +213,7 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public void include( Element child, boolean checkMutability ) {
+	public void include( @NonNull String selector, Element child, boolean checkMutability ) {
 		if ( checkMutability ) {
 			//	Counter-intuitive test: use == because the two sides have exactly opposite meanings.
 			if ( this.mutable_flag == child.isFrozen() ) {
@@ -220,7 +224,7 @@ public class StdBuilder implements Builder {
 				);
 			}
 		}
-		this.focus.addLastChild( this.selector, child );
+		this.focus.addLastChild( selector, child );
 	}
 
 }
