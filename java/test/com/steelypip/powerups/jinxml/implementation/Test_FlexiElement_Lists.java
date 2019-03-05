@@ -18,7 +18,7 @@ public class Test_FlexiElement_Lists {
 	@Before
 	public void setup() {
 		Builder b = Element.newBuilder( "Test_FlexiElement_Lists" );
-		b.include( Element.newArrayValue() );
+		b.include( Element.newArray() );
 		b.include( Element.newIntValue( 456L ) );
 		element_with_kids = b.newElement();
 	}

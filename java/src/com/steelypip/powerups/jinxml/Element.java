@@ -767,7 +767,7 @@ public interface Element {
 	 * Returns a new element that represents a JSON array.
 	 * @return the new mutable element
 	 */
-	static Element newArrayValue() {
+	static Element newArray() {
 		return new FlexiElement( ARRAY_ELEMENT_NAME );
 	}
 	
@@ -775,7 +775,7 @@ public interface Element {
 	 * Returns a new element that represents a JSON object.
 	 * @return the new mutable element
 	 */
-	static Element newObjectValue() {
+	static Element newObject() {
 		return new FlexiElement( OBJECT_ELEMENT_NAME );
 	}
 	
