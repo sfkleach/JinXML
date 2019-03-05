@@ -17,26 +17,78 @@ public class Test_FlexiElement_Primitives {
 	Element intElement;
 	Element floatElementNoDP;
 	Element floatElementWithDP;
+	Element stringElement;
 	
 	@Before
 	public void Setup() {
-		intElement = new FlexiElement( "int" );
-		intElement.addLastValue( "value", "12345678901234567890" );
+		intElement = Element.newIntValue( "12345678901234567890" );
 		
-		floatElementNoDP = new FlexiElement( "float" );
-		floatElementNoDP.addLastValue( "value", "-456" );
+		floatElementNoDP = Element.newFloatValue( "-456" );
 		
-		floatElementWithDP = new FlexiElement( "float" );
-		floatElementWithDP.addLastValue( "value", "-456.5" );
+		floatElementWithDP = Element.newFloatValue( "-456.5" );
+
+		stringElement = Element.newStringValue( "abc" );
+	}
+	
+	@Test( expected=Exception.class )
+	public void setIntValue_InvalidElement() {
+		stringElement.setIntValue( "123" );
+	}
+	
+	@Test( expected=Exception.class )
+	public void setFloatValue_InvalidElement() {
+		stringElement.setFloatValue( "123" );
 	}
 	
 	@Test
-	public void getIntValue_Overflow() {
+	public void setStringValue_Valid() {
+		stringElement.setStringValue( "x y z" );
+		assertEquals( "x y z", stringElement.getStringValue() );
+	}
+	
+	@Test//( expected=Exception.class )
+	public void setIntValue_Valid() {
+		intElement.setIntValue( "123" );
+		assertEquals( (Long)123L, intElement.getIntValue() );
+	}
+	
+	@Test( expected=Exception.class )
+	public void setStringValue_InvalidElement() {
+		intElement.setStringValue( "foo" );
+	}
+	
+	@Test( expected=Exception.class )
+	public void setBooleanValue_InvalidElement() {
+		intElement.setBooleanValue( "foo" );
+	}
+	
+	@Test( expected=NumberFormatException.class )
+	public void setIntValue_BadFormat() {
+		intElement.setIntValue( "abc" );
+	}
+	
+	@Test
+	public void getIntValue_AllowOverflow() {
 		assertTrue( intElement.isIntValue() );
 		long n = intElement.getIntValue( true, 0L );
 		assertEquals( 0L, n );
 		intElement.setValue( "value", "123" );
 		assertTrue( 123L == intElement.getIntValue() );
+	}
+
+	@Test( expected=NumberFormatException.class)
+	public void getIntValue_BadFormat() {
+		final Element ie = Element.newElement( Element.INT_ELEMENT_NAME );
+		ie.addLastValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, "abc" );
+		assertTrue( ie.isIntValue() );
+		ie.getIntValue( true, 0L );
+	}
+
+	@Test( expected=NumberFormatException.class )
+	public void getIntValue_ForbidOverflow() {
+		//  Assert
+		assertTrue( intElement.isIntValue() );
+		intElement.getIntValue( false, 0L ); // will overflow
 	}
 
 	@Test

@@ -840,7 +840,7 @@ public class FlexiElement implements Element {
 					throw e;
 				}
 			} else {
-				return otherwise;
+				throw e;
 			}
 		}
 	}
@@ -941,12 +941,6 @@ public class FlexiElement implements Element {
 	@Override
 	public boolean isNullValue() {
 		return this.hasName( NULL_ELEMENT_NAME ) && this.attributes.hasKey( VALUE_KEY_FOR_LITERAL_CONSTANTS );
-	}
-	
-	@SuppressWarnings("null")
-	@Override
-	public Void getNullValue() {
-		return null;
 	}
 	
 	@SuppressWarnings("null")

@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.common.NullIndenter;
 import com.steelypip.powerups.common.StdIndenter;
 import com.steelypip.powerups.io.StringPrintWriter;
@@ -537,11 +538,18 @@ public interface Element {
 	 */
 	Element getLastChild();
 	
-	List< Element > getChildrenAsList();
-
-	// TODO - is the list mutable or immutable?
 	/**
-	 * Returns a list of the children whose members have the given selector.
+	 * Returns an immutable list of the children whose members have the 
+	 * default selector ("").
+	 *  
+	 * @return a list of the children whose members have the given selector
+	 */	
+	default List< Element > getChildrenAsList() {
+		return this.getChildrenAsList( DEFAULT_SELECTOR );
+	}
+
+	/**
+	 * Returns an immutable list of the children whose members have the given selector.
 	 *  
 	 * @param selector the given selector
 	 * @return a list of the children whose members have the given selector
@@ -653,79 +661,120 @@ public interface Element {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Returns a new element that represents an integer.
-	 * @param value a integer as a string
-	 * @return
+	 * Returns a new element that represents an integer. There are
+	 * no range limits (other than the max size of a string).
+	 * @param value a decimal integer as a string
+	 * @return the new mutable element
 	 */
-	static Element newIntValue( String value ) {
+	static Element newIntValue( @NonNull String value ) {
 		final Element e = Element.newElement( INT_ELEMENT_NAME );
-		e.setIntValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
 		return e;
 	}
 	
-	// TODO javadocs
-	static Element newIntValue( Long value ) {
+	/**
+	 * Returns a new element that represents an integer. 
+	 * @param value an integer
+	 * @return the new mutable element
+	 */
+	static Element newIntValue( @NonNull Long value ) {
 		final Element e = Element.newElement( INT_ELEMENT_NAME );
-		e.setIntValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, value.toString() );
 		return e;
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents an integer. 
+	 * @param value an integer
+	 * @return the new mutable element
+	 */
 	@SuppressWarnings("null")
-	static Element newIntValue( BigInteger value ) {
+	static Element newIntValue( @NonNull BigInteger value ) {
 		final Element e = Element.newElement( INT_ELEMENT_NAME );
-		e.setBigIntValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, value.toString() );
 		return e;
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents a floating point
+	 * number.
+	 * @param value a double
+	 * @return the new mutable element
+	 */
+	@SuppressWarnings("null")
 	static Element newFloatValue( double value ) {
 		final Element e = Element.newElement( FLOAT_ELEMENT_NAME );
-		e.setFloatValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, Double.toString( value ) );
 		return e;
 	}
 	
-	// TODO javadocs
-	static Element newFloatValue( String value ) {
+	/**
+	 * Returns a new element that represents a floating point
+	 * number. There are no limits on the precision.
+	 * @param value a floating point number as a decimal string
+	 * @return the new mutable element
+	 */
+	static Element newFloatValue( @NonNull String value ) {
 		final Element e = Element.newElement( FLOAT_ELEMENT_NAME );
-		e.setFloatValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
 		return e;
 	}
 	
-	// TODO javadocs
-	static Element newStringValue( String value ) {
+	/**
+	 * Returns a new element that represents a string.
+	 * @param value the string
+	 * @return the new mutable element
+	 */
+	static Element newStringValue( @NonNull String value ) {
 		final Element e = Element.newElement( STRING_ELEMENT_NAME );
-		e.setFloatValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
 		return e;
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents a boolean.
+	 * @param value a boolean expressed as a string ("true" or "false")
+	 * @return the new mutable element
+	 */
 	static Element newBooleanValue( String value ) {
 		final Element e = Element.newElement( BOOLEAN_ELEMENT_NAME );
-		e.setBooleanValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, value );
 		return e;
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents a boolean.
+	 * @param value a boolean 
+	 * @return the new mutable element
+	 */
 	static Element newBooleanValue( boolean value ) {
 		final Element e = Element.newElement( BOOLEAN_ELEMENT_NAME );
-		e.setBooleanValue( value );
+		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, Boolean.toString( value  ) );
 		return e;
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents a JSON null.
+	 * @return the new mutable element
+	 */
 	static Element newNullValue() {
 		final Element e = new FlexiElement( NULL_ELEMENT_NAME );
 		e.addLastValue( VALUE_KEY_FOR_LITERAL_CONSTANTS, "null" );
 		return e;
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents a JSON array.
+	 * @return the new mutable element
+	 */
 	static Element newArrayValue() {
 		return new FlexiElement( ARRAY_ELEMENT_NAME );
 	}
 	
-	// TODO javadocs
+	/**
+	 * Returns a new element that represents a JSON object.
+	 * @return the new mutable element
+	 */
 	static Element newObjectValue() {
 		return new FlexiElement( OBJECT_ELEMENT_NAME );
 	}
@@ -738,110 +787,321 @@ public interface Element {
 	boolean isIntValue();
 	
 	
-	// TODO javadocs
+	/**
+	 * Given an element that represents an int (has the right element name
+	 * and the 'value' attribute) will try to parse and return the value as a 
+	 * Long. If the value cannot be parsed as a Long or is out of range then
+	 * a NumberFormatException is raised. 
+	 * 
+	 * If the element does not conform to this format, then null is returned.
+	 * @return a Long if the element is a JSON int, otherwise null
+	 */
 	Long getIntValue();
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents an int (has the right element name
+	 * and the 'value' attribute) will try to parse and return the value as a 
+	 * Long. If the value can be parsed as a Long but is out of range then
+	 * null is returned. But if the value has the wrong syntax for an int then
+	 * a NumberFormatException is raised. 
+	 * 
+	 * If the element does not conform to this format, then null is returned.
+	 * @return a Long if the element is a JSON int, otherwise null
+	 */
 	Long getIntValue( boolean allowOutOfRange );
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents an int (has the right element name
+	 * and the 'value' attribute) will try to parse and return the value as a 
+	 * Long. If the value cannot be parsed as a Long or is out of range then
+	 * a NumberFormatException is raised. 
+	 * 
+	 * If the element does not conform to this format, then otherwise is returned.
+	 * @param otherwise fallback value to return
+	 * @return a Long if the element is a JSON int, otherwise null
+	 */
 	Long getIntValue( Long otherwise );
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents a JSON int (has the right element name
+	 * and the 'value' attribute) will try to parse and return the value as a 
+	 * Long. If the value can be parsed as a Long but is out of range then
+	 * otherwise is returned. But if the value has the wrong syntax for an int then
+	 * a NumberFormatException is raised. 
+	 * 
+	 * If the element does not conform to this format, then otherwise is returned.
+	 * @param allowOutOfRange a flag to indicate if an exception should be raised or null returned if the value is out of range
+	 * @param otherwise fallback value to return
+	 * @return a Long if the element is a JSON int, otherwise null
+	 */
 	Long getIntValue( boolean allowOutOfRange, Long otherwise );
-	// TODO javadocs
+
+	/**
+	 * Sets the value of an element that represents a JSON int to the decimal
+	 * value of a Long.
+	 * @param newValue the new value to use
+	 */
 	@SuppressWarnings("null")
 	default void setIntValue( long newValue ) {
 		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, Long.toString( newValue ) );
 	}
-	// TODO javadocs
+	
+	/**
+	 * Sets the value of an element that represents a JSON int to the decimal
+	 * value of a string. The string must be an decimal integer or an 
+	 * exception will be raised. 
+	 * @param newValue the new value to use
+	 */
 	@SuppressWarnings("null")
 	default void setIntValue( String newValue ) {
-		new BigInteger( newValue ); // has the effect of sanity checking the input.
-		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		if ( this.isIntValue() ) {
+			new BigInteger( newValue ); // has the effect of sanity checking the input.
+			this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		} else {
+			throw new Alert( "Int element required but non-int element supplied" ).culprit( "Supplied", this );
+		}
 	}
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents an int (has the right element name
+	 * and the 'value' attribute) will try to parse and return the value as a 
+	 * BigInteger. If the value cannot be parsed as a BigInteger then
+	 * a NumberFormatException is raised. 
+	 * 
+	 * If the element does not conform to this format, then null is returned.
+	 * @return a BigInteger if the element is a JSON int, otherwise null
+	 */
 	BigInteger getBigIntValue();
-	// TODO javadocs
+
+	/**
+	 * Same as getBigIntValue() - only provided for symmetry with
+	 * getIntValue.
+	 */	
 	BigInteger getBigIntValue( boolean allowOutOfRange );
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents an int (has the right element name
+	 * and the 'value' attribute) will try to parse and return the value as a 
+	 * BigInteger. If the value cannot be parsed as a BigInteger then
+	 * a NumberFormatException is raised. 
+	 * 
+	 * If the element does not conform to this format, then otherwise is returned.
+	 * @param otherwise the fallback value
+	 * @return a BigInteger if the element is a JSON int, if not then return otherwise
+	 */
 	BigInteger getBigIntValue( BigInteger otherwise );
-	// TODO javadocs
+	
+	/**
+	 * Same as getBigIntValue( BigInteger otherwise ) - the out of
+	 * range condition does not apply for BigIntegers. Only provided
+	 * for symmetry with getIntValue.
+	 * @param allowOutOfRange ignored
+	 * @param otherwise the fallback value
+	 * @return a BigInteger if the element is a JSON int, if not then return otherwise
+	 */
 	BigInteger getBigIntValue( boolean allowOutOfRange, BigInteger otherwise );
-	// TODO javadocs
+
+	/**
+	 * Sets the value of an element that represents a JSON int to a BigInteger.
+	 * @param newValue the new value to use
+	 */
 	@SuppressWarnings("null")
 	default void setBigIntValue( @NonNull BigInteger newValue ) {
 		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue.toString() );
 	}
 
-	// TODO javadocs
+	/**
+	 * Recognises whether or not an element represents a JSON float.
+	 * The element name is checked and the presence of the value
+	 * attribute too.
+	 * @return true if an element represents a JSON float.
+	 */
 	boolean isFloatValue();
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON float, it returns
+	 * a Double representing that floating point value (or a 
+	 * NumberFormatException if the value is not syntactically
+	 * correct). If a different type of element is used then 
+	 * null is returned. 
+	 * @return the floating point value
+	 */
 	Double getFloatValue();
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents a JSON float, it returns
+	 * a Double representing that floating point value (or a 
+	 * NumberFormatException if the value is not syntactically
+	 * correct). If a different type of element is used then 
+	 * otherwise is returned.
+	 * @param otherwise the fallback value 
+	 * @return the floating point value or otherwise
+	 */
 	Double getFloatValue( Double otherwise );
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents a JSON float, it sets
+	 * the value to the string representation of the newValue.
+	 * @param newValue the value to set.
+	 */
 	@SuppressWarnings("null")
 	default void setFloatValue( double newValue ) {
 		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, Double.toString( newValue ) );
 	}	
-	// TODO javadocs
+
+	/**
+	 * Given an element that represents a JSON float, it sets
+	 * the value to newValue, which must be in floating point number
+	 * or an exception will be raised. 
+	 * @param newValue the value to set.
+	 */
 	@SuppressWarnings("null")
 	default void setFloatValue( String newValue ) {
-		Double.parseDouble( newValue ); // sanity check the input. 
-		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		if ( this.isFloatValue() ) {
+			Double.parseDouble( newValue ); // sanity check the input. 
+			this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		} else {
+			throw new Alert( "Float element required but non-float supplied" ).culprit( "Supplied", this );
+		}
 	}
 	
-	// TODO javadocs
+	/**
+	 * Recognises whether or not an element represents a JSON string.
+	 * The element name is checked and the presence of the value
+	 * attribute too.
+	 * @return true if an element represents a JSON string.
+	 */
 	boolean isStringValue();
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON string, returns
+	 * the value as a string. If the element is not a JSON 
+	 * string it returns null.
+	 * @return a string or null
+	 */
 	String getStringValue();
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON string, returns
+	 * the value as a string. If the element is not a JSON 
+	 * string it returns otherwise.
+	 * @param otherwise
+	 * @return the string value or otherwise
+	 */
 	String getStringValue( String otherwise );
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON string, it sets 
+	 * the value to a string. If it is not a JSON string then 
+	 * an exception is raised.
+	 * @param newValue the value to set
+	 */
 	@SuppressWarnings("null")
 	default void setStringValue( String newValue ) {
-		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		if ( this.isStringValue() ) {
+			this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		} else {
+			throw new Alert( "String element required but non-string supplied" ).culprit( "Supplied", this );
+		}
 	}
 	
-	// TODO javadocs
+	/**
+	 * Recognises whether or not an element represents a JSON boolean.
+	 * The element name is checked and the presence of the value
+	 * attribute too.
+	 * @return true if an element represents a JSON boolean.
+	 */
 	boolean isBooleanValue();
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON boolean, returns the
+	 * boolean value as a true/false Boolean. If the element does not
+	 * represent a JSON Boolean, returns null.
+	 * @return the boolean value or null
+	 */
 	Boolean getBooleanValue();
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON boolean, returns the
+	 * boolean value as a true/false Boolean. If the element does not
+	 * represent a JSON Boolean, returns otherwise.
+	 * @param otherwise the fallback value
+	 * @returnhe boolean value or otherwise
+	 */
 	Boolean getBooleanValue( Boolean otherwise );
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON boolean, sets the
+	 * boolean value.
+	 * @param newValue the value to set
+	 */
 	@SuppressWarnings("null")
 	default void setBooleanValue( boolean newValue ) {
 		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, Boolean.toString( newValue ) );
 	}
-	// TODO javadocs
+	
+	/**
+	 * Given an element that represents a JSON boolean, sets the
+	 * boolean value as a string. If this is not a JSON boolean or the
+	 * string is not parseable as a boolean an exception is raised.
+	 */
 	@SuppressWarnings("null")
 	default void setBooleanValue( String newValue ) {
-		Boolean.parseBoolean( newValue );
-		this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		if ( this.isBooleanValue() ) {
+			Boolean.parseBoolean( newValue );
+			this.setValue( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS, newValue );
+		} else {
+			throw new Alert( "Boolean element required but non-boolean supplied").culprit( "Supplied", this );
+		}
 	}
 	
-	// TODO javadocs
+	/**
+	 * Recognises whether or not an element represents a JSON null.
+	 * The element name is checked and the presence of the value
+	 * attribute too.
+	 * @return true if an element represents a JSON null.
+	 */
 	boolean isNullValue();
-	// TODO javadocs
-	Void getNullValue();	
-	// TODO javadocs
+		
+	/**
+	 * Provided purely for symmetry, returns (T)null if the subject
+	 * represents a JSON null, otherwise returns defaultValue.
+	 * @param defaultValue the fallback value 
+	 * @return null of the fallback value
+	 */
 	<T> T getNullValue( T defaultValue );
 	
-	// TODO javadocs
+	/**
+	 * Recognises whether or not an element represents a JSON array.
+	 * The element name is checked.
+	 * @return true if an element represents a JSON array.
+	 */
 	boolean isObject();
-	// TODO javadocs
+
+	/**
+	 * Recognises whether or not an element represents a JSON object.
+	 * The element name is checked.
+	 * @return true if an element represents a JSON object.
+	 */
 	boolean isArray();
 	
-	// TODO javadocs
+	/**
+	 * Recognises whether or not an element represents a JSON value
+	 * of any kind. The element name is checked and, in the case
+	 * of primitive values, so is the value attribute.
+	 * @return true if an element represents a JSON value
+	 */
 	default boolean isJSONItem() {
 		switch ( this.getName() ) {
 		case ARRAY_ELEMENT_NAME:
 		case OBJECT_ELEMENT_NAME:
+			return true;
 		case BOOLEAN_ELEMENT_NAME:
 		case INT_ELEMENT_NAME:
 		case FLOAT_ELEMENT_NAME:
 		case NULL_ELEMENT_NAME:
 		case STRING_ELEMENT_NAME:
-			return true;
+			return this.hasKey( Element.VALUE_KEY_FOR_LITERAL_CONSTANTS );
 		default:
 			return false;
 		}
