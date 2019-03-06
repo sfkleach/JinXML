@@ -86,5 +86,18 @@ Element easyTransform( Element element ) {
 }
 ```
 
+Deep Freeze
+-----------
+A common programming pattern is to set-up an element step-by-step and then, once it is set up, use it without changing it. If we work in this way, the newly formed element will be mutable, meaning it remains open to change, and mutable elements are more expensive (and less safe) to work with. So if we don't need to modify an element after it has been created we can freeze or even deep freeze it.
 
+```java
+Element e = Element.newElement( "ItemList" );
+//	Add a lot of children.
+for ( int i = 0; i < string.length; i++ ) {
+	e.addLastChild( Element.newStringValue( string.substring( i ) ) );
+}
+//	Deep freeze it - neither it or its children can be modified.
+e.deepFreezeSelf();
+```
 
+Freezing is a one-way operation.
