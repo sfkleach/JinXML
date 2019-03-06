@@ -58,18 +58,18 @@ Example:
 > :notebook: Design note: this arises from the desire to unify element attributes and string valued objects.
 
 ## Trailing and optional commas
-Commas are entirely optional in JinXML - they are discarded during tokenisation and are purely cosmetic, included to improve readability. A single occurence may appear between or after JinXML terms. Hence the following are all permitted. 
+Commas act as breaks between tokens but are entirely optional in JinXM. A comma may appear between or after JinXML terms but multiple commas are not allowed. All the following are permitted. 
 ```
-{ size: 8 size+: 19 }
-{ size: 8, size+: 19 }
-{ size: 8 size+: 19, }
-{ size: 8, size+: 19, }
+{ size: 8 size+: 19 }    // Comma omitted
+{ size: 8, size+: 19 }   // Comma as separator
+{ size: 8 size+: 19, }   // Comma as terminator
+{ size: 8, size+: 19, }  // Commas as separator and terminator
 ```
 
 > :notebook: Design note: this is the most direct way to unify the syntactic behaviour of comma-free XML with Relaxed JSON while preserving much of their visual appeal.
 
 ## Semi-colons as alternatives to commas
-Semi-colons are acceptable alternatives to commas when separating/terminating JinXML expressions. Between or after an expression there be a maximum of a single comma and/or semicolon.
+Semi-colons are acceptable alternatives to commas for separating/terminating JinXML expressions. Between or after an expression there be a maximum of a single comma and/or semicolon.
 ```
 { size: 8, size+: 19; }   // Allowed
 [ true, false,;]          // Not allowed
