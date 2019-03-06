@@ -53,10 +53,10 @@ Not so much. JinXML is based on the minimal XML subset [MinXML](https://github.c
 But it does not embrace the wider range of XML bells and whistles:
 
 * Character data - not included (see below for explanation).
-* Comments - allowed but discarded.
-* Processing instructions - allowed but discarded.
+* Comments - allowed but any content is discarded.
+* Processing instructions - allowed but treated as comments.
 * Entities - only numerical entities and the HTML5 standard entities are recognised.
-* Prologue, DTD or other schema - allowed but discarded
+* Prologue, DTD or other schema - allowed but treated as comments.
 * Character encoding - the API requires streams of decoded characters.
 
 N.B. MinXML is a strict subset of both JinXML and XML.
