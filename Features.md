@@ -220,7 +220,7 @@ Both element-names and attribute-keys may be quoted using string-literal syntax.
 ## XML-like headers, comments and processing directives
 XML comments of the form ```<!--``` to ```-->``` are supported in the sense that their content must be discarded. Similarly the ```<?xml``` header at the start of every valid XML document is discarded and all xml processing directives as well.
 
-N.B. No processor should respond to their content i.e. pragmas hidden in discarded are official no-nos. Discarded means discarded. 
+N.B. No processor should respond to their content i.e. pragmas hidden in discarded are official no-nos. Comments can be replaced by one-or-more spaces without changing the meaning in any way.
 
 :notebook: Design note: This is a low-priority item but slightly improves the range of XML data that can be accommodated without change. Processing directives may be accommodated in a later revision and we do not want to cramp our style in the intermin. And the idea of embedding character encoding in the XML header is downright horrible & will never be resurrected.
 
