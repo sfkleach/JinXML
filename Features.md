@@ -125,17 +125,35 @@ A start tag has a name and a series of zero or more attributes and looks like th
 ```
 Attributes are name/value pairs separated by one of ```=``` or ```+=```. The difference between ```=``` or ```+=``` is that ```=``` does not allow duplicate attribute-keys but ```+=``` does. The restriction that ```=``` imposes is on a per-element, not just per tag. \[n.b. in the next section we also add the synonyms ```:``` and ```+:```.]
 
-Perhaps surprisingly, end-tags may also have attributes. The intention is to allow programs that serially generate content to be able to add attributes after processing the children. End tags look very much like start tags:
+An element can enclose selector-child members, exactly like a JSON object. e.g.
 ```
-</NAME NAME=STRING NAME=STRING ...>
+<programme>
+    origin: "BBC",
+    series: "Doctor Who",
+    episode: 201245,
+    timeslot: "19:00, Saturday 03, March 2345"
+</programme>
 ```
-The attributes of an element are the attributes of the start tag followed by the attributes of the end tag. There is no difference between placing attributes at the start or end tag - although push parsers will inevitably see the difference, so attributes that are intended to affect the processing of the contents will necessarily need to be placed on the start tag.
+
+Or it can enclose children, exactly like a JSON array e.g.
+```
+<data> 1, 2, "buckle my shoe" </data>
+```
+
+Or an element can enclose both members and children at the same time e.g.
+```
+<data>
+  firstEncountered: "Kindergarten";
+  1, 2, "buckle my shoe";
+</data>
+```
+
 
 Standalone tags are simply a notational convenience for a start-tag that is immediately followed by an end-tag i.e. has no children. They are written like this:
 ```
 <NAME NAME=STRING NAME=STRING ... />
 ```
-A parser may treat the standalone tag as a start tag with all the attributes immediately followed by an end tag that has no attributes.
+A parser may treat the standalone tag as a start tag with all the attributes immediately followed by an end tag.
 
 ## Colon as well as equals
 The ```:``` separator is an alternative to ```=``` and ```+:``` is an alternative to ```+=```. There is no significance to the choice and a parser and/or application may not process them differently.
@@ -220,7 +238,7 @@ Both element-names and attribute-keys may be quoted using string-literal syntax.
 ## XML-like headers, comments and processing directives
 XML comments of the form ```<!--``` to ```-->``` are supported in the sense that their content must be discarded. Similarly the ```<?xml``` header at the start of every valid XML document is discarded and all xml processing directives as well.
 
-N.B. No processor should respond to their content i.e. pragmas hidden in discarded are official no-nos. Discarded means discarded. 
+N.B. No processor should respond to their content i.e. pragmas hidden in discarded are official no-nos. Comments can be replaced by one-or-more spaces without changing the meaning in any way.
 
 :notebook: Design note: This is a low-priority item but slightly improves the range of XML data that can be accommodated without change. Processing directives may be accommodated in a later revision and we do not want to cramp our style in the intermin. And the idea of embedding character encoding in the XML header is downright horrible & will never be resurrected.
 
