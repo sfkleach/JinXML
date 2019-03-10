@@ -144,7 +144,7 @@ __NamedCharacterReference__:
 
 ![Image of NamedCharacterReference rule](grammar/images/NamedCharacterReference.png)
 
-__Hex Characters__:
+__Hex__: Hex Characters
 
 ![Image of Hex rule](grammar/images/Hex.png)
 
@@ -152,23 +152,23 @@ __Discards__: Tokens to be discarded
 
 ![Image of Discard rule](grammar/images/Discard.png)
 
-__XML-style Comment__:
+__XComment__: XML-style comment
 
 ![Image of XComment rule](grammar/images/XComment.png)
 
-__XML-content to be Discarded__:
+__XOther__: Other XML-content to be discarded
 
 ![Image of XOther rule](grammar/images/XOther.png)
 
-__JSON-style Comment__:
+__JComment__: JSON-style comment
 
 ![Image of JComment rule](grammar/images/JComment.png)
 
-__Long Comments__:
+__LongComment__: Multi-line Javascript like comment
 
 ![Image of LongComment rule](grammar/images/LongComment.png)
 
-__End of Line Comment__:
+__EoLComment__: End of Line Javascript style comment
 
 ![Image of EoLComment rule](grammar/images/EoLComment.png)
 
