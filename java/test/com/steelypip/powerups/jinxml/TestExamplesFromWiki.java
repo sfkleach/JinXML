@@ -133,4 +133,23 @@ public class TestExamplesFromWiki {
 		assertEquals( "text", e.getChild( 2 ).getName() );
 	}	
 	
+	final static String sean_hayes_example1 = 
+		"<test>\n" + 
+		"    foo : \"bar\";\n" + 
+		"    <test>\n" + 
+		"        baz : \"bang\";\n" + 
+		"    </test>\n" + 
+		"</test>";
+	
+	@Test
+	public void testSeanHayesExample1() {
+		StdPushParser p = new StdPushParser( new StringReader( sean_hayes_example1 ), false );
+		Element e = p.readElement();
+		assertEquals( 2, e.countMembers() );
+		assertEquals( Element.STRING_ELEMENT_NAME, e.getChild( "foo", 0 ).getName() );
+		assertEquals( "test", e.getChild( 0 ).getName() );
+	}	
+	
+	
+	
 }
