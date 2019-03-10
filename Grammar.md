@@ -6,9 +6,9 @@ JinXML has a whitespace insensitive layout, which means that it is a good idea t
 ## Upper-Level Grammar in EBNF, corresponds to parse phase
 ```
 JinXML ::= Element | JSON
-Element ::= StartTag ( ( Entry Terminator? )* | ( JinXML Terminator? )* ) EndTag | FusedTag
+Element ::= StartTag ( ( Entry | JinXML ) Terminator? )* EndTag | FusedTag
 StartTag ::= '<' ElementName Attribute* '>'
-EndTag ::= '</' ElementName Attribute* '>'
+EndTag ::= '</' ElementName '>'
 FusedTag ::= '<' ElementName Attribute* '/>'
 ElementName ::= NCName | '&' | String
 Attribute ::= FieldPrefix String
@@ -112,11 +112,11 @@ Shebang ::= ('#!' [^#xA]* #xA)+
 
 ## Lower-Level Grammar for Tokenisation as Railroad Diagrams
 
-__Reserved__: identifiers that play the role of literal constants.
+__Reserved__: identifiers that play the role of literal constants
 
 ![Image of Reserved rule](grammar/images/Reserved.png)
 
-__Numbers__: Only base 10 so far.
+__Numbers__: Only base 10 so far
 
 ![Image of Number rule](grammar/images/Number.png)
 
@@ -124,15 +124,27 @@ __Strings__: Single and double quoted strings and their symmetrical escape seque
 
 ![Image of String rule](grammar/images/String.png)
 
+__DoubleQuotedString__: JSON-like double-quoted strings
+
 ![Image of DoubleQuotedString rule](grammar/images/DoubleQuotedString.png)
+
+__BEscape__: JSON-style Escapes
 
 ![Image of BEscape rule](grammar/images/BEscape.png)
 
+__SingleQuotedString__: XML-like single-quoted strings
+
 ![Image of StringQuotedString rule](grammar/images/StringQuotedString.png)
+
+__XEscape__: XML-style Escapes
 
 ![Image of XEscape rule](grammar/images/XEscape.png)
 
+__NamedCharacterReference__: 
+
 ![Image of NamedCharacterReference rule](grammar/images/NamedCharacterReference.png)
+
+__Hex__: Hex Characters
 
 ![Image of Hex rule](grammar/images/Hex.png)
 
@@ -140,16 +152,30 @@ __Discards__: Tokens to be discarded
 
 ![Image of Discard rule](grammar/images/Discard.png)
 
+__XComment__: XML-style comment
+
 ![Image of XComment rule](grammar/images/XComment.png)
+
+__XOther__: Other XML-content to be discarded
 
 ![Image of XOther rule](grammar/images/XOther.png)
 
+__JComment__: JSON-style comment
+
 ![Image of JComment rule](grammar/images/JComment.png)
+
+__LongComment__: Multi-line Javascript like comment
 
 ![Image of LongComment rule](grammar/images/LongComment.png)
 
+__EoLComment__: End of Line Javascript style comment
+
 ![Image of EoLComment rule](grammar/images/EoLComment.png)
 
+__Whitespace__:
+
 ![Image of Whitespace rule](grammar/images/Whitespace.png)
+
+__Shebang__:
 
 ![Image of Shebang rule](grammar/images/Shebang.png)
