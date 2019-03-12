@@ -1,4 +1,4 @@
-<project name="JinXML" basedir="java" default="clean-build">
+<project name="JinXML" basedir="." default="clean-build">
 
     <property name="src.dir"     value="src"/>
 
