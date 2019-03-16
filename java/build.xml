@@ -1,23 +1,47 @@
 <project name="JinXML" basedir="." default="clean-build">
 
     <property name="src.dir"     value="src"/>
+    <property name="dir.lib"     value="."/>
 
     <property name="build.dir"   value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
+    <property name="doc.dir"     value="${build.dir}/doc"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
 
+    <target name="init" description="setup project directories">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${doc.dir}"/>
+    </target>
+
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="${dir.lib}">
+                <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
     </target>
 
     <target name="jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
         <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}" />
+    </target>
+
+    <!-- Generate javadocs for current project into ${doc.dir} -->
+    <target name="doc" depends="init" description="generate documentation">
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}">
+            <classpath>
+                <fileset dir="${dir.lib}">
+                <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javadoc>
     </target>
 
     <target name="clean-build" depends="clean,jar"/>
