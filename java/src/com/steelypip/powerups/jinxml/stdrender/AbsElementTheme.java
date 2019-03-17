@@ -8,7 +8,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.jinxml.Element;
 
-/**
+/*
  * Elements have three
  * parts: name, attributes and links. The general pattern they print 
  * to is:

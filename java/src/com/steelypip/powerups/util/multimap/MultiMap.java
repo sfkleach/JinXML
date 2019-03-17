@@ -80,7 +80,7 @@ public interface MultiMap< K, V > {
 	
 	/** 
 	 * Returns list of all key-value pairs contained in this 
-	 * multimap/ 
+	 * multimap.
 	 */
 	List< Map.Entry< K, V > > entriesToList();
 	
@@ -167,7 +167,6 @@ public interface MultiMap< K, V > {
 	 * Stores a key-value pair in this multimap for each of values, all using the same key, key. 
 	 * @param key
 	 * @param values
-	 * @return
 	 */
 	default void addAll( K key, Iterable< ? extends V > values ) {
 		for ( V v : values ) {
@@ -178,7 +177,6 @@ public interface MultiMap< K, V > {
 	/**
 	 * Stores a key-value pair in this multimap for each of values, in the order supplied. 
 	 * @param values
-	 * @return
 	 */
 	default void addAllEntries( Iterable< ? extends Map.Entry< ? extends K, ? extends V > > values ) {
 		for ( Map.Entry< ? extends K, ? extends V > e : values ) {
@@ -213,7 +211,6 @@ public interface MultiMap< K, V > {
 	/**
 	 * Removes all values associated with the key key.
 	 * @param key
-	 * @return
 	 */
 	void removeEntries( K key );
 	
@@ -222,7 +219,6 @@ public interface MultiMap< K, V > {
 	 * values for that key.
 	 * @param key
 	 * @param values
-	 * @return
 	 */
 	void setValues( K key, Iterable<? extends V> values );
 	

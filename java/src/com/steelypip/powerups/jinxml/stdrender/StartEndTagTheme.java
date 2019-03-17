@@ -7,7 +7,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.jinxml.Element;
 
-/**
+/*
  * 		<		doStartElement( String name, boolean hasAttributes, boolean hasLinks )
  *		NAME	doName( String name )
  *				doStartAttributes( boolean hasAttributes, boolean hasLinks )

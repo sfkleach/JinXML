@@ -1026,7 +1026,7 @@ public interface Element {
 	 * boolean value as a true/false Boolean. If the element does not
 	 * represent a JSON Boolean, returns otherwise.
 	 * @param otherwise the fallback value
-	 * @returnhe boolean value or otherwise
+	 * @return the boolean value or otherwise
 	 */
 	Boolean getBooleanValue( Boolean otherwise );
 	
