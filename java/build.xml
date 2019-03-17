@@ -1,10 +1,12 @@
 <project name="JinXML" basedir="." default="clean-build">
 
     <property name="src.dir"     value="src"/>
-    <property name="dir.lib"     value="."/>
+    <property name="test.dir"    value="test"/>
+    <property name="lib.dir"     value="lib"/>
 
     <property name="build.dir"   value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="test.classes.dir" value="${build.dir}/testclasses"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
     <property name="doc.dir"     value="${build.dir}/doc"/>
 
@@ -12,17 +14,24 @@
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="init" description="setup project directories">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${doc.dir}"/>
-    </target>
-
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
             <classpath>
-                <fileset dir="${dir.lib}">
-                <include name="**/*.jar" />
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="compileTest" depends="jar">
+        <mkdir dir="${test.classes.dir}"/>
+        <javac srcdir="${test.dir}" destdir="${test.classes.dir}" includeantruntime="false">
+            <classpath>
+                <pathelement location="${jar.dir}/${ant.project.name}.jar"/>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar" />
                 </fileset>
             </classpath>
         </javac>
@@ -33,17 +42,55 @@
         <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}" />
     </target>
 
+    <target name="jarTest" depends="jar,compileTest">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}-test.jar" basedir="${test.classes.dir}" />
+    </target>
+
     <!-- Generate javadocs for current project into ${doc.dir} -->
-    <target name="doc" depends="init" description="generate documentation">
+    <target name="doc" description="generate documentation">
+        <mkdir dir="${doc.dir}"/>
         <javadoc sourcepath="${src.dir}" destdir="${doc.dir}">
             <classpath>
-                <fileset dir="${dir.lib}">
-                <include name="**/*.jar" />
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar" />
                 </fileset>
             </classpath>
         </javadoc>
     </target>
 
-    <target name="clean-build" depends="clean,jar"/>
+    <target name="test" depends="jarTest">
+        <!-- Alternative when ant screws up ClassPathSuite.
+        <java classname="com.steelypip.powerups.RunAllTests" fork="true">
+            <classpath>
+                <pathelement location="${jar.dir}/${ant.project.name}.jar"/>
+                <pathelement location="${jar.dir}/${ant.project.name}-test.jar"/>
+                <pathelement location="${lib.dir}/junit-4.12.jar"/>
+                <pathelement location="${lib.dir}/hamcrest-all-1.3.jar"/>
+                <pathelement location="${lib.dir}/cpsuite-1.2.6.jar"/>
+            </classpath>
+            <arg value="com.steelypip.powerups.RunAllTests"/>
+        </java>
+        -->
+
+        <!-- 
+            Using fork is essential because ClassPathSuite will otherwise 
+            scan ant's own class-path and find no tests.
+        -->
+        <junit fork="true">
+            <test name="com.steelypip.powerups.RunAllTests"/>
+            <classpath>
+                <pathelement location="${jar.dir}/${ant.project.name}.jar"/>
+                <pathelement location="${jar.dir}/${ant.project.name}-test.jar"/>
+                <pathelement location="${lib.dir}/junit-4.12.jar"/>
+                <pathelement location="${lib.dir}/hamcrest-all-1.3.jar"/>
+                <pathelement location="${lib.dir}/cpsuite-1.2.6.jar"/>
+            </classpath>    
+            <formatter type="brief" usefile="false"/>
+        </junit>
+
+    </target>
+
+    <target name="clean-build" depends="clean,jar,doc,test"/>
 
 </project>
