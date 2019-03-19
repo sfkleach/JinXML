@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.steelypip.powerups.jinxml</groupId>
+	<artifactId>jinxml</artifactId>
+	<version>1.0.0-review</version>
+	<packaging>jar</packaging>
+	<name>JinXML</name>
+	<description>JSON in XML - a clean and practical fusion of JSON and minimal XML syntax.</description>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<scriptSourceDirectory>scripts</scriptSourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<outputDirectory>target/classes</outputDirectory>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
+	</build>
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13-beta-1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.annotation</artifactId>
+			<version>2.2.200</version>
+		</dependency>
+	</dependencies>
+</project>
