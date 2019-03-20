@@ -1,3 +1,13 @@
 before_install: cd java
 language: java
 jdk: oraclejdk8
+after_success: 
+  - mvn javadoc:javadoc
+  - pwd
+  - cd ..
+  - mkdir build-gh-pages
+  - mv java/target/site/apidocs build-gh-pages/javadocs
+  - cp *.md build-gh-pages/
+  - echo "theme: jekyll-theme-slate" > build-gh-pages/_config.yml
+  - ls -R build-gh-pages
+  
