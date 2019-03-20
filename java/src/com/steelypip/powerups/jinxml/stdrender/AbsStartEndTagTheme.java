@@ -2,7 +2,7 @@ package com.steelypip.powerups.jinxml.stdrender;
 
 import com.steelypip.powerups.jinxml.Element;
 
-/**
+/*
  * 		<		doStartElement( String name, boolean hasAttributes, boolean hasMembers )
  *		NAME	doName( String name )
  *				doStartAttributes( boolean hasAttributes, boolean hasMembers )

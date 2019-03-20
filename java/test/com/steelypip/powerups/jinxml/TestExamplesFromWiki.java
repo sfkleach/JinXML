@@ -131,9 +131,9 @@ public class TestExamplesFromWiki {
 		Element e = p.readElement();
 		assertEquals( 3, e.countMembers() );
 		assertEquals( "text", e.getChild( 2 ).getName() );
-	}	
+	}
 	
-	final static String sean_hayes_example1 = 
+	final static String sean_hayes_example6 = 
 		"<test>\n" + 
 		"    foo : \"bar\";\n" + 
 		"    <test>\n" + 
@@ -142,14 +142,22 @@ public class TestExamplesFromWiki {
 		"</test>";
 	
 	@Test
-	public void testSeanHayesExample1() {
-		StdPushParser p = new StdPushParser( new StringReader( sean_hayes_example1 ), false );
+	public void testSeanHayesExample6() {
+		StdPushParser p = new StdPushParser( new StringReader( sean_hayes_example6 ), false );
 		Element e = p.readElement();
 		assertEquals( 2, e.countMembers() );
 		assertEquals( Element.STRING_ELEMENT_NAME, e.getChild( "foo", 0 ).getName() );
 		assertEquals( "test", e.getChild( 0 ).getName() );
 	}	
+
+	final static String example7 = "{ \"size\": 8, \"size\"+: 19, \"name\": \"Steve\", \"name\"+: \"Stephen\", \"name\"+: \"Steve\" }";
 	
-	
-	
+	@Test
+	public void testExample7() {
+		StdPushParser p = new StdPushParser( new StringReader( example7 ), false );
+		Element e = p.readElement();
+		assertEquals( 2, e.countChildren( "size" ) );
+		assertEquals( 3, e.countChildren( "name" ) );
+		assertEquals( 5, e.countMembers() );
+	}
 }
