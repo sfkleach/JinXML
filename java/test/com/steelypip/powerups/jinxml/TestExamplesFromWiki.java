@@ -131,6 +131,11 @@ public class TestExamplesFromWiki {
 		Element e = p.readElement();
 		assertEquals( 3, e.countMembers() );
 		assertEquals( "text", e.getChild( 2 ).getName() );
-	}	
+	}
+	
+	@Test
+	public void deliberateFail() {
+		fail( "Deliberate fail to check Travis-CI" );
+	}
 	
 }
