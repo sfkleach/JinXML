@@ -133,9 +133,14 @@ public class TestExamplesFromWiki {
 		assertEquals( "text", e.getChild( 2 ).getName() );
 	}
 	
-	@Test
-	public void deliberateFail() {
-		fail( "Deliberate fail to check Travis-CI" );
-	}
+	final static String example6 = "{ \"size\": 8, \"size\"+: 19, \"name\": \"Steve\", \"name\"+: \"Stephen\", \"name\"+: \"Steve\" }";
 	
+	@Test
+	public void testExample6() {
+		StdPushParser p = new StdPushParser( new StringReader( example6 ), false );
+		Element e = p.readElement();
+		assertEquals( 2, e.countChildren( "size" ) );
+		assertEquals( 3, e.countChildren( "name" ) );
+		assertEquals( 5, e.countMembers() );
+	}
 }
