@@ -27,7 +27,7 @@ site: site-java
 
 .PHONEY: clean
 clean: clean-java
-	true
+	rm -rf build-gh-pages/
 
 .PHONEY: build-java
 build-java:
