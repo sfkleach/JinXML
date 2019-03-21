@@ -24,7 +24,6 @@ site: site-java
 	cp -r grammar build-gh-pages/
 	cp -r images build-gh-pages/
 	echo "theme: jekyll-theme-modernist" > build-gh-pages/_config.yml
-	ls -R build-gh-pages
 
 .PHONEY: clean
 clean: clean-java
