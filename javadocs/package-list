@@ -1,0 +1,12 @@
+com.steelypip.powerups.alert
+com.steelypip.powerups.charrepeater
+com.steelypip.powerups.common
+com.steelypip.powerups.io
+com.steelypip.powerups.jinxml
+com.steelypip.powerups.jinxml.stdmodel
+com.steelypip.powerups.jinxml.stdparse
+com.steelypip.powerups.jinxml.stdrender
+com.steelypip.powerups.util.multimap
+com.steelypip.powerups.util.phoenixmultimap
+com.steelypip.powerups.util.phoenixmultimap.frozen
+com.steelypip.powerups.util.phoenixmultimap.mutable
