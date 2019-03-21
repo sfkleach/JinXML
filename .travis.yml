@@ -1,7 +1,9 @@
 language: java
 jdk: oraclejdk8
 script: make test
-after_success: make site
+after_success: 
+    - cd java && mvn install
+    - make site
 deploy:
     provider: pages
     skip-cleanup: true

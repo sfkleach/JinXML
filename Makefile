@@ -19,7 +19,10 @@ test: test-java
 .PHONEY: site
 site: site-java
 	mkdir -p build-gh-pages
-	mv java/target/site/apidocs build-gh-pages/javadocs
+	mkdir -p build-gh-pages/java
+	mkdir -p build-gh-pages/java/jarfiles
+	mv java/target/site/apidocs build-gh-pages/java/docs
+	mv java/target/jinxml*.jar build-gh-pages/java/jarfiles/
 	cp *.md build-gh-pages/
 	cp -r grammar build-gh-pages/
 	cp -r images build-gh-pages/
