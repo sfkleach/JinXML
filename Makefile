@@ -42,6 +42,7 @@ test-java:
 
 .PHONEY: site-java
 site-java:
+	cd java && mvn install
 	cd java && mvn javadoc:javadoc
 
 .PHONEY: clean-java
