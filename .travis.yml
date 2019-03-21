@@ -1,9 +1,7 @@
-before_install: cd java
 language: java
 jdk: oraclejdk8
-after_success: 
-    - cat Makefile
-    - make site
+script: make test
+after_success: make site
 deploy:
     provider: pages
     skip-cleanup: true
