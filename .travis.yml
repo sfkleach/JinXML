@@ -10,4 +10,4 @@ deploy:
     keep-history: true
     local-dir: build-gh-pages
     on:
-        branch: development
+        branch: master
