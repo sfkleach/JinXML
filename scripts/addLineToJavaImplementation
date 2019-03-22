@@ -1,0 +1,3 @@
+#!/bin/bash
+FILENAME=$(basename build-gh-pages/java/jarfiles/jinxml*.jar) 
+echo "* [JAR file](java/jarfiles/${FILENAME}) - download the latest build." >> build-gh-pages/JavaImplementation.md

@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 .PHONEY: all
 all:
 	# Valid targets are:
@@ -30,9 +32,7 @@ site: site-java
 	cp -r grammar build-gh-pages/
 	cp -r images build-gh-pages/
 	# Fix up the name of the JinXML jar file to be included in the JavaImplementation.md file.
-	/bin/echo -n "* [JAR file](java/jarfiles/" >> build-gh-pages/JavaImplementation.md
-	( cd build-gh-pages/java/jarfiles && /bin/echo -n jinxml*.jar ) >> build-gh-pages/JavaImplementation.md
-	/bin/echo ") - download the latest build." >> build-gh-pages/JavaImplementation.md
+	./scripts/addLineToJavaImplementation
 	# Fill in the jekyll config.
 	/bin/echo "theme: jekyll-theme-cayman" > build-gh-pages/_config.yml
 
