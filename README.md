@@ -1,4 +1,4 @@
-# JinXML
+# JinXML [![Build Status](https://travis-ci.org/sfkleach/JinXML.svg?branch=master)](https://travis-ci.org/sfkleach/JinXML)
 
 JSON in XML - a clean and practical fusion of JSON and minimal XML syntax. 
 
