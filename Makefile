@@ -30,9 +30,11 @@ site: site-java
 	cp -r grammar build-gh-pages/
 	cp -r images build-gh-pages/
 	# Fix up the name of the JinXML jar file to be included in the JavaImplementation.md file.
-	echo "* [JAR file](java/jarfiles/"`basename java/target/jinxml*.jar`") - download the latest build." >> build-gh-pages/JavaImplementation.md
+	/bin/echo -n "* [JAR file](java/jarfiles/" >> build-gh-pages/JavaImplementation.md
+	( cd build-gh-pages/java/jarfiles && /bin/echo -n jinxml*.jar ) >> build-gh-pages/JavaImplementation.md
+	/bin/echo ") - download the latest build." >> build-gh-pages/JavaImplementation.md
 	# Fill in the jekyll config.
-	echo "theme: jekyll-theme-modernist" > build-gh-pages/_config.yml
+	/bin/echo "theme: jekyll-theme-cayman" > build-gh-pages/_config.yml
 
 .PHONEY: clean
 clean: clean-java
@@ -40,17 +42,17 @@ clean: clean-java
 
 .PHONEY: build-java
 build-java:
-	cd java && mvn compile
+	cd java && mvn -q compile
 
 .PHONEY: test-java
 test-java:
-	cd java && mvn test
+	cd java && mvn -q test
 
 .PHONEY: site-java
 site-java:
-	cd java && mvn install
-	cd java && mvn javadoc:javadoc
+	cd java && mvn -q install
+	cd java && mvn -q javadoc:javadoc
 
 .PHONEY: clean-java
 clean-java:
-	cd java && mvn clean
+	cd java && mvn -q clean
