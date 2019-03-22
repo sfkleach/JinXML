@@ -30,8 +30,7 @@ site: site-java
 	cp -r grammar build-gh-pages/
 	cp -r images build-gh-pages/
 	# Fix up the name of the JinXML jar file to be included in the JavaImplementation.md file.
-	m4 -D __JARFILE__=`basename java/target/jinxml*.jar` JavaImplementation.md > JavaImplementation.tmp
-	mv JavaImplementation.tmp JavaImplementation.md
+	m4 -D __JARFILE__=$(basename java/target/jinxml*.jar) JavaImplementation.md > build-gh-pages/JavaImplementation.md
 	# Fill in the jekyll config.
 	echo "theme: jekyll-theme-modernist" > build-gh-pages/_config.yml
 
