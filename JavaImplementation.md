@@ -1,3 +1,4 @@
 # An Implementation of JinXML in Java
 
-* [JavaDocs](java/docs) - describes the API in the familiar javadoc format.
+To see this page properly, please go to https://sfkleach.github.com/JinXML/JavaImplementation.
+
