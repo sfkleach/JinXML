@@ -1,0 +1,9 @@
+#!/bin/bash
+# This script writes the content for the JavaImplementation.md file
+
+FILENAME=$(basename build-gh-pages/java/jarfiles/jinxml*.jar)
+
+echo '# An Implementation of JinXML in Java'
+echo ""
+echo '* [JavaDocs](java/docs) - describes the API in the familiar javadoc format.'
+echo "* [JAR file](java/jarfiles/${FILENAME}) - download the latest build."

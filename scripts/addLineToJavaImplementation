@@ -1,8 +1,0 @@
-#!/bin/bash
-FILENAME=$(basename build-gh-pages/java/jarfiles/jinxml*.jar)
-MDFILE=build-gh-pages/JavaImplementation.md
-
-echo "# An Implementation of JinXML in Java" > $MDFILE
-echo "" > $MDFILE
-echo " [JavaDocs](java/docs) - describes the API in the familiar javadoc format." >> $MDFILE
-echo "* [JAR file](java/jarfiles/${FILENAME}) - download the latest build." >> $MDFILE
