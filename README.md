@@ -2,6 +2,9 @@
 
 JSON in XML - a clean and practical fusion of JSON and minimal XML syntax. 
 
+{:toc}
+This is a test
+
 ## What Is It?
 
 JinXML is an extension of JSON syntax that adds XML-like start, end and standalone tags that adds convenience and expressive power to JSON suitable for representing hierarchical or 'tree-like' data. 
