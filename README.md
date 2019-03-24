@@ -10,6 +10,7 @@ _Read more_:
 * [List of features](Features.md)
 * [JinXML grammar](Grammar.md)
 * [Implementations](Implementations.md)
+* [Frequently Asked Questions](FAQ.md)
 
 
 ## Example
