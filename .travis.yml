@@ -1,3 +1,13 @@
-before_install: cd java
 language: java
 jdk: oraclejdk8
+script: make test
+after_success:
+    - make site
+deploy:
+    provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN
+    keep-history: true
+    local-dir: build-gh-pages
+    on:
+        branch: master

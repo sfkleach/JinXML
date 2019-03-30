@@ -1,4 +1,4 @@
-# JinXML
+# JinXML [![Build Status](https://travis-ci.org/sfkleach/JinXML.svg?branch=master)](https://travis-ci.org/sfkleach/JinXML)
 
 JSON in XML - a clean and practical fusion of JSON and minimal XML syntax. 
 
@@ -9,6 +9,8 @@ JinXML is an extension of JSON syntax that adds XML-like start, end and standalo
 _Read more_:
 * [List of features](Features.md)
 * [JinXML grammar](Grammar.md)
+* [Implementations](Implementations.md)
+* [Frequently Asked Questions](FAQ.md)
 
 
 ## Example
