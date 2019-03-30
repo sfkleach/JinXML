@@ -1,7 +1,5 @@
 # Frequently Asked Questions
 
-{:toc}
-
 ## Q: Why another notation?
 
 This is definitely the most frequently asked question. JinXML adds some much needed features to JSON. The first is that you can use XML-like tags to assign types to objects directly, rather than indirectly via the referencing key e.g.
