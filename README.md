@@ -2,9 +2,6 @@
 
 JSON in XML - a clean and practical fusion of JSON and minimal XML syntax. 
 
-{:toc}
-This is a test
-
 ## What Is It?
 
 JinXML is an extension of JSON syntax that adds XML-like start, end and standalone tags that adds convenience and expressive power to JSON suitable for representing hierarchical or 'tree-like' data. 
@@ -21,19 +18,19 @@ Here's a simple example that fits in some of the features of JinXML.
 ```
 <markers> 
     <marker>
-        /* When a field has multiple values it's natural to use parentheses */
+        /* Start-end tags can act like objects or arrays */
         name:       "Rixos The Palm Dubai",
         location:   [ 25.1212, 55.1535 ]
     </marker>
     <marker>
         // Commas can be omitted or swapped for semi-colons. 
-        name:       'Shangri-La Hotel';
+        name:       "Shangri-La Hotel";
         location:   [ 25.2084 55.2719 ]
     </marker>
     <marker>
         <!-- Trailing commas are allowed. Also single-quotes, as in HTML. -->
-        name:       "Grand Hyatt";
-        location:   [ 25.2285, 55.3273, ]
+        name:       'Grand Hyatt',
+        location:   [ 25.2285, 55.3273, ],
     </marker>
 </markers>
 ```
