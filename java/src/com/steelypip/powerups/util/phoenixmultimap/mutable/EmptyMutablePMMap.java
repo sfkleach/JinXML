@@ -77,7 +77,5 @@ public class EmptyMutablePMMap< K, V > extends AbsEmptyMutablePMMap< K, V > impl
 	public PhoenixMultiMap< K, V > freezeByPhoenixing() {
 		return EmptyFrozenPMMap.INSTANCE;
 	}
-
-	
 	
 }
