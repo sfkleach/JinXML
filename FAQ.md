@@ -65,7 +65,7 @@ Whitespace is discarded as part of tokenisation but, as you might expect, is use
 
 ## Q: Can I also write `[1; 2; 3;]` (not that I’d want to)? 
 
-A: Yes (and I wouldn't want to either). The semi-colon is added because (1) some JSON variants include it and we strive to be inclusive (2) when the members have propositional semantics it sometimes reads nicely and (3) it fits within the overarching vision of JinXML. 
+A: Yes (even if it looks odd). The semi-colon is added because (1) some JSON variants include it and we strive to be inclusive (2) when the members have propositional semantics it sometimes reads nicely and (3) it fits within the overarching vision of JinXML.
 
 Another example of when it makes sense to use semi-colons is when writing data with mixed record-and-array contents. For example:
 
