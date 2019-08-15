@@ -145,6 +145,7 @@ public abstract class ViewPhoenixMultiMapAsMultiMap< K, V > implements MultiMap<
 	public boolean equals( final Object object ) {
 		if ( object == null ) return false;
 		if ( ! ( object instanceof MultiMap ) ) return false;
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final MultiMap< Object, Object > that = (MultiMap)object;
 		if ( this.sizeEntries() != that.sizeEntries() ) return false;
 		for ( K k : this.keySet() ) {

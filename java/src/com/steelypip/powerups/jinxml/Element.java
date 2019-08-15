@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.common.NullIndenter;
+import com.steelypip.powerups.common.Sequence;
 import com.steelypip.powerups.common.StdIndenter;
 import com.steelypip.powerups.io.StringPrintWriter;
 import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
@@ -272,8 +273,15 @@ public interface Element {
 	 * element. It is provided for the efficient iteration over the attributes of an element. 
 	 * @return iterable for the attributes.
 	 */
-	Attribute.Iterable attributes();
+	Sequence< Attribute > attributes();
 	
+	/**
+	 * Return a result that can be used to generate an iterator over the attributes of the
+	 * element that have distinct keys.
+	 * @return iterable for the attributes.
+	 */
+	Sequence< Attribute > firstAttributes();
+
 	/**
 	 * Creates a new element based on the subject that has the same head and
 	 * attributes but with a transformed set of children. The children are
@@ -586,7 +594,28 @@ public interface Element {
 	 * of the guarantee that once created they are insensitive to mutation.
 	 * @return iterable for the members.
 	 */
-	Member.Iterable members();
+	Sequence< Member > members();
+	
+	/**
+	 * Return a result that can be used to generate an iterator over the members of the
+	 * element that have distinct selectors i.e. if several members have the same selector
+	 * only the first will be used.
+	 * @return iterable for the members.
+	 */
+	Sequence< Member > firstMembers();
+	
+	/**
+	 * Return a result that can be used to generate an iterator over the children of the
+	 * element. It is provided for the efficient iteration over the children of an element.
+	 * Frozen elements are likely to be much more efficient than mutable elements because
+	 * of the guarantee that once created they are insensitive to mutation.
+	 * @return iterable for the members.
+	 */
+	Sequence< Element > children( String selector );
+	
+	default Sequence< Element > children() {
+		return this.children( DEFAULT_SELECTOR ); 
+	}
 
 	/**
 	 * Creates a new element based on the subject that has the same head and
@@ -1128,24 +1157,31 @@ public interface Element {
 	 * @param key the shared key
 	 * @param values a set of values provided as an iterable
 	 */
-	void setValues( @NonNull String key, Iterable< String > values );
+	void setValues( @NonNull String key, java.lang.Iterable< String > values );
 	
 	/**
 	 * Sets the first attribute of an element with the given key to the given value
-	 * the same key. 
 	 * @param key the shared key
-	 * @param value the value to add
+	 * @param value the value to set
 	 */
 	void setValue( @NonNull String key, @NonNull String value );
 	
+	default void setFirstValue( @NonNull String key, @NonNull String value ) {
+		
+	}
+	
+	default void setLastValue( @NonNull String key, @NonNull String value ) {
+		this.setValue( key, true, 1, value );
+	}	
+	
 	/**
 	 * Sets the n-th attribute of an element with the given key to the given value
-	 * the same key. 
 	 * @param key the shared key
+	 * @param reverse TODO
 	 * @param position the index of the attribute to update
 	 * @param value the value to add
 	 */
-	void setValue( @NonNull String key, int position, @NonNull String value );
+	void setValue( @NonNull String key, boolean reverse, int position, @NonNull String value );
 	
 	/**
 	 * Adds an entry to the attributes of an element.
@@ -1153,6 +1189,7 @@ public interface Element {
 	 * @param value value of the entry being added
 	 */
 	void addLastValue( @NonNull String key, @NonNull String value );
+
 	
 	/**
 	 * Adds an entry to the attributes of an element.
@@ -1243,7 +1280,7 @@ public interface Element {
 	 * @param key the given key
 	 * @param children the sequence of elements that will form the children of the new elements in order
 	 */
-	void setChildren( @NonNull String key, Iterable< Element > children );
+	void setChildren( @NonNull String key, java.lang.Iterable< Element > children );
 
 	/**
 	 * Adds a new member with the given selector and child, which will be the
@@ -1513,11 +1550,11 @@ public interface Element {
 		return newBuilder( name, null, null );
 	}
 	
-	static Builder newBuilder( @NonNull String name, Attribute.Iterable attributes ) {
+	static Builder newBuilder( @NonNull String name, java.lang.Iterable< Attribute > attributes ) {
 		return newBuilder( name, attributes, null );
 	}
 	
-	static Builder newBuilder( @NonNull String name, Attribute.Iterable attributes, Member.Iterable members ) {
+	static Builder newBuilder( @NonNull String name, java.lang.Iterable< Attribute > attributes, java.lang.Iterable< Member > members ) {
 		StdBuilder builder = new StdBuilder( false, true );
 		builder.startTagEvent( name );
 		if ( attributes != null ) {

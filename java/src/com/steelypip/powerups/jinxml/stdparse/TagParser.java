@@ -137,14 +137,14 @@ public class TagParser extends TokeniserBaseClass {
 			final @NonNull String key = this.gatherNameOrQuotedName();
 			
 			this.eatWhiteSpace();
-			final boolean repeat_ok = this.tryReadChar( '+' );
+			final boolean solo = !this.tryReadChar( '+' );
 			final char nch = this.nextChar();
 			this.eatWhiteSpace();
 			if ( nch != '=' && nch != ':' ) {
 				throw new Alert( "Expected = or :" ).culprit( "Received", nch );
 			}
 			final String value = this.gatherString();
-			handler.attributeEvent( key, value, repeat_ok );
+			handler.attributeEvent( key, value, solo );
 		}
 	}
 

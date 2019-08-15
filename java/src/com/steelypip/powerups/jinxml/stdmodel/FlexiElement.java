@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.common.Sequence;
 import com.steelypip.powerups.common.StdPair;
 import com.steelypip.powerups.io.StringPrintWriter;
 import com.steelypip.powerups.jinxml.Attribute;
@@ -281,7 +282,7 @@ public class FlexiElement implements Element {
 		public String set( int index, String value ) {
 			this.checkPermissionToUpdate();
 			final String old_value = this.element.getValue( this.key, index );
-			this.element.setValue( this.key, index, Objects.requireNonNull( value ) );
+			this.element.setValue( this.key, false, index, Objects.requireNonNull( value ) );
 			return old_value;
 		}
 
@@ -331,9 +332,9 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Attribute.Iterable attributes() {
+	public Sequence< Attribute > attributes() {
 		if ( this.isFrozen() ) {
-			return new Attribute.Iterable() {
+			return new Sequence< Attribute >() {
 				@Override
 				public Iterator< Attribute > iterator() {
 					final Iterator< Map.Entry< String, String > > it = FlexiElement.this.attributes.iterator();
@@ -357,7 +358,7 @@ public class FlexiElement implements Element {
 				final Map.Entry< String, String > e = it.next();
 				list.add( new StdAttribute( e ) );
 			}
-			return Attribute.fromIterable( list );
+			return Sequence.fromIterable( list );
 		}
 	}
 	
@@ -608,9 +609,20 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public Member.Iterable members() {
+	public Sequence< Element > children( final String selector ) {
 		if ( this.isFrozen() ) {
-			return new Member.Iterable() {
+			java.lang.Iterable< Element > c = FlexiElement.this.members.valuesToIterable( selector );
+			return Sequence.fromIterable( c );
+		} else {
+			java.lang.Iterable< Element > c = FlexiElement.this.members.valuesToIterable( selector );
+			return Sequence.fromIterable( c ).copy();
+		}
+	}
+	
+	@Override
+	public Sequence< Member > members() {
+		if ( this.isFrozen() ) {
+			return new Sequence< Member >() {
 				@Override
 				public Iterator< Member > iterator() {
 					final Iterator< Map.Entry< String, Element > > it = FlexiElement.this.members.iterator();
@@ -636,7 +648,7 @@ public class FlexiElement implements Element {
 				final Map.Entry< String, Element > e = it.next();
 				list.add( new StdMember( e ) );
 			}
-			return Member.fromIterable( list );
+			return Sequence.fromIterable( list );
 		}
 	}
 	
@@ -659,12 +671,16 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public void setValue( @NonNull String key, int position, @NonNull String value  ) {
+	public void setValue( @NonNull String key, boolean reverse, int position, @NonNull String value  ) {
+		if ( reverse ) {
+			final int n = this.countValues( key );
+			position = n - 1 - position;
+		}
 		this.attributes = this.attributes.updateValue( key, position, value );
 	}
 	
 	@Override
-	public void setValues( @NonNull String key, Iterable< String > values ) {
+	public void setValues( @NonNull String key, java.lang.Iterable< String > values ) {
 		this.attributes = this.attributes.clearAllEntries();
 		for ( String v : values ) {
 			this.attributes = this.attributes.add( key, Objects.requireNonNull( v ) );
@@ -740,7 +756,7 @@ public class FlexiElement implements Element {
 	}
 	
 	@Override
-	public void setChildren( @NonNull String key, Iterable< Element > children ) {
+	public void setChildren( @NonNull String key, java.lang.Iterable< Element > children ) {
 		this.members = this.members.clearAllEntries();
 		for ( Element v : children ) {
 			this.members = this.members.add( key, Objects.requireNonNull( v ) );
@@ -995,6 +1011,16 @@ public class FlexiElement implements Element {
 		final StringPrintWriter pw = new StringPrintWriter();
 		this.print( pw );
 		return pw.toString();
+	}
+
+	@Override
+	public Sequence< Attribute > firstAttributes() {
+		return this.attributes.oneEntryPerKey().map( e -> Attribute.newAttribute( e.getKey(), e.getValue() ) );
+	}
+
+	@Override
+	public Sequence< Member > firstMembers() {
+		return this.members.oneEntryPerKey().map( e -> Member.newMember( e.getKey(), e.getValue() ) );
 	}
 	
 }

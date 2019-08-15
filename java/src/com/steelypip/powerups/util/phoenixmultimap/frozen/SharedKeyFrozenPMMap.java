@@ -2,10 +2,15 @@ package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.common.EmptyIterator;
+import com.steelypip.powerups.common.Sequence;
+import com.steelypip.powerups.common.SingletonIterator;
 import com.steelypip.powerups.util.phoenixmultimap.FrozenMarkerInterface;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.AbsSharedKeyMutablePMMap;
@@ -28,8 +33,6 @@ public class SharedKeyFrozenPMMap< Key, Value > extends AbsSharedKeyMutablePMMap
 		this.values_list = new ArrayList< Value >( values );
 	}
 	
-
-
 	@Override
 	public PhoenixMultiMap< Key, Value > clearAllEntries() {
 		throw new UnsupportedOperationException();
@@ -99,6 +102,28 @@ public class SharedKeyFrozenPMMap< Key, Value > extends AbsSharedKeyMutablePMMap
 		return this;
 	}
 
+	@Override
+	public Sequence< Key > keysToIterable() {
+		return new Sequence< Key >() {
+			@Override
+			public Iterator< Key > iterator() {
+				return new SingletonIterator< Key >( SharedKeyFrozenPMMap.this.sharedKey );
+			}
+		};
+	}
 
+	@Override
+	public Sequence< Value > valuesToIterable( Key key ) {
+		if ( key.equals( this.sharedKey ) ) {
+			return Sequence.fromIterable( Collections.unmodifiableList( this.values_list ) );
+		} else {
+			return new Sequence< Value >() {
+				@Override
+				public Iterator< Value > iterator() {
+					return new EmptyIterator< Value >();
+				}
+			};
+		}
+	}
 
 }

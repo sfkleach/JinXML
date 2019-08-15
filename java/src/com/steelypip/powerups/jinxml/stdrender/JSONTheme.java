@@ -26,7 +26,7 @@ public class JSONTheme implements Theme< Element > {
 			} else if ( x.isArray() ) {
 				fwriter.print( '[' );
 				boolean is_first = true;
-				for ( Member m : x.members().with( Member::hasDefaultSelector ) ) {
+				for ( Member m : x.members().filter( Member::hasDefaultSelector ) ) {
 					if ( ! is_first ) {
 						fwriter.print( "," );
 					}
@@ -39,7 +39,7 @@ public class JSONTheme implements Theme< Element > {
 			} else if ( x.isObject() ) {
 				fwriter.print( '{' );
 				boolean is_first = true;
-				for ( Member m : x.members().uniqueSelector() ) {
+				for ( Member m : x.firstMembers() ) {
 					if ( ! is_first ) {
 						fwriter.print( "," );
 					}

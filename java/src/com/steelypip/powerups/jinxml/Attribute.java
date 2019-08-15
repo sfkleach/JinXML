@@ -9,7 +9,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.jinxml.stdmodel.StdAttribute;
-import com.steelypip.powerups.jinxml.stdmodel.StdMember;
 
 /**
  * Attributes represent a (key, value) pair. All attributes of an 

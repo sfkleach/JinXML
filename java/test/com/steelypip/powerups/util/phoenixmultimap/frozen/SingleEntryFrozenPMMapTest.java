@@ -2,6 +2,7 @@ package com.steelypip.powerups.util.phoenixmultimap.frozen;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.steelypip.powerups.common.Sequence;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 
 public class SingleEntryFrozenPMMapTest {
@@ -235,5 +237,23 @@ public class SingleEntryFrozenPMMapTest {
 	public void testEqualsObject() {
 		assertTrue( this.pmmap.equals( this.pmmap ) );
 	}
+	
+	@Test
+	public void testOneEntryPerKey_SingleEntryFrozenMap() {
+		Sequence< Map.Entry< String, String >> seq = this.pmmap.oneEntryPerKey();
+		int count_key0 = 0;
+		int count_else = 0;
+		for ( Map.Entry< String, String > i : seq ) {
+			String key = i.getKey();
+			if ( "key0".equals( key ) ) {
+				count_key0 += 1;
+			} else {
+				count_else += 1;
+			}
+		}
+		assertSame( 1, count_key0 );
+		assertSame( 0, count_else );
+	}
+
 
 }

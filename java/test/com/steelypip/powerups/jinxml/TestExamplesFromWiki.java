@@ -145,6 +145,10 @@ public class TestExamplesFromWiki {
 	public void testSeanHayesExample6() {
 		StdPushParser p = new StdPushParser( new StringReader( sean_hayes_example6 ), false );
 		Element e = p.readElement();
+		for ( Member m : e.members() ) {
+			String selector = m.getSelector();
+			Element child = m.getChild();
+		}
 		assertEquals( 2, e.countMembers() );
 		assertEquals( Element.STRING_ELEMENT_NAME, e.getChild( "foo", 0 ).getName() );
 		assertEquals( "test", e.getChild( 0 ).getName() );
@@ -160,4 +164,14 @@ public class TestExamplesFromWiki {
 		assertEquals( 3, e.countChildren( "name" ) );
 		assertEquals( 5, e.countMembers() );
 	}
+	
+	@Test
+	public void fromJavaProgramming() {
+		Element element = Element.fromString( "<data myKey='alpha' myKey+='beta' myKey+='gamma'/>");
+		String alpha = element.getValue( "myKey" );
+		String beta = element.getValue( "myKey", 1 );
+		String gamma = element.getLastValue( "myKey" );
+		assert "alpha".equals( alpha ) && "beta".equals( beta ) && "gamma".equals( gamma );
+	}
+	
 }

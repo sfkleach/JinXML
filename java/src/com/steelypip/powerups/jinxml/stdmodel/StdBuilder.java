@@ -1,16 +1,24 @@
 package com.steelypip.powerups.jinxml.stdmodel;
 
-import java.util.ArrayDeque;
+import static com.steelypip.powerups.jinxml.Element.ARRAY_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.BOOLEAN_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.FLOAT_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.INT_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.NULL_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.OBJECT_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.ROOT_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.ROOT_SELECTOR;
+import static com.steelypip.powerups.jinxml.Element.STRING_ELEMENT_NAME;
+import static com.steelypip.powerups.jinxml.Element.VALUE_KEY_FOR_LITERAL_CONSTANTS;
 
+import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.jinxml.Builder;
 import com.steelypip.powerups.jinxml.Element;
-import static com.steelypip.powerups.jinxml.Element.*;
 
 public class StdBuilder implements Builder {
 

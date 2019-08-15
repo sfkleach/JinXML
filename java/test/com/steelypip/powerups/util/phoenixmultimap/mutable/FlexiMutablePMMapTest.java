@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.steelypip.powerups.common.Sequence;
 import com.steelypip.powerups.util.phoenixmultimap.PhoenixMultiMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.FlexiMutablePMMap;
 
@@ -211,6 +212,34 @@ public class FlexiMutablePMMapTest {
 	public void testSizeEntriesWithKey() {
 		assertEquals( 0, this.pmmap.sizeEntriesWithKey( "foo" ) );
 		assertEquals( 1, this.pmmap.sizeEntriesWithKey( "key0" ) );
+	}
+	
+	@Test
+	public void testOneEntryPerKey_Basic() {
+		this.pmmap = this.pmmap.add( "key0", "value1" );
+		this.pmmap = this.pmmap.add( "key0", "value2" );
+		this.pmmap = this.pmmap.add( "foo", "bar" );
+		Sequence< Map.Entry< String, String >> seq = this.pmmap.oneEntryPerKey();
+		int count_key0 = 0;
+		int count_key1 = 0;
+		int count_foo = 0;
+		int count_else = 0;
+		for ( Map.Entry< String, String > i : seq ) {
+			String key = i.getKey();
+			if ( "key0".equals( key ) ) {
+				count_key0 += 1;
+			} else if ( "key1".equals( key ) ) {
+				count_key1 += 1;
+			} else if ( "foo".equals(  key  ) ) {
+				count_foo += 1;
+			} else {
+				count_else += 1;
+			}
+		}
+		assertSame( 1, count_key0 );
+		assertSame( 1, count_key1 );
+		assertSame( 1, count_foo );
+		assertSame( 0, count_else );
 	}
 
 	@Test

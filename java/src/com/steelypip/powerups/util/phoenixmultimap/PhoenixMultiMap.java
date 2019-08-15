@@ -6,11 +6,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.steelypip.powerups.common.Sequence;
 import com.steelypip.powerups.util.phoenixmultimap.frozen.EmptyFrozenPMMap;
 import com.steelypip.powerups.util.phoenixmultimap.mutable.EmptyMutablePMMap;
 
@@ -143,6 +145,32 @@ public interface PhoenixMultiMap< K, V > extends Iterable< Map.Entry< K, V > > {
 	
 	default Iterator< Map.Entry< K, V > > iterator() {
 		return this.entriesToList().iterator();
+	}
+	
+	default Sequence< Entry< K, V > > entriesToIterable() {
+		return Sequence.fromIterable( this.entriesToList() );
+	}
+
+	default Sequence< K > keysToIterable() {
+		return Sequence.fromIterable( this.keySet() );
+	}
+
+	default Sequence< V > valuesToIterable( K key ) {
+		return Sequence.fromIterable( this.getAll( key ) );
+	}
+	
+	default Sequence< Map.Entry< K, V > > oneEntryPerKey() {
+		final Set< K > seen = new TreeSet<>();
+		return this.entriesToIterable().filter(
+			( Map.Entry< K, V > t ) -> {
+				K k = t.getKey();
+				boolean unseen = ! seen.contains( k );
+				if ( unseen ) {
+					seen.add( k );
+				}
+				return unseen;				
+			}
+		);
 	}
 	
 	default Stream< Map.Entry< K, V > > stream() {
