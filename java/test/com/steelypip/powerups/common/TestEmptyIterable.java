@@ -23,30 +23,20 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestIterators {
+public class TestEmptyIterable {
 
 	@Before
 	public void setUp() throws Exception {
 	}
 
 	@Test
-	public void testEmptyIterable() {
+	public void testIterator_HasNext() {
 		assertFalse( new EmptyIterable< Object >().iterator().hasNext() );
 	}
 	
 	@Test(expected=Exception.class)
-	public void failNext() {
+	public void testIterator_Next() {
 		new EmptyIterable< Object >().iterator().next();
-	}
-	
-	@Test
-	public void testEmptyIterator() {
-		assertFalse( new EmptyIterator< Object >().hasNext() );
-	}
-	
-	@Test(expected=Exception.class)
-	public void failIteratorNext() {
-		new EmptyIterator< Object >().next();
 	}
 
 }
