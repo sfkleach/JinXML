@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class SingletonIterator< Item > implements Iterator< Item > {
 	
 	private Item item;
-	private boolean has_next = false;
+	private boolean has_next = true;
  
 	public SingletonIterator( Item item ) {
 		super();
