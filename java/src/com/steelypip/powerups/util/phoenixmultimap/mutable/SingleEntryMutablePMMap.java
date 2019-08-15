@@ -105,5 +105,5 @@ public class SingleEntryMutablePMMap< K, V > extends AbsSingleEntryMutablePMMap<
 	public PhoenixMultiMap< K, V > freezeByPhoenixing() {
 		return new SingleEntryFrozenPMMap< K, V >( this );
 	}
-	
+
 }
