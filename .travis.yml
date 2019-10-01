@@ -1,5 +1,6 @@
+dist: bionic
 language: java
-jdk: oraclejdk8
+jdk: oraclejdk11
 script: make test
 after_success:
     - make site
