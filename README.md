@@ -10,6 +10,7 @@ _Read more_:
 * [List of features](Features.md)
 * [JinXML grammar](Grammar.md)
 * [Implementations](Implementations.md)
+* [Frequently Asked Questions](FAQ.md)
 
 
 ## Example
@@ -67,7 +68,7 @@ N.B. MinXML is a strict subset of both JinXML and XML.
 As a notation, JinXML is well-suited to complex, hierarchical data where the lack of inter-operatability with third party applications isn't an issue. It's a bit more flexible and comfortable than either JSON or XML, as outlined below, but its real advantage is that the processing model is very simple. This is very helpful when working with complex data transformations e.g. representing domain specific languages.
 
 _Read more_:
-* [Tips for using JinXML](Tips.md)
+* [Programming with JinXML (Java)](JavaProgramming.md)
 
 
 ## Why another notation?
