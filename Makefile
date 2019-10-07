@@ -3,11 +3,13 @@ SHELL=/bin/bash
 .PHONEY: all
 all:
 	# Valid targets are:
-	# 	- build: 	builds all the implementations 
-	#	- test:		runs all automated tests for all implementations
-	#	- site:		builds the site with automated docs for all implementations
-	#	- clean: 	cleans out all artefacts for all implementations
-	#	- all:		provides this summary!
+	# 	- build: 		builds all the implementations 
+	#	- test:			runs all automated tests for all implementations
+	#	- site:			builds the site with automated docs for all implementations
+	#	- clean: 		cleans out all artefacts for all implementations
+	#	- version:		echoes the version number (use with -s flag)
+	#	- set-version	updates (hard-codes) all files that reference the version 
+	#	- all:			provides this summary!
 
 
 .PHONEY: build
@@ -56,3 +58,12 @@ site-java:
 .PHONEY: clean-java
 clean-java:
 	cd java && mvn -q clean
+
+.PHONEY: version
+version:
+	echo "1.0.0"
+
+.PHONEY: set-version
+set-version:
+	python3 scripts/editPOM.py $(shell make -s version) < java/pom.xml > java/pom.xml.tmp
+	mv java/pom.xml.tmp java/pom.xml
