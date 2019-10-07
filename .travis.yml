@@ -4,6 +4,7 @@ jdk: oraclejdk11
 script: make test
 after_success:
     - make site
+    - make set-version
 deploy:
     provider: pages
     skip-cleanup: true
