@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.steelypip.powerups.jinxml</groupId>
 	<artifactId>jinxml</artifactId>
-	<version>1.0.0-review</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>JinXML</name>
 	<description>JSON in XML - a clean and practical fusion of JSON and minimal XML syntax.</description>
