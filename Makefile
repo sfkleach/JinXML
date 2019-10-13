@@ -37,6 +37,8 @@ site: site-java
 	./scripts/generateJavaImplementation > build-gh-pages/JavaImplementation.md
 	# Fill in the jekyll config.
 	/bin/echo "theme: jekyll-theme-cayman" > build-gh-pages/_config.yml
+	# This is needed to support the custom domain jinxml.org for the site.
+	/bin/echo "jinxml.org" > build-gh-pages/CNAME
 
 .PHONEY: clean
 clean: clean-java
