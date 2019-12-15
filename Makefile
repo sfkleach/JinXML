@@ -6,6 +6,7 @@ all:
 	# 	- build: 		builds all the implementations 
 	#	- test:			runs all automated tests for all implementations
 	#	- site:			builds the site with automated docs for all implementations
+	#   - release:		builds the file jinxml-$VERSION.zip
 	#	- clean: 		cleans out all artefacts for all implementations
 	#	- version:		echoes the version number (use with -s flag)
 	#	- set-version	updates (hard-codes) all files that reference the version 
@@ -40,9 +41,24 @@ site: site-java
 	# This is needed to support the custom domain jinxml.org for the site.
 	/bin/echo "jinxml.org" > build-gh-pages/CNAME
 
+.PHONEY: release
+release: site
+	mkdir -p _build
+	mv build-gh-pages _build/jinxml-$(shell make -s version)
+	( cd _build; zip -r jinxml-$(shell make -s version).zip jinxml-$(shell make -s version) )
+	( cd _build; tar cf - jinxml-$(shell make -s version) | gzip > jinxml-$(shell make -s version).tar.gz )
+	mv _build/*.{tar.gz,zip} .
+	rm -rf _build/
+	
 .PHONEY: clean
-clean: clean-java
-	rm -rf build-gh-pages/
+clean: clean-java clean-release
+	rm -rf build-gh-pages
+	rm -rf _build
+
+.PHONEY: clean-release
+clean-release:
+	rm -f jinxml-*.zip
+	rm -f jinxml-*.tar.gz
 
 .PHONEY: build-java
 build-java:
