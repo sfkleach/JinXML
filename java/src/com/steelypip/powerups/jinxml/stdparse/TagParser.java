@@ -26,6 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import com.steelypip.powerups.alert.Alert;
 import com.steelypip.powerups.charrepeater.CharRepeater;
 import com.steelypip.powerups.charrepeater.ReaderCharRepeater;
+import com.steelypip.powerups.jinxml.Element;
 import com.steelypip.powerups.jinxml.EventHandler;
 
 /**
@@ -169,8 +170,6 @@ public class TagParser extends TokeniserBaseClass {
 		return is_identifier ? this.handleIdentifier( handler, SelectorInfo.DEFAULT, x ) : this.handleString( handler, SelectorInfo.DEFAULT, x );
 	}
 	
-
-	
 	private boolean handleString( EventHandler handler, SelectorInfo selectorInfo, @NonNull String s ) {
 		this.sendStringEvent( handler, selectorInfo.getSelector( "string" ), s );
 		return true;
@@ -185,11 +184,25 @@ public class TagParser extends TokeniserBaseClass {
 		case "false":
 			this.sendBooleanEvent( handler, selectorInfo.getSelector(), identifier );
 			return true;
+		case "let":
+			this.level_tracker.pushLetBindings();
+			handler.startLetEvent( selectorInfo.getSelector() );
+			return true;
+		case "in":
+			this.level_tracker.popLetBindings();
+			handler.inLetEvent();
+			this.level_tracker.pushLetBody();
+			return true;
+		case "end":
+		case "endlet":
+			handler.endLetEvent();
+			this.level_tracker.popLetBody();
+			return true;
 		default:
-			throw new Alert( "Unrecognised identifier" ).culprit( "Identifier", identifier );
+			handler.identifierEvent( selectorInfo.getSelector(), identifier );
+			return true;
 		}
 	}
-	
 
 	private boolean readCoreTag( EventHandler handler, @NonNull SelectorInfo selectorInfo ) {
 		if ( this.tryReadChar( '[' ) ) {

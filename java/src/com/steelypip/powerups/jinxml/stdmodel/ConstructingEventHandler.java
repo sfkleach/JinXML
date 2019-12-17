@@ -75,8 +75,33 @@ public class ConstructingEventHandler implements EventHandler {
 	}
 
 	@Override
+	public void startLetEvent() {
+		this.accept( new Event.StartLetEvent() );
+	}
+
+	@Override
+	public void startLetEvent( @NonNull String selector ) {
+		this.accept( new Event.StartLetEvent( selector ) );
+	}
+	
+	@Override
+	public void inLetEvent() {
+		this.accept( new Event.InLetEvent() );
+	}
+
+	@Override
 	public void endObjectEvent() {
 		this.accept( new Event.EndObjectEvent() );
+	}
+
+	@Override
+	public void endLetEvent() {
+		this.accept( new Event.EndLetEvent() );
+	}
+	
+	@Override 
+	public void identifierEvent( @NonNull String selector, @NonNull String identifier ) {
+		this.accept( new Event.IdentifierEvent( selector, identifier ) );
 	}
 
 	@Override

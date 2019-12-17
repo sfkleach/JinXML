@@ -256,6 +256,47 @@ public abstract class Event {
 		}		
 	}
 	
+	// TODO: document
+	public static class StartLetEvent extends SelectorEvent {
+		public StartLetEvent() {
+			super( "" );
+		}
+		public StartLetEvent( @NonNull String selector ) {
+			super( selector );
+		}
+		@Override
+		public void sendTo( EventHandler handler ) {
+			handler.startLetEvent( this.selector );
+		}
+	}
+	
+	public static class InLetEvent extends Event {
+		@Override
+		public void sendTo( EventHandler handler ) {
+			handler.inLetEvent();
+		}
+	}
+	
+	// TODO: document
+	public static class EndLetEvent extends Event {
+		@Override
+		public void sendTo( EventHandler handler ) {
+			handler.endLetEvent();
+		}
+	}
+	
+	public static class IdentifierEvent extends SelectorEvent {
+		@NonNull String identifier;
+		public IdentifierEvent( @NonNull String selector, @NonNull String identifier ) {
+			super( selector );
+			this.identifier = identifier;
+		}
+		@Override
+		public void sendTo( EventHandler handler ) {
+			handler.identifierEvent( this.selector, this.identifier );
+		}
+	}
+	
 	public static abstract class LiteralConstantEvent extends SelectorEvent {
 		
 		@NonNull String value;

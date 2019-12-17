@@ -3,6 +3,7 @@ package com.steelypip.powerups.jinxml.stdmodel;
 import java.math.BigInteger;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,74 @@ public class FlexiElement implements Element {
 		}
 	}
 	
-	public Element deepFreeze() {
+	static class DeepFreezeWithSharing {
+		
+		static enum CanReachMutable {
+			InProgress,
+			NoPath,
+			PathFound;
+		}
+		
+		private IdentityHashMap< Element, CanReachMutable > canReachMutable = new IdentityHashMap<>();
+		
+		@NonNull CanReachMutable scanForReachableMutable( Element x ) {
+			CanReachMutable m = this.canReachMutable.get( x );
+			if ( m != null ) {
+				return m;
+			} else if ( ! x.isFrozen() ) {
+				this.canReachMutable.put( x, CanReachMutable.PathFound );
+				return CanReachMutable.PathFound;
+			} else {
+				m = CanReachMutable.InProgress;
+				canReachMutable.put( x, m );
+				for ( Element child : x.children() ) {
+					CanReachMutable mc = this.scanForReachableMutable( child );
+					if ( m == CanReachMutable.InProgress && mc == CanReachMutable.PathFound ) {
+						m = CanReachMutable.PathFound;
+						canReachMutable.put( x, m );
+					}
+				}
+				if ( m != CanReachMutable.PathFound ) {
+					m = CanReachMutable.NoPath;
+					canReachMutable.put( x, m );
+				} 
+				return m;
+			}
+		}
+		
+		private Element shallowCopy( Element x ) {
+			final Element new_element = new FlexiElement( x.getName() );
+			x.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
+			return new_element;
+		}
+		
+		private void deepCopyChildren( Element x, Element new_copy ) {
+			x.getMembersStream().forEach( member -> new_copy.addLastChild( member.getSelector(), this.fetchElement( member.getChild() ) ) );
+		}
+		
+		private IdentityHashMap< Element, Element > idmap = new IdentityHashMap<>();
+		
+		public Element fetchElement( Element x ) {
+			CanReachMutable m = this.scanForReachableMutable( x );
+			if ( m == CanReachMutable.NoPath ) {
+				//	Deeply immutable.
+				return x;
+			} else {
+				final Element saved = idmap.get( x );
+				if ( saved != null ) {
+					return saved;
+				} else {
+					final Element new_copy = this.shallowCopy( x );
+					idmap.put( x, new_copy );
+					this.deepCopyChildren( x, new_copy );
+					new_copy.freezeSelf();
+					return new_copy;
+				}
+			}
+		}
+	}
+	
+	public Element deepFreezeIgnoringSharing() {
 		List< StdPair< Member, Element> > pairs = this.getMembersStream().map( e -> new StdPair<>( e, e.getChild().deepFreeze() ) ).collect( Collectors.toList() );
 		boolean no_need_to_copy = this.isFrozen() && pairs.stream().allMatch( p -> p.getFirst().getChild() == p.getSecond() );
 		if ( no_need_to_copy ) {
@@ -78,11 +146,62 @@ public class FlexiElement implements Element {
 		}
 	}
 	
-	public Element deepMutableCopy() {
+	public Element deepFreeze( boolean preserveSharing ) {
+		if ( preserveSharing ) {
+			return new DeepFreezeWithSharing().fetchElement( this );
+		} else {
+			return this.deepFreezeIgnoringSharing();
+		}
+	}
+	
+	public Element deepFreeze() {
+		return new DeepFreezeWithSharing().fetchElement( this );
+	}
+		
+	static class DeepMutableCopyWithSharing {
+		private IdentityHashMap< Element, Element > idmap = new IdentityHashMap<>();
+		
+		private Element shallowCopy( Element x ) {
+			final Element new_element = new FlexiElement( x.getName() );
+			x.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
+			return new_element;
+		}
+		
+		private void deepCopyChildren( Element x, Element new_copy ) {
+			x.getMembersStream()
+			.forEach( m -> new_copy.addLastChild( m.getSelector(), this.fetchElement( m.getChild() ) ) );
+		}
+		
+		public Element fetchElement( Element x ) {
+			final Element saved = idmap.get( x );
+			if ( saved != null ) {
+				return saved;
+			} else {
+				final Element new_copy = this.shallowCopy( x );
+				idmap.put( x, new_copy );
+				this.deepCopyChildren( x, new_copy );
+				return new_copy;
+			}
+		}
+	}
+	
+	public Element deepMutableCopyIgnoringSharing() {
 		final Element new_element = new FlexiElement( this.getName() );
 		this.getAttributesStream().forEachOrdered( e -> new_element.addLastValue( e.getKey(), e.getValue() ) );		
 		this.getMembersStream().map( e -> new StdPair<>( e.getSelector(), e.getChild().deepMutableCopy() ) ).forEachOrdered( e -> new_element.addLastChild( Objects.requireNonNull( e.getKey() ), Objects.requireNonNull( e.getValue() ) ) );
 		return new_element;
+	}
+	
+	public Element deepMutableCopy( boolean preserveSharing ) {
+		if ( preserveSharing ) {
+			return new DeepMutableCopyWithSharing().fetchElement( this );
+		} else {
+			return this.deepFreezeIgnoringSharing();
+		}
+	}
+	
+	public Element deepMutableCopy() {
+		return new DeepMutableCopyWithSharing().fetchElement( this );		
 	}
 	
 	public Element mutableCopy() {
