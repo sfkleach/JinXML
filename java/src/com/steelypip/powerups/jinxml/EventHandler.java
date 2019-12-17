@@ -90,6 +90,28 @@ public interface EventHandler {
 	void endObjectEvent();
 	
 	/**
+	 * startLetEvent is a handler method that correponds to the recognition of
+	 * the start of a let-expression.
+	 * @param selector the relationship with the parent
+	 */
+	void startLetEvent( @NonNull String selector );
+	default void startLetEvent() {
+		this.startObjectEvent( Element.DEFAULT_SELECTOR );
+	}
+	
+	/**
+	 * endLetEvent is a handler method that corresponds to the recognition
+	 * of the end of a let-expression.
+	 */
+	void endLetEvent();
+	
+	//	TODO:
+	void inLetEvent();
+	
+	void identifierEvent( @NonNull String selector, @NonNull String identifier );
+	
+	
+	/**
 	 * intEvent is a handler method that corresponds to the recognition of a
 	 * literal integer (JSON syntax).
 	 * @param selector the relationship with the parent

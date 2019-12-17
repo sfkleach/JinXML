@@ -21,6 +21,7 @@ import com.steelypip.powerups.common.NullIndenter;
 import com.steelypip.powerups.common.Sequence;
 import com.steelypip.powerups.common.StdIndenter;
 import com.steelypip.powerups.io.StringPrintWriter;
+import com.steelypip.powerups.jinxml.stdmodel.DeepFreezeSelf;
 import com.steelypip.powerups.jinxml.stdmodel.FlexiElement;
 import com.steelypip.powerups.jinxml.stdmodel.InOrderTraversal;
 import com.steelypip.powerups.jinxml.stdmodel.StdBuilder;
@@ -61,8 +62,7 @@ public interface Element {
 	 * Freezes the element and all the children recursively.
 	 */
 	default void deepFreezeSelf() {
-		this.freezeSelf();
-		this.getMembersStream().forEach( a -> a.getChild().deepFreezeSelf() );
+		new DeepFreezeSelf().selfFreeze( this );
 	}
 	
 	/**
@@ -79,6 +79,9 @@ public interface Element {
 	 */
 	Element deepFreeze();
 	
+	//	TODO: complete the comment.
+	Element deepFreeze( boolean preserveSharing );
+	
 	/**
 	 * Returns a non-identical but equal shallow-copy of the element. All the
 	 * children are shared.
@@ -92,6 +95,9 @@ public interface Element {
 	 * @return deep-copy of the element
 	 */
 	Element deepMutableCopy();
+	
+	// TODO: complete the comment.
+	Element deepMutableCopy( boolean preserveSharing );
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//	Name

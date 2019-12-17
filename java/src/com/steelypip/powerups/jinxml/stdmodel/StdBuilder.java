@@ -6,12 +6,10 @@ import static com.steelypip.powerups.jinxml.Element.FLOAT_ELEMENT_NAME;
 import static com.steelypip.powerups.jinxml.Element.INT_ELEMENT_NAME;
 import static com.steelypip.powerups.jinxml.Element.NULL_ELEMENT_NAME;
 import static com.steelypip.powerups.jinxml.Element.OBJECT_ELEMENT_NAME;
-import static com.steelypip.powerups.jinxml.Element.ROOT_ELEMENT_NAME;
 import static com.steelypip.powerups.jinxml.Element.ROOT_SELECTOR;
 import static com.steelypip.powerups.jinxml.Element.STRING_ELEMENT_NAME;
 import static com.steelypip.powerups.jinxml.Element.VALUE_KEY_FOR_LITERAL_CONSTANTS;
 
-import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -22,24 +20,13 @@ import com.steelypip.powerups.jinxml.Element;
 
 public class StdBuilder implements Builder {
 
-	/**
-	 * The root element holds onto the entire in-progress tree. It is never exposed.
-	 * As elements are parsed from the input, they become a queue of children held by
-	 * the root (all of which have the selector ROOT_CHILD_SELECTOR).
-	 */
-	protected Element root = new FlexiElement( ROOT_ELEMENT_NAME ); 
-
-	
-	/**
-	 * The dump is a record of the enclosing context. Tags and entry-selectors are
-	 * regarded as akin to nested parentheses and brackets - they have to match. Open-tags
-	 * are represented by the element that they start and open-entries are represented by
-	 * the selector-string.
-	 */
-	protected ArrayDeque< Object > dump = new ArrayDeque<>();
-	
+	protected Focus.RootFocus root = new Focus.RootFocus();
 	// 	This variables represent the current context.  
-	protected Element focus = this.root;
+	protected Focus focus = root;
+	//	This variable represents the list of ancestor focii.
+	protected Trail trail = new Trail();
+	
+	protected boolean mustCopyResults = false;
 	
 	/**
 	 * This flag dictates whether or not the items that are constructed will be mutable or not. 
@@ -47,7 +34,7 @@ public class StdBuilder implements Builder {
 	protected boolean mutable_flag;
 	
 	/**
-	 * Tihs flag dictates whether or not the builder can accept events after an instance is
+	 * This flag dictates whether or not the builder can accept events after an instance is
 	 * ready.
 	 */
 	protected boolean allow_queuing;
@@ -57,14 +44,16 @@ public class StdBuilder implements Builder {
 		this.allow_queuing = allow_queuing;
 	}
 
-	private void pushChild( Element x ) {
-		this.dump.addLast( this.focus );
+	private void pushChild( Focus x ) {
+		this.trail.addLast( this.focus );
 		this.focus = x;
 	}
 
 	private void popChild() {
+		Focus current = this.focus;
 		try {
-			this.focus = (Element)this.dump.removeLast();
+			this.focus = this.trail.removeLast();
+			this.focus.addFocus( current );
 		} catch ( NoSuchElementException e ) {
 			throw new IllegalStateException( e );
 		} catch (ClassCastException e ) {
@@ -74,19 +63,15 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public void startTagEvent( @NonNull String selector, @NonNull String key ) {
-		if ( this.dump.isEmpty() && ! this.allow_queuing && this.focus.countChildren( ROOT_SELECTOR ) > 0  ) {
-			throw new Alert( "Trying to add a second element to a builder that does not allow queuing" ).culprit( "First element", this.focus.getChild( ROOT_SELECTOR, 0 ) );
+		if ( this.trail.isEmpty() && ! this.allow_queuing && this.focus.hasRootChildren()  ) {
+			throw new Alert( "Trying to add a second element to a builder that does not allow queuing" ).culprit( "First element", this.focus.getElement().getChild( ROOT_SELECTOR, 0 ) );
 		}
-		final Element new_child = new FlexiElement( key );
-		this.focus.addLastChild( selector, new_child );
-		this.pushChild( new_child );
+		this.pushChild( new Focus.ElementFocus( selector, new FlexiElement( key ) ) );
 	}
 
 	@Override
 	public void attributeEvent( @NonNull String key, @NonNull String value, boolean solo ) {
-		if ( this.dump.isEmpty() ) {
-			throw new IllegalStateException( "Trying to add attributes outside of a tag" );
-		} else if ( solo && this.focus.hasKey( key ) ) {
+		if ( solo && this.focus.hasKey( key ) ) {
 			throw new Alert( "Adding second attribute with same key but marked as solo" ).culprit( "Key", key );
 		} else {
 			this.focus.addLastValue( key, value );
@@ -105,6 +90,45 @@ public class StdBuilder implements Builder {
 				wrap( IllegalArgumentException.class )
 			);
 		}
+	}	
+
+	@Override
+	public void startLetEvent( @NonNull String selector ) {
+		if ( this.trail.isEmpty() && ! this.allow_queuing && this.focus.hasRootChildren()  ) {
+			throw new Alert( "Trying to add a second element to a builder that does not allow queuing" ).culprit( "First element", this.focus.getElement().getChild( ROOT_SELECTOR, 0 ) );
+		}
+		this.pushChild( new Focus.LetFocus( selector ) );
+	}
+	
+	@Override
+	public void inLetEvent() {
+		this.focus.seenInKeyword();
+	}
+
+	@Override
+	public void endLetEvent() {
+		if ( this.focus.isLetFocus() ) {
+			this.popChild();
+		} else {
+			throw new Alert( "Mismatched tag/element brackets" );
+		}
+	}
+	
+	private Element lookup( @NonNull String identifier ) {
+		Element e = this.focus.lookup( identifier );
+		if ( e != null ) return e;
+		for ( Focus f : this.trail ) {
+			Element x = f.lookup( identifier );
+			if ( x != null ) return x;
+		}
+		return null;
+	}
+	
+	@Override 
+	public void identifierEvent( @NonNull String selector, @NonNull String identifier ) {
+		Element e = this.lookup( identifier );
+		if ( e == null ) throw new IllegalStateException( String.format( "Cannot resolve reference to %s", identifier ) );
+		this.focus.addFocus( new Focus.ElementFocus( selector, e ) );
 	}
 
 	@Override
@@ -164,24 +188,24 @@ public class StdBuilder implements Builder {
 
 	@Override
 	public boolean hasNext() {
-		final int n = this.root.countChildren();
-		//	Adjust for in progress.
-		return n > ( this.dump.isEmpty() ? 0 : 1 );
+		return this.root.hasNextItem();
 	}
 
 	@Override
 	public boolean isInProgress() {
-		return ! this.dump.isEmpty();
+		return ! this.trail.isEmpty();
 	}
 
 	@Override
 	public Element next( boolean mutable ) {
-		Element e = this.root.getFirstChild();
-		if ( e == null ) {
-			throw new IllegalStateException( "No next element available" );
+		Element e = this.root.nextItem();
+		if ( this.mustCopyResults ) {
+			return mutable ? e.deepMutableCopy() : e.deepFreeze();
+		} else if ( mutable ) {
+			return e;
 		} else {
-			this.root.removeFirstChild( ROOT_SELECTOR, null ); 
-			return this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze();
+			e.deepFreezeSelf();
+			return e;
 		}
 	}
 
@@ -205,34 +229,23 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Element snapshot() {
-		final Element e = root.getFirstChild();
-		if ( e != null ) {
-			return this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze();
-		} else {
-			throw new IllegalStateException( "No events processed, cannot take a snapshot" );
-		}
-	}
-
-	@Override
-	public Element trySnapshot( Element otherwise ) {
-		final Element e = root.getFirstChild();
-		return e != null ? ( this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze() ) : otherwise;
-	}
-
-	@Override
 	public void include( @NonNull String selector, Element child, boolean checkMutability ) {
 		if ( checkMutability ) {
 			//	Counter-intuitive test: use == because the two sides have exactly opposite meanings.
 			if ( this.mutable_flag == child.isFrozen() ) {
 				throw (
 					new Alert( "Failed check for mutability consistency" ).
-					culprit( "ELement to be included", child ).
+					culprit( "Element to be included", child ).
 					culprit( "Builder mutability", mutable_flag )
 				);
 			}
 		}
-		this.focus.addLastChild( selector, child );
+		// 	Importantly: inclusion means that not all nodes are freshly built. That means we must
+		//	copy the results to avoid inadvertant sharing with pre-existing store.
+		this.mustCopyResults = true;
+		this.pushChild( new Focus.ElementFocus( selector, child ) );
+		this.popChild();
 	}
+
 
 }
