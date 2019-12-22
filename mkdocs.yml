@@ -1,0 +1,17 @@
+site_name: JinXML
+nav:
+  - Features: Features.md
+  - FAQ: FAQ.md
+  - Some Examples: Examples.md
+  - Object Model: 
+    - Overview: ObjectModel.md
+    - Elements: Element.md
+    - Builder: Builder.md
+    - Push Parser: PushParser.md
+    - Events: Event.md
+  - Programming Guide (Java): JavaProgramming.md
+  - Reference:
+      - Grammar: Grammar.md
+      - List of Implementations: Implementations.md
+      - Licence: LICENSE.md
+theme: windmill

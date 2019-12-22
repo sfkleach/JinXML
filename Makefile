@@ -41,6 +41,13 @@ site: site-java
 	# This is needed to support the custom domain jinxml.org for the site.
 	/bin/echo "jinxml.org" > build-gh-pages/CNAME
 
+.PHONEY: mkdocs
+mkdocs: site
+	rm build-gh-pages/JavaImplementation.md
+	rm build-gh-pages/_config.yml
+	mv build-gh-pages docs
+	mkdocs build
+
 .PHONEY: release
 release: site
 	mkdir -p _build
