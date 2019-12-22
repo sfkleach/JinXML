@@ -82,7 +82,7 @@ the key.
 
 * Method ```getMembersAsMultiMap() -> MultiMap< String, Element >``` - returns a multi-map representing the members of the object. If `view` is `true` then the multi-map is a mutable view onto the members and changes to the multi-map immediately affect the members. If view is `false` then the list is a copy. The result is mutable or immutable depending on the value of `mutable`.
 
-* Method ```getChild( String sel = "", Boolen reverse = false, Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the member with selector `sel and position `position`. If there is no such member then `default is returned instead. If `reverse` is true then the position is taken to be `countChildren( sel ) - 1 - position`.
+* Method ```getChild( String sel = "", Boolen reverse = false, Int position = 0, Element? default = null ) -> Element?``` - returns the object associated with the member with selector `sel` and position `position`. If there is no such member then `default is returned instead. If `reverse` is true then the position is taken to be `countChildren( sel ) - 1 - position`.
 
 * Method ```getFirstChild( String sel, String? default = null ) -> Element?``` - returns the first child associated with the member with selector ```sel```. If there is no such member then ```default``` is returned instead. 
 
