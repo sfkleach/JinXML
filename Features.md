@@ -176,12 +176,12 @@ Example:
   isAlive = true
   age = 27        // Does the age of a person freeze at their time of death?
   address =       // See how to fix this 'stutter' in the next section.
-  <address>
-    streetAddress = "21 2nd Street"
-    city = "New York"
-    state = "NY"
-    postalCode = "10021-3100"
-  </&>
+    <address>
+      streetAddress = "21 2nd Street"
+      city = "New York"
+      state = "NY"
+      postalCode = "10021-3100"
+    </&>
   children = []
   spouse = null  // Can you have multiple spouses?
 </&>
