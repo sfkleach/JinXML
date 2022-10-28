@@ -36,7 +36,7 @@ instead you smoothly convert the exceptionally multi-valued field like this:
 ```xml
 <book.list>
     <book>title: "The Martian", author: "Andy Weir"</book>
-    <book>title: "Neuromancer", author; "William Gibson"</book&>
+    <book>title: "Neuromancer", author; "William Gibson"</book>
     <book>title: "The Space Merchants", author: "Frederik Pohl", author+: "Cyril M. Kornbluth"</book>
 </book.list>
 ```
