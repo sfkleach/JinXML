@@ -57,6 +57,9 @@ public class StdPushParser implements PushParser {
 	* Public methods
 	*************************************************************************/
 	
+	public boolean isXMLStringSyntaxSupported() {
+		return this.pp.isXMLStringSyntaxSupported();
+	}
 
 	@Override
 	public Event readEvent( Event otherwise ) {

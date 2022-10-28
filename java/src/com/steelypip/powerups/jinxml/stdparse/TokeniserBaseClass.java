@@ -22,6 +22,8 @@ public abstract class TokeniserBaseClass {
 	
 	abstract CharRepeater cucharin();
 	
+	abstract boolean isXMLStringSyntaxSupported();
+	
 	char nextChar() {
 		return this.cucharin().nextChar();
 	}
@@ -279,7 +281,7 @@ public abstract class TokeniserBaseClass {
 		final StringBuilder attr = new StringBuilder();
 		final char opening_quote_mark = this.nextChar();
 		if ( opening_quote_mark != DOUBLE_QUOTE && opening_quote_mark != SINGLE_QUOTE ) throw new Alert( "Attribute value not quoted" ).culprit( "Character", opening_quote_mark );
-		final boolean is_xml = opening_quote_mark == SINGLE_QUOTE;
+		final boolean is_xml = this.isXMLStringSyntaxSupported() && opening_quote_mark == SINGLE_QUOTE;
 		final char esc = is_xml ? AMPERSAND : BACK_SLASH;
 		for (;;) {
 			char ch = this.nextChar();

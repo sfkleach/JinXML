@@ -64,6 +64,10 @@ public class TagParser extends TokeniserBaseClass {
 	public CharRepeater cucharin() {
 		return this.cucharin;
 	}
+	
+	public boolean isXMLStringSyntaxSupported() {
+		return false;
+	}
 
 	/*************************************************************************
 	* Delgation to LevelTracker
