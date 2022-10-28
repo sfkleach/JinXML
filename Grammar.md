@@ -94,10 +94,10 @@ Note that Shebang sequences may only occur at the start of a stream.
 Reserved ::= 'null' | 'true' | 'false'
 Number ::= '-'? [0-9]+ ( '.' [0-9]+ )? ( ( 'e' | 'E' ) [0-9]+ )?
 String ::= SingleQuotedString | DoubleQuotedString
-DoubleQuotedString ::= '"' ([^"\]|BEscape)* '"' | "'" ([^'\]|BEscape)* "'"
-BEscape ::= '\' ( ["'\/bfnrt] | 'u' Hex Hex Hex Hex | Reference )
-StringQuotedString ::= "'" ([^&>"]|XEscape)* "'"
-XEscape ::= '&' (NamedCharacterReference|'#' [0-9]+|'#x' Hex+|'\' BEscape)';'
+DoubleQuotedString ::= '"' ([^"\]|Escape)* '"'
+SingleQuotedString ::= "'" ([^'\]|Escape)* "'"
+Escape ::= '\' ( ["'\/bfnrt] | 'u' Hex Hex Hex Hex | XEscape )
+XEscape ::= '&' (NamedCharacterReference|'#' [0-9]+|'#x' Hex+)';'
 NamedCharacterReference ::= [http://www.w3.org/TR/html5/syntax.html#named-character-references]
 Hex ::= [0-9a-fA-F]
 Discard ::= ( Whitespace | XComment | XOther | JComment )+
@@ -128,13 +128,13 @@ __DoubleQuotedString__: JSON-like double-quoted strings
 
 ![Image of DoubleQuotedString rule](grammar/images/DoubleQuotedString.png)
 
-__BEscape__: JSON-style Escapes
-
-![Image of BEscape rule](grammar/images/BEscape.png)
-
 __SingleQuotedString__: XML-like single-quoted strings
 
-![Image of StringQuotedString rule](grammar/images/StringQuotedString.png)
+![Image of StringQuotedString rule](grammar/images/SingleQuotedString.png)
+
+__Escape__: JSON-style Escapes
+
+![Image of Escape rule](grammar/images/Escape.png)
 
 __XEscape__: XML-style Escapes
 

@@ -8,12 +8,12 @@
 * [End of line comments](#end-of-line-comments)
 * [Long comments](#long-comments)
 * [Double-quoted JSON string literals with HTML5 escapes](#double-quoted-json-string-literals-with-HTML5-escapes)
+* [Single-quoted string literals](#single-quoted-string-literals)
 * [XML-like tags](#xml-like-tags)
 * [Colon as well as equals](#colon-as-well-as-equals)
 * [Optional tag names](#optional-tag-names)
 * [Quoted element names and attribute keys](#quoted-element-names-and-attribute-keys)
 * [XML-like headers, comments and processing directives](#xml-like-headers-comments-and-processing-directives)
-* [Single-quoted XML string literals with HTML5 escapes](#single-quoted-xml-string-literals-with-html5-escapes)
 
 ## Strict superset of JSON
 This is self-explanatory: a JinXML parser can read any normal JSON input. In other words nothing in JinXML breaks normal JSON usage. And the output of such a parse has the expected representation. Note that [objects with duplicate keys](https://dzone.com/articles/duplicate-keys-in-json-objects) are not considered to be 'normal' JSON. JinXML supports multiple values properly and hence does not behave the same way as abnormal JSON - see below for details.
@@ -114,7 +114,15 @@ JSON string literals have a relatively small number of escapes ```\n```, ```\r``
 { copyright = "\&copy; Copyright Stephen Leach, 2018" }
 ```
 
+N.B. There is no automatic line-ending conversion in JinXML, such as MacOS \r to Unix \n or PC \r\n, and there never will be. JinXML is all about recording data, not corrupting it with dodgy heuristics.
+
+
+## Single-quoted string literals
+Single quotes are an alternative to double quotes for introducing string literals. Within single quotes the same escape conventions apply. These are often preferred because they look less 'heavy' on the page. Having both single and double quotes available is especially handy when the text being quoted contains the opposite quote mark.
+
 > :notebook: Design note: The clash in escape conventions for string literals is the most awkward aspect of unifying JSON and MinXML.
+
+
 
 ## XML-like tags
 Just as in XML, there are three kinds of tags. Start and end tags are paired and enclose a series of expressions and their names must match. The pair together is called an element.
@@ -241,15 +249,3 @@ XML comments of the form ```<!--``` to ```-->``` are supported in the sense that
 N.B. No processor should respond to their content i.e. pragmas hidden in discarded are official no-nos. Comments can be replaced by one-or-more spaces without changing the meaning in any way.
 
 :notebook: Design note: This is a low-priority item but slightly improves the range of XML data that can be accommodated without change. Processing directives may be accommodated in a later revision and we do not want to cramp our style in the intermin. And the idea of embedding character encoding in the XML header is downright horrible & will never be resurrected.
-
-## Single-quoted (XML) string literals with JSON escapes
-In JinXML, single and double quoted strings are mostly interchangeable - but single-quoted strings are primarily intended to help bring across HTML data. They each use different conventions to introduce escape sequences. Double-quoted strings use ```\``` to start escape sequences but single-quoted strings use ```&```. 
-
-In this regard, single-quoted strings are very like XML attribute values (which may be single or double-quoted). However, JinXML extends the escape sequences to allow ```&\``` to switch to using the escape sequences of JSON.
-
-For example:
-```
-<greeting text='Hello, world!&\n'/>
-```
-
-N.B. There is no automatic line-ending conversion in JinXML, such as MacOS \r to Unix \n or PC \r\n, and there never will be. JinXML is all about recording data, not corrupting it with dodgy heuristics.

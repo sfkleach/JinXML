@@ -19,7 +19,11 @@ public class Test_StdParser_ReadElement {
 	}
 	
 	Element element( String s ) {
-		return new StdPushParser( new StringReader( s ), false ).readElement();
+		return parser( s ).readElement();
+	}
+	
+	boolean isXMLStringSyntaxSupported() {
+		return parser("").isXMLStringSyntaxSupported();
 	}
 	
 	@Test
@@ -149,6 +153,7 @@ public class Test_StdParser_ReadElement {
 
 	@Test
 	public void readElement_XMLStyle_NonEmptyString_WithEscapes() {
+		if (!isXMLStringSyntaxSupported()) return;
 		String text = "'Fish &amp; Chips&\\n'";
 		Element x = element( text );
 		assertTrue( x.isStringValue() );
@@ -157,6 +162,7 @@ public class Test_StdParser_ReadElement {
 
 	@Test
 	public void readElement_XMLStyle_EscapeFlip() {
+		if (!isXMLStringSyntaxSupported()) return;
 		String text = "'&\\&apos;'";
 		Element x = element( text );
 		assertTrue( x.isStringValue() );
