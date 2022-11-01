@@ -7,18 +7,18 @@ JinXML has a whitespace insensitive layout, which means that it is a good idea t
 ```
 JinXML ::= Element | JSON
 Element ::= StartTag ( ( Entry | JinXML ) Terminator? )* EndTag | FusedTag
-StartTag ::= '<' ElementName Attribute* '>'
-EndTag ::= '</' ElementName '>'
-FusedTag ::= '<' ElementName Attribute* '/>'
-ElementName ::= NCName | '&' | String
+StartTag ::= '<' Name Attribute* '>'
+EndTag ::= '</' Name '>'
+FusedTag ::= '<' Name Attribute* '/>'
 Attribute ::= FieldPrefix String
-NCName ::= [http://www.w3.org/TR/xml-names/#NT-NCName]
 JSON ::= Reserved | Number | String | Array | Object
 Reserved ::= 'null' | 'true' | 'false'
 Array ::= '[' ( JinXML Terminator? )*  ']'
 Object ::= '{' ( Entry Terminator? )* '}'
-Entry ::= ( NCName | String ) ( ':' | '=' | '+:' | '+=' ) JinXML 
-Entry ::= '&' ( ':' | '=' | '+:' | '+=' ) Element
+Entry ::= FieldPrefix JinXML 
+FieldPrefix ::= Name ( ':' | '=' | '+:' | '+=' )
+Name ::= NCName | '&' | String
+NCName ::= [http://www.w3.org/TR/xml-names/#NT-NCName]
 Terminator ::= ',' | ';'
 ```
 
@@ -49,17 +49,9 @@ __FusedTag__: Combines a start-and-end tag pair when there are no children
 
 ![Image of FusedTag rule](grammar/images/FusedTag.png "Combines a start-and-end tag pair when there are no children")
 
-__ElementName__: Element names, attribute keys and object keys are almost identical - but '+' is allowed for element names.
-
-![Image of ElementName rule](grammar/images/ElementName.png "Element names support + for defaulting")
-
 __Attribute__: An attribute pairs up a name with a string value
 
 ![Image of Attribute rule](grammar/images/Attribute.png "An attribute pairs up a name with a string value")
-
-__NCName__: Same as XML spec
-
-![Image of NCName URL](grammar/images/NCName.png "Same as XML spec")
 
 __JSON__: Denotes a JSON-styled expression
 
@@ -81,10 +73,21 @@ __Entry__: Member of JSON-style object
 
 ![Image of Entry rule](grammar/images/Entry.png "Member of JSON-style object")
 
+__FieldPrefix__: Member of JSON-style object
+
+![Image of Entry rule](grammar/images/Entry.png "Member of JSON-style object")
+
+__ElementName__: Element names, attribute keys and object keys are almost identical - but '+' is allowed for element names.
+
+![Image of ElementName rule](grammar/images/ElementName.png "Element names support + for defaulting")
+
+__NCName__: Same as XML spec
+
+![Image of NCName URL](grammar/images/NCName.png "Same as XML spec")
+
 __Terminator__: Optional comma or semi between members of arrays, objects or elements.
 
 ![Image of Terminator rule](grammar/images/Terminator.png "Optional comma or semi between members of arrays, objects or elements")
-
 
 
 ## Lower-Level Grammar for Tokenisation in EBNF, corresponds lexical analysis phase

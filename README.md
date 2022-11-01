@@ -7,10 +7,10 @@ JSON in XML - a clean and practical fusion of JSON and minimal XML syntax.
 JinXML is an extension of JSON syntax that adds XML-like start, end and standalone tags that adds convenience and expressive power to JSON suitable for representing hierarchical or 'tree-like' data. 
 
 _Read more_:
-* [List of features](Features.md)
-* [JinXML grammar](Grammar.md)
-* [Implementations](Implementations.md)
-* [Frequently Asked Questions](FAQ.md)
+* [List of features](/docs/Features.md)
+* [JinXML grammar](/docs/Grammar.md)
+* [Implementations](/docs/Implementations.md)
+* [Frequently Asked Questions](/docs/FAQ.md)
 
 
 ## Example
@@ -37,7 +37,7 @@ Here's a simple example that fits in some of the features of JinXML.
 ```
 
 _Read more_:
-* [List of examples](Examples.md)
+* [List of examples](/docs/Examples.md)
 
 
 ## How much JSON is included?
@@ -68,7 +68,7 @@ N.B. MinXML is a strict subset of both JinXML and XML.
 As a notation, JinXML is well-suited to complex, hierarchical data where the lack of inter-operatability with third party applications isn't an issue. It's a bit more flexible and comfortable than either JSON or XML, as outlined below, but its real advantage is that the processing model is very simple. This is very helpful when working with complex data transformations e.g. representing domain specific languages.
 
 _Read more_:
-* [Programming with JinXML (Java)](JavaProgramming.md)
+* [Programming with JinXML (Java)](/docs/JavaProgramming.md)
 
 
 ## Why another notation?
