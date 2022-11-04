@@ -612,7 +612,7 @@ class Parser():
 		while True:
 			e = self.readElement()
 			if None == e:
-				raise StopIteration
+				return
 			yield e
 
 
