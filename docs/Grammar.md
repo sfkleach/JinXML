@@ -35,6 +35,10 @@ __JinXML__: JinXML is the non-terminal through which all recursion happens
 
 ![Image of JinXML rule](grammar/images/JinXML.png "JinXML is the non-terminal through which all recursion happens")
 
+__Call__: A function-call like syntax for elements
+
+![Image of Call rule](grammar/images/Call.png "Call makes elements look similar to Python function-calls")
+
 __Element__: Element are made up of tags
 
 ![Image of Element rule](grammar/images/Element.png "Element are made up of tags")
