@@ -36,6 +36,7 @@ public interface Element {
 	final static @NonNull String ROOT_SELECTOR = DEFAULT_SELECTOR;
 	final static @NonNull String ROOT_ELEMENT_NAME = "";
 	
+	static final @NonNull String APPLY_LIKE_ELEMENT_NAME = "<parenthesis>";
 	static final @NonNull String OBJECT_ELEMENT_NAME = "object";
 	static final @NonNull String ARRAY_ELEMENT_NAME = "array";
 	static final @NonNull String NULL_ELEMENT_NAME = "null";

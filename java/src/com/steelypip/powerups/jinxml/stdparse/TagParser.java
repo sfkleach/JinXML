@@ -190,8 +190,36 @@ public class TagParser extends TokeniserBaseClass {
 			this.sendBooleanEvent( handler, selectorInfo.getSelector(), identifier );
 			return true;
 		default:
-			throw new Alert( "Unrecognised identifier" ).culprit( "Identifier", identifier );
+			return readApplyLike( handler, selectorInfo, identifier );
+			// TODO: remove: throw new Alert( "Unrecognised identifier" ).culprit( "Identifier", identifier );
 		}
+	}
+	
+	private boolean readApplyLike( EventHandler handler, @NonNull SelectorInfo selectorInfo, String identifier ) {
+		this.eatWhiteSpace();
+		handler.startTagEvent( selectorInfo.getSelector( identifier ), identifier );
+		this.level_tracker.pushElement( identifier );
+		this.eatWhiteSpace();
+		if ( this.tryReadChar( '<' ) ) {	
+			this.eatWhiteSpace();
+			this.processAttributes( handler );
+			this.eatWhiteSpace();
+			if ( this.tryReadChar( '>' ) ) {
+				this.eatWhiteSpace();
+				this.mustReadChar( '(' );
+				this.level_tracker.pushApplyLike();
+			} else {
+				this.mustReadChar( '/' );
+				this.mustReadChar( '>' );
+				handler.endTagEvent( identifier );
+				this.level_tracker.popElement( identifier );
+			}
+		} else if ( this.tryReadChar( '(' ) ) {
+			this.level_tracker.pushApplyLike();
+		} else {
+			throw new Alert( "Misplaced identifier" ).culprit( "Identifier", identifier );
+		}
+		return true;
 	}
 	
 
@@ -296,6 +324,12 @@ public class TagParser extends TokeniserBaseClass {
 			this.mustReadChar( '}' );
 			this.level_tracker.popObject();
 			handler.endObjectEvent();
+			return true;
+		} else if ( pch == ')' ) {
+			this.mustReadChar( ')' );
+			this.level_tracker.popApplyLike();
+			handler.endTagEvent( null );
+			this.level_tracker.popElement( null );
 			return true;
 		} else if ( Character.isLetter( pch ) ) {
 			return this.handleIdentifier( handler, selectorInfo, this.gatherNonEmptyName() );
