@@ -11,7 +11,7 @@ public class LevelTracker {
 		return this.contexts_implementation.isEmpty();
 	}
 	
-	public void pop( String actualCategory ) {
+	private void pop( String actualCategory ) {
 		String expecting = this.contexts_implementation.removeLast();
 		if ( actualCategory == null ) {
 			// No checking.
