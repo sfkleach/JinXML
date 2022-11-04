@@ -34,7 +34,7 @@ public class Test_FlexiElement_toString {
 		assertEquals( "<a b='foo'/>", Element.fromString( "<a b='foo'/>" ).toString() );
 		assertEquals( "<a b='&quot;'/>", Element.fromString( "<a b='\"'/>" ).toString() );
 		assertEquals( "\"\\n\\r\\b\\t\\f\"", Element.fromString( "'\\n\\r\\b\\t\\f'" ).toString() );
-		assertEquals( "\"fish & chips\"", Element.fromString( "'fish &amp; chips'" ).toString() );
+		assertEquals( "\"fish & chips\"", Element.fromString( "'fish \\&amp; chips'" ).toString() );
 		assertEquals( "\"Copyright \\u00A9\"", Element.fromString( "'Copyright \u00A9'" ).toString() );
 	}
 

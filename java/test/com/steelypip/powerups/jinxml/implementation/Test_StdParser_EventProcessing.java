@@ -55,7 +55,7 @@ public class Test_StdParser_EventProcessing {
 
 	@Test
 	public void readEvent_XMLStyle_NonEmptyString_WithEscapes() {
-		StdPushParser p = new StdPushParser( new StringReader( "'x&amp;y'" ), true );
+		StdPushParser p = new StdPushParser( new StringReader( "'x\\&amp;y'" ), true );
 		Event start = p.readEvent();
 		assertTrue( start instanceof Event.StartTagEvent );
 		assertEquals( Element.STRING_ELEMENT_NAME, ((Event.StartTagEvent)start).getName() );
