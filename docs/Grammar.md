@@ -5,14 +5,16 @@ JinXML has a whitespace insensitive layout, which means that it is a good idea t
 
 ## Upper-Level Grammar in EBNF, corresponds to parse phase
 ```
-JinXML ::= Element | JSON
-Element ::= StartTag ( ( Entry | JinXML ) Terminator? )* EndTag | FusedTag
+JinXML ::= Element | JSON | Call
+Call ::= ( NCName | '&' ) '<' Attribute* ( '/>' | '>' '(' Item* ')' )
+Element ::= StartTag  Item* EndTag | FusedTag
 StartTag ::= '<' Name Attribute* '>'
 EndTag ::= '</' Name '>'
 FusedTag ::= '<' Name Attribute* '/>'
 Attribute ::= FieldPrefix String
 JSON ::= Reserved | Number | String | Array | Object
 Reserved ::= 'null' | 'true' | 'false'
+Item ::= ( Entry | JinXML ) Terminator?
 Array ::= '[' ( JinXML Terminator? )*  ']'
 Object ::= '{' ( Entry Terminator? )* '}'
 Entry ::= FieldPrefix JinXML 
