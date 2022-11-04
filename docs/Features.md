@@ -10,6 +10,7 @@
 * [Double-quoted JSON string literals with HTML5 escapes](#double-quoted-json-string-literals-with-HTML5-escapes)
 * [Single-quoted string literals](#single-quoted-string-literals)
 * [XML-like tags](#xml-like-tags)
+* [Call-like syntax](#call-like-syntax)
 * [Colon as well as equals](#colon-as-well-as-equals)
 * [Optional tag names](#optional-tag-names)
 * [Quoted element names and attribute keys](#quoted-element-names-and-attribute-keys)
@@ -163,6 +164,40 @@ Standalone tags are simply a notational convenience for a start-tag that is imme
 ```
 A parser may treat the standalone tag as a start tag with all the attributes immediately followed by an end tag.
 
+## Call-like Syntax
+JinXML also supports a function-call like syntax. Instead of writing:
+```xml
+<marker>
+    name:       'Grand Hyatt',
+    location:   [ 25.2285, 55.3273, ],
+</marker>
+```
+you may also write:
+```py
+marker( name='Grand Hyatt', location=[ 25.2285, 55.3273 ] )
+```
+The basic idea is to write the element-name as if it was the name of a function and the children as if they were parameters or named-parameters. The overall effect can look a lot like Python code. 
+
+You can even add attributes inside `<` ... `>` pairs. For example you could write:
+```xml
+<codon for="LEU"> 'CTT' 'CTC' 'CTA' 'CTG' </codon>
+```
+as:
+```
+codon<for="LEU">( 'CTT' 'CTC' 'CTA' 'CTG' )
+```
+
+In the case where there are no children, you can optionally omit the parameters by using a 'fused' attribute list. So:
+```xml
+<data col:'8', col+='19'/>
+```
+can alternatively be written as:
+```
+data<col:'8', col+='19'/>
+```
+Obviously these are very similar and mainly intended to ease writing programs that generate data in this style.
+
+
 ## Colon as well as equals
 The ```:``` separator is an alternative to ```=``` and ```+:``` is an alternative to ```+=```. There is no significance to the choice and a parser and/or application may not process them differently.
 
@@ -201,7 +236,7 @@ A relatively common use case is to want to use the same name for object-key and 
   firstName = "John" 
   lastName = "Smith"
   isAlive = true
-  age = 27        // Does the age of a person freeze at their time of death?
+  age = 27
   address = <&>
     streetAddress = "21 2nd Street"
     city = "New York"
@@ -210,6 +245,23 @@ A relatively common use case is to want to use the same name for object-key and 
   </&>
   ...
 </&>
+```
+
+You can also use the '&' with the call-style syntax:
+```py
+person(
+  firstName = "John" 
+  lastName = "Smith"
+  isAlive = true
+  age = 27
+  address = &(
+    streetAddress = "21 2nd Street"
+    city = "New York"
+    state = "NY"
+    postalCode = "10021-3100"
+  )
+  ...
+)
 ```
 
 This is the only situation in which both the start and end tags of a matched pair can omit the element name. And because it applies to both the start and end tag, it is also the only situation a standalone tag may have its name omitted.

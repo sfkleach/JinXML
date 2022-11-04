@@ -195,11 +195,10 @@ public class TagParser extends TokeniserBaseClass {
 		}
 	}
 	
-	private boolean readApplyLike( EventHandler handler, @NonNull SelectorInfo selectorInfo, String identifier ) {
+	private boolean readApplyLike( EventHandler handler, @NonNull SelectorInfo selectorInfo, @NonNull String identifier ) {
 		this.eatWhiteSpace();
 		handler.startTagEvent( selectorInfo.getSelector( identifier ), identifier );
 		this.level_tracker.pushElement( identifier );
-		this.eatWhiteSpace();
 		if ( this.tryReadChar( '<' ) ) {	
 			this.eatWhiteSpace();
 			this.processAttributes( handler );
@@ -333,6 +332,9 @@ public class TagParser extends TokeniserBaseClass {
 			return true;
 		} else if ( Character.isLetter( pch ) ) {
 			return this.handleIdentifier( handler, selectorInfo, this.gatherNonEmptyName() );
+		} else if ( pch == '&') {
+			this.skipChar();
+			return this.readApplyLike( handler, selectorInfo, selectorInfo.getSelector() );
 		} else {
 			throw new Alert( "Unexpected character while reading tag or constant" ).culprit( "Character", pch );
 		}

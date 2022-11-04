@@ -174,4 +174,50 @@ public class TestExamplesFromWiki {
 		assert "alpha".equals( alpha ) && "beta".equals( beta ) && "gamma".equals( gamma );
 	}
 	
+	final static String call_style_example_8 = "marker( name='Grand Hyatt', location=[ 25.2285, 55.3273 ] )";
+			
+	@Test
+	public void callStyleExample8() {
+		Element e = Element.fromString( call_style_example_8 );
+		assertEquals( "marker", e.getName() );
+		assertEquals( 1, e.countChildren( "name" ) );
+		assertEquals( 1, e.countChildren( "location" ) );
+		assertEquals( 2, e.countMembers() );
+		assertEquals( 0, e.countAttributes() );
+	}	
+	
+	final static String call_style_example_9 = "codon<for=\"LEU\">( 'CTT' 'CTC' 'CTA' 'CTG' )";
+	
+	@Test
+	public void callStyleExample9() {
+		Element e = Element.fromString( call_style_example_9 );
+		assertEquals( "codon", e.getName() );
+		assertEquals( 1, e.countAttributes() );
+		assertEquals( "LEU", e.getValue( "for" ) );
+		assertEquals( 4, e.countChildren() );
+	}
+	
+	
+	final static String call_style_ditto_example_10 =
+		    "person(" + 
+		    "  firstName = \"John\" " + 
+		    "  lastName = \"Smith\"" + 
+		    "  isAlive = true" + 
+		    "  age = 27" + 
+		    "  address = &(" + 
+		    "    streetAddress = \"21 2nd Street\"" + 
+		    "    city = \"New York\"" + 
+		    "    state = \"NY\"" + 
+		    "    postalCode = \"10021-3100\"" + 
+		    "  )" + 
+		    ")";
+	
+	@Test
+	public void callStyleDittoExample10() {
+		Element e = Element.fromString( call_style_ditto_example_10 );
+		assertEquals( "person", e.getName() );
+		assertEquals( 0, e.countAttributes() );
+		assertEquals( 5, e.countMembers() );
+	}
+	
 }
