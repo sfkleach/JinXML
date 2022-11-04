@@ -5,14 +5,14 @@ import static com.steelypip.powerups.jinxml.Element.*;
 
 public class LevelTracker {
 	
-	final private ArrayDeque< String > contexts_implementation = new ArrayDeque<>();
+	final private ArrayDeque< Object > contexts_implementation = new ArrayDeque<>();
 
 	public boolean isAtTopLevel() {
 		return this.contexts_implementation.isEmpty();
 	}
 	
-	private void pop( String actualCategory ) {
-		String expecting = this.contexts_implementation.removeLast();
+	private void pop( Object actualCategory ) {
+		final Object expecting = this.contexts_implementation.removeLast();
 		if ( actualCategory == null ) {
 			// No checking.
 		} else if ( ! actualCategory.equals( expecting ) ) {
@@ -28,20 +28,23 @@ public class LevelTracker {
 		this.contexts_implementation.addLast( tag );
 	}
 	
+	final Object ARRAY_ELEMENT_PLACEHOLDER = new Object();
+	final Object OBJECT_ELEMENT_PLACEHOLDER = new Object();
+	
 	public void popArray() {
-		pop( ARRAY_ELEMENT_NAME );
+		pop( ARRAY_ELEMENT_PLACEHOLDER );
 	}
 	
 	public void pushArray() {
-		this.contexts_implementation.addLast( ARRAY_ELEMENT_NAME );
+		this.contexts_implementation.addLast( ARRAY_ELEMENT_PLACEHOLDER );
 	}
 	
 	public void popObject() {
-		pop( OBJECT_ELEMENT_NAME );
+		pop( OBJECT_ELEMENT_PLACEHOLDER );
 	}
 	
 	public void pushObject() {
-		this.contexts_implementation.addLast( OBJECT_ELEMENT_NAME );
+		this.contexts_implementation.addLast( OBJECT_ELEMENT_PLACEHOLDER );
 	}
 	
 }
