@@ -16,7 +16,21 @@ public class LevelTracker {
 		if ( actualCategory == null ) {
 			// No checking.
 		} else if ( ! actualCategory.equals( expecting ) ) {
-			throw new IllegalStateException(String.format( "Found {} but was expecting {}", actualCategory, expecting ) );
+			String a = stringify( actualCategory );
+			String e = stringify( expecting );
+			throw new IllegalStateException(String.format( "Found {} but was expecting {}", a, e ) );
+		}
+	}
+	
+	private String stringify( Object x ) {
+		if ( x == ARRAY_ELEMENT_PLACEHOLDER ) {
+			return ARRAY_ELEMENT_NAME;
+		} else if ( x == OBJECT_ELEMENT_PLACEHOLDER ) {
+			return OBJECT_ELEMENT_NAME;
+		} else if ( x == APPLY_LIKE_ELEMENT_PLACEHOLDER ) {
+			return APPLY_LIKE_ELEMENT_NAME;
+		} else {
+			return x.toString();
 		}
 	}
 	
@@ -30,6 +44,7 @@ public class LevelTracker {
 	
 	final Object ARRAY_ELEMENT_PLACEHOLDER = new Object();
 	final Object OBJECT_ELEMENT_PLACEHOLDER = new Object();
+	final Object APPLY_LIKE_ELEMENT_PLACEHOLDER = new Object();
 	
 	public void popArray() {
 		pop( ARRAY_ELEMENT_PLACEHOLDER );
@@ -45,6 +60,14 @@ public class LevelTracker {
 	
 	public void pushObject() {
 		this.contexts_implementation.addLast( OBJECT_ELEMENT_PLACEHOLDER );
+	}
+	
+	public void popApplyLike() {
+		pop( APPLY_LIKE_ELEMENT_PLACEHOLDER );
+	}
+	
+	public void pushApplyLike() {
+		this.contexts_implementation.addLast( APPLY_LIKE_ELEMENT_PLACEHOLDER );
 	}
 	
 }
