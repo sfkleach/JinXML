@@ -168,22 +168,6 @@ public class Test_StdBuilder {
 	}
 	
 	@Test
-	public void snapshot_OK() {
-		builder.startArrayEvent();
-		assertEquals( Element.ARRAY_ELEMENT_NAME, builder.snapshot().getName() );
-	}
-	
-	@Test( expected=Exception.class )
-	public void snapshot_Fail() {
-		builder.snapshot();
-	}
-	
-	@Test
-	public void trySnapshot_Otherwise() {
-		assertEquals( "me", builder.trySnapshot( Element.newElement( "me" ) ).getName() );
-	}
-	
-	@Test
 	public void tryNext_Otherwise() {
 		assertEquals( "me", builder.tryNext( Element.newElement( "me" ) ).getName() );
 	}

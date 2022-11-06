@@ -57,22 +57,6 @@ public interface Builder extends Iterator< Element >, EventHandler {
 	default Element tryNext() {
 		return this.tryNext( null );
 	}
-
-	/**
-	 * All open states are automatically but temporarily completed; if an Element is ready for construction after the 
-	 * auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the 
-	 * temporarily closed states are restored to their previous state. Use this.isInProgress() to check whether it 
-	 * is safe to call this method.
-	 * @return the element
-	 */
-	Element snapshot(); 
-	
-	/**
-	 * As for snapshot but never raises an exception but returns the value otherwise instead.
-	 * @param otherwise the value to return if there are 
-	 * @return the newly constructed element
-	 */
-	Element trySnapshot( Element otherwise );
 	
 	/**
 	 * Closes the current element-under-construction and returns it.

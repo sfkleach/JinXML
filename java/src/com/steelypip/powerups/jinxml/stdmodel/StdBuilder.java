@@ -205,22 +205,6 @@ public class StdBuilder implements Builder {
 	}
 
 	@Override
-	public Element snapshot() {
-		final Element e = root.getFirstChild();
-		if ( e != null ) {
-			return this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze();
-		} else {
-			throw new IllegalStateException( "No events processed, cannot take a snapshot" );
-		}
-	}
-
-	@Override
-	public Element trySnapshot( Element otherwise ) {
-		final Element e = root.getFirstChild();
-		return e != null ? ( this.mutable_flag ? e.deepMutableCopy() : e.deepFreeze() ) : otherwise;
-	}
-
-	@Override
 	public void include( @NonNull String selector, Element child, boolean checkMutability ) {
 		if ( checkMutability ) {
 			//	Counter-intuitive test: use == because the two sides have exactly opposite meanings.

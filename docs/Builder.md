@@ -12,11 +12,6 @@
 
 * Method ```tryNext( Element? orElse = null ) -> Element?``` - if an Element is ready for construction it builds and returns it, otherwise it returns the value in ```orElse``` instead.
 
-* Method ```snapshot() -> Element``` - all open states are automatically but temporarily completed;
-if an Element is ready for construction after the auto-completion, it is constructed and the result will be returned, otherwise an exception is raised; the temporarily closed states are restored to their previous state. Use ```this.isInProgress()``` to check whether it is safe to call this method.
-
-* Method ```trySnapshot( Element? orElse = null ) -> Element?``` - as for ```snapshot``` but never raises an exception but returns the value in```orElse``` instead.
-
 * Method ```include( Element value, Boolean checkMutability = false )``` - adds and shares this Element into the in-progress build. The mutability of the included value is checked depending on the ```checkMutability``` flag. It is **not** an error to mix mutability this way but an occasionally important feature.
 
 * Method ```reconstruct( Element value )``` - replays a series of events which would construct the Element supplied but does so inside the in-progress build. This is effectively the same as ```this.processEvents( value.toEventIterator() )```
