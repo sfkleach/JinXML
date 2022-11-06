@@ -227,7 +227,7 @@ public class StdBuilder implements Builder {
 			if ( this.mutable_flag == child.isFrozen() ) {
 				throw (
 					new Alert( "Failed check for mutability consistency" ).
-					culprit( "ELement to be included", child ).
+					culprit( "Element to be included", child ).
 					culprit( "Builder mutability", mutable_flag )
 				);
 			}
