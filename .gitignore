@@ -25,3 +25,5 @@ hs_err_pid*
 /java/javadoc.xml
 /java/doc/
 /scrapbook/tree.graffle
+/java/.idea/
+/java/jinxml.iml
